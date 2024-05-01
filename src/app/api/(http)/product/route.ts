@@ -12,9 +12,34 @@ import { getUserPermissions } from '@/utils/get-user-permissions'
 
 import { ProductAlreadyExistsError } from '../../_errors/product-already-exists-error'
 import { ProductNotExistsError } from '../../_errors/product-not-exists-error'
+import { FetchAllProductsUseCase } from '../../_use-cases/fetch-all-products'
 import { UpdateProductUseCase } from '../../_use-cases/update-product'
 
 const ProductType = ['TSHIRT', 'SHORTS', 'SHIRTS', 'HOODIE', 'JEANS'] as const
+
+export async function GET(req: NextRequest) {
+  try {
+    const token = await getToken({ req })
+
+    if (!token) throw new UnauthorizedError()
+
+    const { cannot } = await getUserPermissions(token.sub as string)
+
+    if (cannot('manage', 'all')) throw new UnauthorizedError()
+
+    const productsRepository = new PrismaProductsRepository()
+    const fetchAllProducts = new FetchAllProductsUseCase(productsRepository)
+
+    const products = await fetchAllProducts.execute()
+
+    return NextResponse.json(products, { status: 200 })
+  } catch (err) {
+    if (err instanceof UnauthorizedError) {
+      throw new UnauthorizedError()
+    }
+    throw new BadRequestError()
+  }
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -68,6 +93,7 @@ export async function POST(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
   try {
     const token = await getToken({ req })
+
     if (!token) throw new UnauthorizedError()
 
     const { cannot } = await getUserPermissions(token.sub as string)

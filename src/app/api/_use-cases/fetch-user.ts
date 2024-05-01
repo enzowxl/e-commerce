@@ -6,9 +6,9 @@ interface FetchUserUseCaseRequest {
 }
 
 export class FetchUserUseCase {
-  constructor(private UsersRepository: UsersRepository) {}
+  constructor(private usersRepository: UsersRepository) {}
   async execute({ email }: FetchUserUseCaseRequest) {
-    const userWithEmail = await this.UsersRepository.findByEmail(email)
+    const userWithEmail = await this.usersRepository.findByEmail(email)
 
     if (!userWithEmail) throw new UserNotExistsError()
 

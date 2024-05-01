@@ -5,6 +5,10 @@ import { prisma } from '@/lib/prisma'
 import { ProductsRepository } from '../products-repository'
 
 export class PrismaProductsRepository implements ProductsRepository {
+  async findMany() {
+    return await prisma.product.findMany()
+  }
+
   async delete(slug: string) {
     return await prisma.product.delete({
       where: {

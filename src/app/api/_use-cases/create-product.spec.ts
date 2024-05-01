@@ -26,7 +26,7 @@ describe('Create product Use Case', () => {
     const { product } = await sut.execute({
       name: 'Black shirt',
       price: 30,
-      description: 'This is a dress',
+      description: 'This is a shirt',
       slug: createSlug('Black shirt'),
       type: 'TSHIRT',
     })
@@ -40,7 +40,7 @@ describe('Create product Use Case', () => {
     await sut.execute({
       name,
       price: 30,
-      description: 'This is a dress',
+      description: 'This is a shirt',
       slug: createSlug(name),
       type: 'TSHIRT',
     })
@@ -49,7 +49,7 @@ describe('Create product Use Case', () => {
       sut.execute({
         name,
         price: 30,
-        description: 'This is a dress',
+        description: 'This is a shirt',
         slug: createSlug(name),
         type: 'TSHIRT',
       }),
@@ -60,7 +60,7 @@ describe('Create product Use Case', () => {
     const { product } = await sut.execute({
       name: 'Black shirt',
       price: 30,
-      description: 'This is a dress',
+      description: 'This is a shirt',
       slug: createSlug('Black shirt'),
       type: 'TSHIRT',
     })

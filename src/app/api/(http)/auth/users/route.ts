@@ -8,11 +8,36 @@ import { UserAlreadyExistsError } from '@/app/api/_errors/user-already-exists-er
 import { UserNotExistsError } from '@/app/api/_errors/user-not-exists-error'
 import { ValidationError } from '@/app/api/_errors/validation-error'
 import { PrismaUserRepository } from '@/app/api/_repository/prisma/prisma-users-repository'
+import { FetchAllUsersUseCase } from '@/app/api/_use-cases/fetch-all-users'
 import { FetchUserUseCase } from '@/app/api/_use-cases/fetch-user'
 import { RegisterUseCase } from '@/app/api/_use-cases/register'
 import { UpdateUserUseCase } from '@/app/api/_use-cases/update-user'
 import { userSchema } from '@/auth/models/user'
 import { getUserPermissions } from '@/utils/get-user-permissions'
+
+export async function GET(req: NextRequest) {
+  try {
+    const token = await getToken({ req })
+
+    if (!token) throw new UnauthorizedError()
+
+    const { cannot } = await getUserPermissions(token.sub as string)
+
+    if (cannot('manage', 'all')) throw new UnauthorizedError()
+
+    const usersRepository = new PrismaUserRepository()
+    const fetchAllUsers = new FetchAllUsersUseCase(usersRepository)
+
+    const users = await fetchAllUsers.execute()
+
+    return NextResponse.json(users, { status: 200 })
+  } catch (err) {
+    if (err instanceof UnauthorizedError) {
+      throw new UnauthorizedError()
+    }
+    throw new BadRequestError()
+  }
+}
 
 export async function POST(req: NextRequest) {
   try {

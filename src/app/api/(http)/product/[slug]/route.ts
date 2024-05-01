@@ -29,7 +29,7 @@ export async function GET(
 
     const product = await fetchProductUseCase.execute({ slug })
 
-    return NextResponse.json({ product }, { status: 200 })
+    return NextResponse.json(product, { status: 200 })
   } catch (err) {
     if (err instanceof ZodError) {
       throw new ValidationError()

@@ -5,4 +5,5 @@ export interface ProductsRepository {
   update(slug: string, data: Prisma.ProductUpdateInput): Promise<Product | null>
   findBySlug(slug: string): Promise<Product | null>
   delete(slug: string): Promise<Product | null>
+  findMany(): Promise<Product[]>
 }

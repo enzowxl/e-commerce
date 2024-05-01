@@ -7,6 +7,10 @@ import { ProductsRepository } from '../products-repository'
 export class InMemoryProductsRepository implements ProductsRepository {
   public products: Product[] = []
 
+  async findMany() {
+    return this.products
+  }
+
   async create(data: Prisma.ProductCreateInput) {
     const createProduct: Product = {
       id: randomUUID(),

@@ -26,7 +26,7 @@ describe('Delete product Use Case', () => {
     await productsRepository.create({
       name: 'Black shirt',
       price: 30,
-      description: 'This is a dress',
+      description: 'This is a shirt',
       slug: createSlug('Black shirt'),
       type: 'TSHIRT',
     })

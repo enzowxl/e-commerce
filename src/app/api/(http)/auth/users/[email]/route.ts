@@ -29,7 +29,7 @@ export async function GET(
     const fetchUserUseCase = new FetchUserUseCase(usersRepository)
 
     const user = await fetchUserUseCase.execute({ email })
-    return NextResponse.json({ user }, { status: 200 })
+    return NextResponse.json(user, { status: 200 })
   } catch (err) {
     if (err instanceof ZodError) {
       throw new ValidationError()

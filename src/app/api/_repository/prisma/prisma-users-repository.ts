@@ -5,6 +5,10 @@ import { prisma } from '@/lib/prisma'
 import { UsersRepository } from '../users-repository'
 
 export class PrismaUserRepository implements UsersRepository {
+  async findMany() {
+    return await prisma.user.findMany()
+  }
+
   async delete(email: string) {
     return await prisma.user.delete({
       where: {

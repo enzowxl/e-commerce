@@ -7,6 +7,10 @@ import { UsersRepository } from '../users-repository'
 export class InMemoryUsersRepository implements UsersRepository {
   public users: User[] = []
 
+  async findMany() {
+    return this.users
+  }
+
   async create(data: Prisma.UserCreateInput) {
     const createUser = {
       id: randomUUID(),
