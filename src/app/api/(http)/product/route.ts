@@ -23,10 +23,6 @@ export async function GET(req: NextRequest) {
 
     if (!token) throw new UnauthorizedError()
 
-    const { cannot } = await getUserPermissions(token.sub as string)
-
-    if (cannot('manage', 'all')) throw new UnauthorizedError()
-
     const productsRepository = new PrismaProductsRepository()
     const fetchAllProducts = new FetchAllProductsUseCase(productsRepository)
 
