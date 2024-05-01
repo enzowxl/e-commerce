@@ -1,0 +1,42 @@
+{
+  "name": "e-commerce",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "vitest run --dir src/app/api/_use-cases",
+    "test:watch": "vitest --dir src/app/api/_use-cases",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui"
+  },
+  "dependencies": {
+    "@casl/ability": "^6.7.1",
+    "@prisma/client": "^5.13.0",
+    "bcryptjs": "^2.4.3",
+    "next": "14.2.3",
+    "next-auth": "^4.24.7",
+    "react": "^18",
+    "react-dom": "^18",
+    "zod": "^3.23.5"
+  },
+  "devDependencies": {
+    "@rocketseat/eslint-config": "^2.2.2",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@vitest/coverage-v8": "^1.5.3",
+    "@vitest/ui": "^1.5.3",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.3",
+    "eslint-plugin-simple-import-sort": "^12.1.0",
+    "postcss": "^8",
+    "prisma": "^5.13.0",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5",
+    "vitest": "^1.5.3"
+  }
+}

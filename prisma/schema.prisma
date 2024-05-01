@@ -1,0 +1,114 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  MEMBER
+}
+
+model User {
+  id           String  @id @default(uuid())
+  name         String
+  email        String  @unique
+  avatarUrl    String? @map("avatar_url")
+  role         Role    @default(MEMBER)
+  passwordHash String  @map("password_hash")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  product_ratings  ProductRating[]
+  product_comments ProductComment[]
+}
+
+enum ProductType {
+  TSHIRT
+  SHORTS
+  SHIRTS
+  HOODIE
+  JEANS
+}
+
+model Product {
+  id          String      @id @default(uuid())
+  name        String
+  slug        String      @unique
+  description String
+  price       Float
+  discount    Float?
+  avatarUrl   String?     @map("avatar_url")
+  type        ProductType
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  photos           ProductPhoto[]
+  product_ratings  ProductRating[]
+  categories       Category[]
+  product_comments ProductComment[]
+  product_colors   ProductColor[]
+  product_sizes    ProductSize[]
+}
+
+model ProductPhoto {
+  id  String @id @default(uuid())
+  url String
+
+  Product   Product? @relation(fields: [productId], references: [id])
+  productId String?
+}
+
+model ProductSize {
+  id   String @id @default(uuid())
+  size String
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+}
+
+model ProductColor {
+  id  String @id @default(uuid())
+  hex String
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+}
+
+model ProductComment {
+  id      String @id @default(uuid())
+  comment String
+
+  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  productId String
+  userId    String
+}
+
+model ProductRating {
+  id     String @id @default(uuid())
+  rating Float
+
+  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  userId    String
+  productId String
+}
+
+model Category {
+  id        String @id @default(uuid())
+  name      String
+  avatarUrl String @map("avatar_url")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  products Product[]
+}
