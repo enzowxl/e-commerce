@@ -8,8 +8,7 @@ export const env = createEnv({
     DATABASE_URL: z.string().url(),
   },
 
-  // client: {
-  // },
+  client: {},
 
   runtimeEnv: {
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
