@@ -10,7 +10,8 @@
     "test": "vitest run --dir src/app/api/_use-cases",
     "test:watch": "vitest --dir src/app/api/_use-cases",
     "test:coverage": "vitest run --coverage",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "prepare": "husky"
   },
   "dependencies": {
     "@casl/ability": "^6.7.1",
@@ -33,6 +34,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
     "eslint-plugin-simple-import-sort": "^12.1.0",
+    "husky": "^9.0.11",
     "postcss": "^8",
     "prisma": "^5.13.0",
     "tailwindcss": "^3.4.1",
