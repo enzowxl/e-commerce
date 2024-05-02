@@ -28,7 +28,8 @@ describe('Update product Use Case', () => {
       price: 30,
       description: 'This is a dress',
       slug: createSlug('Black shirt'),
-      type: 'TSHIRT',
+      type: 'T_SHIRT',
+      categoryId: 'category-id',
     })
 
     const { product } = await sut.execute({

@@ -7,123 +7,65 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum ProductType {
-  TSHIRT
+enum ProductTypes {
+  T_SHIRT
   SHORTS
   SHIRTS
   HOODIE
   JEANS
 }
 
-enum Role {
+enum UserRoles {
   ADMIN
   MEMBER
 }
 
-enum PaymentStatus {
-  PENDING
-  APPROVED
-  DECLINED
+enum OrderStatus {
+  WAITING_FOR_PAYMENT
+  PAYMENT_CONFIRMED
 }
 
 model User {
-  id           String  @id @default(uuid())
+  id           String    @id @default(uuid())
   name         String
-  email        String  @unique
-  avatarUrl    String? @map("avatar_url")
-  role         Role    @default(MEMBER)
-  passwordHash String  @map("password_hash")
+  email        String    @unique
+  role         UserRoles @default(MEMBER)
+  passwordHash String    @map("password_hash")
+  avatarUrl    String?   @map("avatar_url")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  product_ratings  ProductRating[]
-  product_comments ProductComment[]
-  payments         Payment[]
-}
+  orders Order[]
 
-model Payment {
-  id          String        @id @default(uuid())
-  amount      Float
-  status      PaymentStatus
-  description String?
-  quantity    Int
-  createdAt   DateTime      @default(now()) @map("created_at")
-  updatedAt   DateTime      @updatedAt @map("updated_at")
-
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
-
-  product   Product? @relation(fields: [productId], references: [id])
-  productId String?
+  @@map("users")
 }
 
 model Product {
-  id          String      @id @default(uuid())
+  id          String       @id @default(uuid())
+  slug        String       @unique
   name        String
-  slug        String      @unique
   description String
   price       Float
   discount    Float?
-  avatarUrl   String?     @map("avatar_url")
-  type        ProductType
+  avatarUrl   String?      @map("avatar_url")
+  type        ProductTypes
+  sizes       String[]
+  colors      String[]
+  photos      String[]
+
+  // comments    String[]
+  // ratings     String[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  photos           ProductPhoto[]
-  product_ratings  ProductRating[]
-  categories       Category[]
-  product_comments ProductComment[]
-  product_colors   ProductColor[]
-  product_sizes    ProductSize[]
-  payments         Payment[]
-}
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String   @map("category_id")
 
-model ProductPhoto {
-  id  String @id @default(uuid())
-  url String
+  orderProducts OrderProduct[]
 
-  Product   Product? @relation(fields: [productId], references: [id])
-  productId String?
-}
-
-model ProductSize {
-  id   String @id @default(uuid())
-  size String
-
-  product   Product @relation(fields: [productId], references: [id])
-  productId String
-}
-
-model ProductColor {
-  id  String @id @default(uuid())
-  hex String
-
-  product   Product @relation(fields: [productId], references: [id])
-  productId String
-}
-
-model ProductComment {
-  id      String @id @default(uuid())
-  comment String
-
-  user    User    @relation(fields: [userId], references: [id])
-  product Product @relation(fields: [productId], references: [id])
-
-  productId String
-  userId    String
-}
-
-model ProductRating {
-  id     String @id @default(uuid())
-  rating Float
-
-  user    User    @relation(fields: [userId], references: [id])
-  product Product @relation(fields: [productId], references: [id])
-
-  userId    String
-  productId String
+  @@map("products")
 }
 
 model Category {
@@ -136,4 +78,34 @@ model Category {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   products Product[]
+
+  @@map("categories")
+}
+
+model Order {
+  id     String      @id @default(uuid())
+  status OrderStatus @default(WAITING_FOR_PAYMENT)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String? @map("user_id")
+
+  orderProducts OrderProduct[]
+
+  @@map("orders")
+}
+
+model OrderProduct {
+  id       String @id @default(uuid())
+  price    Float
+  quantity Float
+  discount Float?
+
+  order   Order  @relation(fields: [orderId], references: [id])
+  orderId String
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
 }

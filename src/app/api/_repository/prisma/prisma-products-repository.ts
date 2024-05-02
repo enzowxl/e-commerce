@@ -17,7 +17,7 @@ export class PrismaProductsRepository implements ProductsRepository {
     })
   }
 
-  async create(data: Prisma.ProductCreateInput) {
+  async create(data: Prisma.ProductUncheckedCreateInput) {
     return await prisma.product.create({
       data,
     })

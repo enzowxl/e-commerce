@@ -7,6 +7,7 @@ export interface CategoriesRepository {
     data: Prisma.CategoryUpdateInput,
   ): Promise<Category | null>
   findBySlug(slug: string): Promise<Category | null>
+  findById(id: string): Promise<Category | null>
   delete(slug: string): Promise<Category | null>
   findMany(): Promise<Category[]>
 }

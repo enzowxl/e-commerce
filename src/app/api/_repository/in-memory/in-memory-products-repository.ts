@@ -11,16 +11,20 @@ export class InMemoryProductsRepository implements ProductsRepository {
     return this.products
   }
 
-  async create(data: Prisma.ProductCreateInput) {
+  async create(data: Prisma.ProductUncheckedCreateInput) {
     const createProduct: Product = {
       id: randomUUID(),
+      slug: data.slug,
       name: data.name,
       description: data.description,
       price: data.price,
       type: data.type,
+      categoryId: data.categoryId,
       discount: data.discount as number,
       avatarUrl: data.avatarUrl as string,
-      slug: data.slug,
+      colors: data.colors as string[],
+      photos: data.photos as string[],
+      sizes: data.sizes as string[],
       createdAt: new Date(),
       updatedAt: new Date(),
     }

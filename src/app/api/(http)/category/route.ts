@@ -15,11 +15,11 @@ import { CreateCategoryUseCase } from '../../_use-cases/create-category'
 import { FetchAllCategoriesUseCase } from '../../_use-cases/fetch-all-categories'
 import { UpdateCategoryUseCase } from '../../_use-cases/update-category'
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
-    const token = await getToken({ req })
+    // const token = await getToken({ req })
 
-    if (!token) throw new UnauthorizedError()
+    // if (!token) throw new UnauthorizedError()
 
     const categoriesRepository = new PrismaCategoriesRepository()
     const fetchAllCategories = new FetchAllCategoriesUseCase(
@@ -30,9 +30,6 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(categories, { status: 200 })
   } catch (err) {
-    if (err instanceof UnauthorizedError) {
-      throw new UnauthorizedError()
-    }
     throw new BadRequestError()
   }
 }
@@ -74,6 +71,9 @@ export async function POST(req: NextRequest) {
     }
     if (err instanceof CategoryAlreadyExistsError) {
       throw new CategoryAlreadyExistsError()
+    }
+    if (err instanceof UnauthorizedError) {
+      throw new UnauthorizedError()
     }
     throw new BadRequestError()
   }

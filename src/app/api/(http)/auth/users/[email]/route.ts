@@ -13,10 +13,16 @@ import { userSchema } from '@/auth/models/user'
 import { getUserPermissions } from '@/utils/get-user-permissions'
 
 export async function GET(
-  _: NextRequest,
+  req: NextRequest,
   { params }: { params: { email: string } },
 ) {
   try {
+    const token = await getToken({ req })
+
+    if (!token) throw new UnauthorizedError()
+
+    const { cannot } = await getUserPermissions(token.sub as string)
+
     const userParamsSchema = z
       .object({
         email: z.string().email(),
@@ -29,6 +35,11 @@ export async function GET(
     const fetchUserUseCase = new FetchUserUseCase(usersRepository)
 
     const user = await fetchUserUseCase.execute({ email })
+
+    const authUser = userSchema.parse(user.user)
+
+    if (cannot('get', authUser)) throw new UnauthorizedError()
+
     return NextResponse.json(user, { status: 200 })
   } catch (err) {
     if (err instanceof ZodError) {
@@ -36,6 +47,9 @@ export async function GET(
     }
     if (err instanceof UserNotExistsError) {
       throw new UserNotExistsError()
+    }
+    if (err instanceof UnauthorizedError) {
+      throw new UnauthorizedError()
     }
     throw new BadRequestError()
   }

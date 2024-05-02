@@ -39,4 +39,12 @@ export class PrismaCategoriesRepository implements CategoriesRepository {
       },
     })
   }
+
+  async findById(id: string) {
+    return await prisma.category.findUnique({
+      where: {
+        id,
+      },
+    })
+  }
 }

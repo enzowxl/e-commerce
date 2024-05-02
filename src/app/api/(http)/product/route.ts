@@ -10,18 +10,20 @@ import { CreateProductUseCase } from '@/app/api/_use-cases/create-product'
 import { createSlug } from '@/utils/create-slug'
 import { getUserPermissions } from '@/utils/get-user-permissions'
 
+import { CategoryNotExistsError } from '../../_errors/category-not-exists-error'
 import { ProductAlreadyExistsError } from '../../_errors/product-already-exists-error'
 import { ProductNotExistsError } from '../../_errors/product-not-exists-error'
+import { PrismaCategoriesRepository } from '../../_repository/prisma/prisma-categories-repository'
 import { FetchAllProductsUseCase } from '../../_use-cases/fetch-all-products'
 import { UpdateProductUseCase } from '../../_use-cases/update-product'
 
-const ProductType = ['TSHIRT', 'SHORTS', 'SHIRTS', 'HOODIE', 'JEANS'] as const
+const ProductTypes = ['T_SHIRT', 'SHORTS', 'SHIRTS', 'HOODIE', 'JEANS'] as const
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
-    const token = await getToken({ req })
+    // const token = await getToken({ req })
 
-    if (!token) throw new UnauthorizedError()
+    // if (!token) throw new UnauthorizedError()
 
     const productsRepository = new PrismaProductsRepository()
     const fetchAllProducts = new FetchAllProductsUseCase(productsRepository)
@@ -30,9 +32,6 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(products, { status: 200 })
   } catch (err) {
-    if (err instanceof UnauthorizedError) {
-      throw new UnauthorizedError()
-    }
     throw new BadRequestError()
   }
 }
@@ -51,26 +50,48 @@ export async function POST(req: NextRequest) {
       .object({
         name: z.string(),
         price: z.number().int(),
-        type: z.enum(ProductType),
+        type: z.enum(ProductTypes),
         description: z.string(),
+        categoryId: z.string(),
         avatarUrl: z.string().optional(),
         discount: z.number().int().optional(),
+        sizes: z.string().array().optional(),
+        colors: z.string().array().optional(),
+        photos: z.string().array().optional(),
       })
       .parseAsync(await req.json())
 
-    const { name, price, type, discount, description, avatarUrl } =
-      await productRequestSchema
-
-    const productsRepository = new PrismaProductsRepository()
-    const createProductUseCase = new CreateProductUseCase(productsRepository)
-
-    await createProductUseCase.execute({
+    const {
       name,
       price,
       type,
       discount,
       description,
       avatarUrl,
+      categoryId,
+      sizes,
+      colors,
+      photos,
+    } = await productRequestSchema
+
+    const productsRepository = new PrismaProductsRepository()
+    const categoriesRepository = new PrismaCategoriesRepository()
+    const createProductUseCase = new CreateProductUseCase(
+      productsRepository,
+      categoriesRepository,
+    )
+
+    await createProductUseCase.execute({
+      categoryId,
+      name,
+      price,
+      type,
+      discount,
+      description,
+      avatarUrl,
+      sizes,
+      colors,
+      photos,
       slug: createSlug(name),
     })
 
@@ -79,8 +100,14 @@ export async function POST(req: NextRequest) {
     if (err instanceof ZodError) {
       throw new ValidationError()
     }
+    if (err instanceof CategoryNotExistsError) {
+      throw new CategoryNotExistsError()
+    }
     if (err instanceof ProductAlreadyExistsError) {
       throw new ProductAlreadyExistsError()
+    }
+    if (err instanceof UnauthorizedError) {
+      throw new UnauthorizedError()
     }
     throw new BadRequestError()
   }
@@ -99,16 +126,29 @@ export async function PATCH(req: NextRequest) {
     const productRequestSchema = z
       .object({
         slug: z.string(),
-        name: z.string().optional(),
-        price: z.number().int().optional(),
-        type: z.enum(ProductType).optional(),
-        description: z.string().optional(),
+        name: z.string(),
+        price: z.number().int(),
+        type: z.enum(ProductTypes),
+        description: z.string(),
         avatarUrl: z.string().optional(),
         discount: z.number().int().optional(),
+        sizes: z.string().array().optional(),
+        colors: z.string().array().optional(),
+        photos: z.string().array().optional(),
       })
       .parseAsync(await req.json())
-    const { slug, name, price, type, discount, description, avatarUrl } =
-      await productRequestSchema
+    const {
+      slug,
+      name,
+      price,
+      type,
+      discount,
+      description,
+      avatarUrl,
+      colors,
+      photos,
+      sizes,
+    } = await productRequestSchema
 
     const productsRepository = new PrismaProductsRepository()
     const updateProductUseCase = new UpdateProductUseCase(productsRepository)
@@ -122,6 +162,9 @@ export async function PATCH(req: NextRequest) {
         discount,
         description,
         avatarUrl,
+        colors,
+        photos,
+        sizes,
       },
     })
     return NextResponse.json({}, { status: 201 })

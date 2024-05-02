@@ -28,7 +28,7 @@ describe('Delete product Use Case', () => {
       price: 30,
       description: 'This is a shirt',
       slug: createSlug('Black shirt'),
-      type: 'TSHIRT',
+      type: 'T_SHIRT',
     })
 
     const { product } = await sut.execute({

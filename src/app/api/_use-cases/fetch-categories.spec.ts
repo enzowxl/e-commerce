@@ -26,7 +26,6 @@ describe('Fetching category Use Case', () => {
     await categoriesRepository.create({
       name: 'Casual',
       slug: createSlug('casual'),
-      avatarUrl: '',
     })
 
     const { category } = await sut.execute({

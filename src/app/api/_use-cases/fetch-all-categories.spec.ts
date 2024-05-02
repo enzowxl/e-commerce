@@ -25,13 +25,11 @@ describe('Fetching all categories Use Case', () => {
     await categoriesRepository.create({
       name: 'Casual',
       slug: createSlug('casual'),
-      avatarUrl: '',
     })
 
     await categoriesRepository.create({
       name: 'Gym',
       slug: createSlug('Gym'),
-      avatarUrl: '',
     })
 
     const { categories } = await sut.execute()

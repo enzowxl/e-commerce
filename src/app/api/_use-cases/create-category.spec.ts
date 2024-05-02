@@ -26,7 +26,6 @@ describe('Create category Use Case', () => {
     const { category } = await sut.execute({
       name: 'Gym',
       slug: createSlug('Gym'),
-      avatarUrl: '',
     })
 
     expect(category.id).toEqual(expect.any(String))
@@ -38,14 +37,12 @@ describe('Create category Use Case', () => {
     await sut.execute({
       name,
       slug: createSlug('Casual'),
-      avatarUrl: '',
     })
 
     await expect(() =>
       sut.execute({
         name,
         slug: createSlug('Casual'),
-        avatarUrl: '',
       }),
     ).rejects.toBeInstanceOf(CategoryAlreadyExistsError)
   })
