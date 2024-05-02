@@ -7,9 +7,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ProductType {
+  TSHIRT
+  SHORTS
+  SHIRTS
+  HOODIE
+  JEANS
+}
+
 enum Role {
   ADMIN
   MEMBER
+}
+
+enum PaymentStatus {
+  PENDING
+  APPROVED
+  DECLINED
 }
 
 model User {
@@ -25,14 +39,23 @@ model User {
 
   product_ratings  ProductRating[]
   product_comments ProductComment[]
+  payments         Payment[]
 }
 
-enum ProductType {
-  TSHIRT
-  SHORTS
-  SHIRTS
-  HOODIE
-  JEANS
+model Payment {
+  id          String        @id @default(uuid())
+  amount      Float
+  status      PaymentStatus
+  description String?
+  quantity    Int
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  product   Product? @relation(fields: [productId], references: [id])
+  productId String?
 }
 
 model Product {
@@ -54,6 +77,7 @@ model Product {
   product_comments ProductComment[]
   product_colors   ProductColor[]
   product_sizes    ProductSize[]
+  payments         Payment[]
 }
 
 model ProductPhoto {
@@ -104,6 +128,7 @@ model ProductRating {
 
 model Category {
   id        String @id @default(uuid())
+  slug      String @unique
   name      String
   avatarUrl String @map("avatar_url")
 
