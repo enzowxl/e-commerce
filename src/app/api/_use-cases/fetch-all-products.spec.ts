@@ -28,7 +28,7 @@ describe('Fetching all products Use Case', () => {
       description: 'This is a black shirt',
       slug: createSlug('Black shirt'),
       type: 'T_SHIRT',
-      categoryId: 'category-1',
+      categorySlug: 'slug',
     })
 
     await productsRepository.create({
@@ -37,7 +37,7 @@ describe('Fetching all products Use Case', () => {
       description: 'This is a red shirt',
       slug: createSlug('Red shirt'),
       type: 'T_SHIRT',
-      categoryId: 'category-1',
+      categorySlug: 'slug',
     })
 
     const { products } = await sut.execute()

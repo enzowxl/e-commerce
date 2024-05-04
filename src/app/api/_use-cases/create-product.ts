@@ -22,17 +22,18 @@ export class CreateProductUseCase {
     description,
     avatarUrl,
     slug,
-    categoryId,
+    categorySlug,
     colors,
     photos,
     sizes,
   }: CreateProductUseCaseRequest) {
     const productWithSlug = await this.productsRepository.findBySlug(slug)
-    const categoryWithId = await this.categoriesRepository.findById(categoryId)
+    const categoryWithSlug =
+      await this.categoriesRepository.findBySlug(categorySlug)
 
     if (productWithSlug) throw new ProductAlreadyExistsError()
 
-    if (!categoryWithId) throw new CategoryNotExistsError()
+    if (!categoryWithSlug) throw new CategoryNotExistsError()
 
     const createProduct = await this.productsRepository.create({
       name,
@@ -42,7 +43,7 @@ export class CreateProductUseCase {
       description,
       avatarUrl,
       slug,
-      categoryId,
+      categorySlug,
       colors,
       photos,
       sizes,

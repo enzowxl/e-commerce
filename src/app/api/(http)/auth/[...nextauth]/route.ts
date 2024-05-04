@@ -5,8 +5,7 @@ import { z, ZodError } from 'zod'
 import { AuthenticateUserError } from '@/app/api/_errors/authenticate-user-error'
 import { BadRequestError } from '@/app/api/_errors/bad-request-error'
 import { ValidationError } from '@/app/api/_errors/validation-error'
-import { PrismaUserRepository } from '@/app/api/_repository/prisma/prisma-users-repository'
-import { AuthenticateUseCase } from '@/app/api/_use-cases/authenticate'
+import { makeAuthenticateUseCase } from '@/app/api/_use-cases/factories/make-authenticate'
 
 const handler = NextAuth({
   providers: [
@@ -27,8 +26,7 @@ const handler = NextAuth({
 
           const { email, password } = await authSchema
 
-          const usersRepository = new PrismaUserRepository()
-          const authenticateUseCase = new AuthenticateUseCase(usersRepository)
+          const authenticateUseCase = makeAuthenticateUseCase()
 
           const { user } = await authenticateUseCase.execute({
             email,

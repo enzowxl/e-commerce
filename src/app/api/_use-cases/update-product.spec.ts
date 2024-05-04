@@ -29,13 +29,14 @@ describe('Update product Use Case', () => {
       description: 'This is a dress',
       slug: createSlug('Black shirt'),
       type: 'T_SHIRT',
-      categoryId: 'category-id',
+      categorySlug: 'slug',
     })
 
     const { product } = await sut.execute({
       slug: createSlug('Black shirt'),
       data: {
         name: 'Red shirt',
+        slug: createSlug('Red shirt'),
       },
     })
 
@@ -48,6 +49,7 @@ describe('Update product Use Case', () => {
         slug: createSlug('Black shirt'),
         data: {
           name: 'Red shirt',
+          slug: createSlug('Red shirt'),
         },
       }),
     ).rejects.toBeInstanceOf(ProductNotExistsError)

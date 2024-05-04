@@ -8,12 +8,26 @@ interface UpdateCategoryUseCaseRequest {
   slug: string
 }
 
+function createSlug(text: string): string {
+  return text
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^\w\s]/gi, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .toLowerCase()
+}
+
 export class UpdateCategoryUseCase {
   constructor(private categoriesRepository: CategoriesRepository) {}
   async execute({ slug, data }: UpdateCategoryUseCaseRequest) {
-    const cateoryFromSlug = await this.categoriesRepository.findBySlug(slug)
+    const categoryFromSlug = await this.categoriesRepository.findBySlug(slug)
 
-    if (!cateoryFromSlug) throw new CategoryNotExistsError()
+    if (!categoryFromSlug) throw new CategoryNotExistsError()
+
+    if (data?.name) {
+      data.slug = createSlug(data.name as string)
+    }
 
     const updateCategory = await this.categoriesRepository.update(slug, data)
 

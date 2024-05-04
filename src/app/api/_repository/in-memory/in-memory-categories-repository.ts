@@ -54,14 +54,6 @@ export class InMemoryCategoriesRepository implements CategoriesRepository {
     return findCategory
   }
 
-  async findById(id: string) {
-    const findCategory = this.categories.find((category) => category.id === id)
-
-    if (!findCategory) return null
-
-    return findCategory
-  }
-
   async delete(slug: string) {
     const findCategoryIndex = this.categories.findIndex(
       (category) => category.slug === slug,

@@ -6,9 +6,8 @@ import { BadRequestError } from '@/app/api/_errors/bad-request-error'
 import { ProductNotExistsError } from '@/app/api/_errors/product-not-exists-error'
 import { UnauthorizedError } from '@/app/api/_errors/unauthorized-error'
 import { ValidationError } from '@/app/api/_errors/validation-error'
-import { PrismaProductsRepository } from '@/app/api/_repository/prisma/prisma-products-repository'
-import { DeleteProductUseCase } from '@/app/api/_use-cases/delete-product'
-import { FetchProductUseCase } from '@/app/api/_use-cases/fetch-product'
+import { makeDeleteProductUseCase } from '@/app/api/_use-cases/factories/make-delete-product-use-case'
+import { makeFetchProductUseCase } from '@/app/api/_use-cases/factories/make-fetch-product-use-case'
 import { getUserPermissions } from '@/utils/get-user-permissions'
 
 export async function GET(
@@ -24,8 +23,7 @@ export async function GET(
 
     const { slug } = productParamsSchema
 
-    const productsRepository = new PrismaProductsRepository()
-    const fetchProductUseCase = new FetchProductUseCase(productsRepository)
+    const fetchProductUseCase = makeFetchProductUseCase()
 
     const product = await fetchProductUseCase.execute({ slug })
 
@@ -62,8 +60,7 @@ export async function DELETE(
 
     const { slug } = productParamsSchema
 
-    const productsRepository = new PrismaProductsRepository()
-    const deleteProductUseCase = new DeleteProductUseCase(productsRepository)
+    const deleteProductUseCase = makeDeleteProductUseCase()
 
     await deleteProductUseCase.execute({ slug })
 

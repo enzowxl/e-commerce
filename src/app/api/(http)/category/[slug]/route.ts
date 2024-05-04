@@ -6,9 +6,8 @@ import { BadRequestError } from '@/app/api/_errors/bad-request-error'
 import { CategoryNotExistsError } from '@/app/api/_errors/category-not-exists-error'
 import { UnauthorizedError } from '@/app/api/_errors/unauthorized-error'
 import { ValidationError } from '@/app/api/_errors/validation-error'
-import { PrismaCategoriesRepository } from '@/app/api/_repository/prisma/prisma-categories-repository'
-import { DeleteCategoryUseCase } from '@/app/api/_use-cases/delete-category'
-import { FetchCategoryUseCase } from '@/app/api/_use-cases/fetch-category'
+import { makeDeleteCategoryUseCase } from '@/app/api/_use-cases/factories/make-delete-category-use-case'
+import { makeFetchCategoryUseCase } from '@/app/api/_use-cases/factories/make-fetch-category-use-case'
 import { getUserPermissions } from '@/utils/get-user-permissions'
 
 export async function GET(
@@ -24,8 +23,7 @@ export async function GET(
 
     const { slug } = categoryParamsSchema
 
-    const categoriesRepository = new PrismaCategoriesRepository()
-    const fetchCategoryUseCase = new FetchCategoryUseCase(categoriesRepository)
+    const fetchCategoryUseCase = makeFetchCategoryUseCase()
 
     const category = await fetchCategoryUseCase.execute({ slug })
 
@@ -62,10 +60,7 @@ export async function DELETE(
 
     const { slug } = categoryParamsSchema
 
-    const categoriesRepository = new PrismaCategoriesRepository()
-    const deleteCategoryUseCase = new DeleteCategoryUseCase(
-      categoriesRepository,
-    )
+    const deleteCategoryUseCase = makeDeleteCategoryUseCase()
 
     await deleteCategoryUseCase.execute({ slug })
 

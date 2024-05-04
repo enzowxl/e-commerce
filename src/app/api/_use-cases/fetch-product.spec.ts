@@ -29,6 +29,7 @@ describe('Fetching product Use Case', () => {
       description: 'This is a shirt',
       slug: createSlug('Black shirt'),
       type: 'T_SHIRT',
+      categorySlug: 'slug',
     })
 
     const { product } = await sut.execute({

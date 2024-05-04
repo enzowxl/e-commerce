@@ -5,17 +5,15 @@ import { z, ZodError } from 'zod'
 import { BadRequestError } from '@/app/api/_errors/bad-request-error'
 import { UnauthorizedError } from '@/app/api/_errors/unauthorized-error'
 import { ValidationError } from '@/app/api/_errors/validation-error'
-import { PrismaProductsRepository } from '@/app/api/_repository/prisma/prisma-products-repository'
-import { CreateProductUseCase } from '@/app/api/_use-cases/create-product'
 import { createSlug } from '@/utils/create-slug'
 import { getUserPermissions } from '@/utils/get-user-permissions'
 
 import { CategoryNotExistsError } from '../../_errors/category-not-exists-error'
 import { ProductAlreadyExistsError } from '../../_errors/product-already-exists-error'
 import { ProductNotExistsError } from '../../_errors/product-not-exists-error'
-import { PrismaCategoriesRepository } from '../../_repository/prisma/prisma-categories-repository'
-import { FetchAllProductsUseCase } from '../../_use-cases/fetch-all-products'
-import { UpdateProductUseCase } from '../../_use-cases/update-product'
+import { makeCreateProductUseCase } from '../../_use-cases/factories/make-create-product-use-case'
+import { makeFetchAllProductsUseCase } from '../../_use-cases/factories/make-fetch-all-products-use-case'
+import { makeUpdateProductUseCase } from '../../_use-cases/factories/make-update-product-use-case'
 
 const ProductTypes = ['T_SHIRT', 'SHORTS', 'SHIRTS', 'HOODIE', 'JEANS'] as const
 
@@ -25,8 +23,7 @@ export async function GET() {
 
     // if (!token) throw new UnauthorizedError()
 
-    const productsRepository = new PrismaProductsRepository()
-    const fetchAllProducts = new FetchAllProductsUseCase(productsRepository)
+    const fetchAllProducts = makeFetchAllProductsUseCase()
 
     const products = await fetchAllProducts.execute()
 
@@ -52,7 +49,7 @@ export async function POST(req: NextRequest) {
         price: z.number().int(),
         type: z.enum(ProductTypes),
         description: z.string(),
-        categoryId: z.string(),
+        categorySlug: z.string(),
         avatarUrl: z.string().optional(),
         discount: z.number().int().optional(),
         sizes: z.string().array().optional(),
@@ -68,21 +65,16 @@ export async function POST(req: NextRequest) {
       discount,
       description,
       avatarUrl,
-      categoryId,
+      categorySlug,
       sizes,
       colors,
       photos,
     } = await productRequestSchema
 
-    const productsRepository = new PrismaProductsRepository()
-    const categoriesRepository = new PrismaCategoriesRepository()
-    const createProductUseCase = new CreateProductUseCase(
-      productsRepository,
-      categoriesRepository,
-    )
+    const createProductUseCase = makeCreateProductUseCase()
 
     await createProductUseCase.execute({
-      categoryId,
+      categorySlug,
       name,
       price,
       type,
@@ -150,8 +142,7 @@ export async function PATCH(req: NextRequest) {
       sizes,
     } = await productRequestSchema
 
-    const productsRepository = new PrismaProductsRepository()
-    const updateProductUseCase = new UpdateProductUseCase(productsRepository)
+    const updateProductUseCase = makeUpdateProductUseCase()
 
     await updateProductUseCase.execute({
       slug,

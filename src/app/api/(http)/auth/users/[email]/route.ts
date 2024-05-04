@@ -6,9 +6,8 @@ import { BadRequestError } from '@/app/api/_errors/bad-request-error'
 import { UnauthorizedError } from '@/app/api/_errors/unauthorized-error'
 import { UserNotExistsError } from '@/app/api/_errors/user-not-exists-error'
 import { ValidationError } from '@/app/api/_errors/validation-error'
-import { PrismaUserRepository } from '@/app/api/_repository/prisma/prisma-users-repository'
-import { DeleteUserUseCase } from '@/app/api/_use-cases/delete-user'
-import { FetchUserUseCase } from '@/app/api/_use-cases/fetch-user'
+import { makeDeleteUserUseCase } from '@/app/api/_use-cases/factories/make-delete-user-use-case'
+import { makeFetchUserUseCase } from '@/app/api/_use-cases/factories/make-fetch-user-use-case'
 import { userSchema } from '@/auth/models/user'
 import { getUserPermissions } from '@/utils/get-user-permissions'
 
@@ -31,8 +30,7 @@ export async function GET(
 
     const { email } = userParamsSchema
 
-    const usersRepository = new PrismaUserRepository()
-    const fetchUserUseCase = new FetchUserUseCase(usersRepository)
+    const fetchUserUseCase = makeFetchUserUseCase()
 
     const user = await fetchUserUseCase.execute({ email })
 
@@ -66,9 +64,8 @@ export async function DELETE(
 
     const { cannot } = await getUserPermissions(token.sub as string)
 
-    const usersRepository = new PrismaUserRepository()
-    const fetchUserUseCase = new FetchUserUseCase(usersRepository)
-    const deleteUserUseCase = new DeleteUserUseCase(usersRepository)
+    const fetchUserUseCase = makeFetchUserUseCase()
+    const deleteUserUseCase = makeDeleteUserUseCase()
 
     const { user } = await fetchUserUseCase.execute({ email: params.email })
 

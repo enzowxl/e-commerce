@@ -38,7 +38,7 @@ describe('Create product Use Case', () => {
       description: 'This is a shirt',
       slug: createSlug('Black shirt'),
       type: 'T_SHIRT',
-      categoryId: category.id,
+      categorySlug: category.slug,
     })
 
     expect(product.id).toEqual(expect.any(String))
@@ -58,7 +58,7 @@ describe('Create product Use Case', () => {
       description: 'This is a shirt',
       slug: createSlug(name),
       type: 'T_SHIRT',
-      categoryId: category.id,
+      categorySlug: category.slug,
     })
 
     await expect(() =>
@@ -68,7 +68,7 @@ describe('Create product Use Case', () => {
         description: 'This is a shirt',
         slug: createSlug(name),
         type: 'T_SHIRT',
-        categoryId: category.id,
+        categorySlug: category.slug,
       }),
     ).rejects.toBeInstanceOf(ProductAlreadyExistsError)
   })
@@ -85,7 +85,7 @@ describe('Create product Use Case', () => {
       description: 'This is a shirt',
       slug: createSlug('Black shirt'),
       type: 'T_SHIRT',
-      categoryId: category.id,
+      categorySlug: category.slug,
     })
 
     expect(product.slug).toEqual('black-shirt')
@@ -99,7 +99,7 @@ describe('Create product Use Case', () => {
         description: 'This is a shirt',
         slug: createSlug('Black shirt'),
         type: 'T_SHIRT',
-        categoryId: 'category-id',
+        categorySlug: 'slug',
       }),
     ).rejects.toBeInstanceOf(CategoryNotExistsError)
   })

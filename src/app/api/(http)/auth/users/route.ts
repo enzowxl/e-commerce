@@ -7,11 +7,10 @@ import { UnauthorizedError } from '@/app/api/_errors/unauthorized-error'
 import { UserAlreadyExistsError } from '@/app/api/_errors/user-already-exists-error'
 import { UserNotExistsError } from '@/app/api/_errors/user-not-exists-error'
 import { ValidationError } from '@/app/api/_errors/validation-error'
-import { PrismaUserRepository } from '@/app/api/_repository/prisma/prisma-users-repository'
-import { FetchAllUsersUseCase } from '@/app/api/_use-cases/fetch-all-users'
-import { FetchUserUseCase } from '@/app/api/_use-cases/fetch-user'
-import { RegisterUseCase } from '@/app/api/_use-cases/register'
-import { UpdateUserUseCase } from '@/app/api/_use-cases/update-user'
+import { makeFetchAllUsersUseCase } from '@/app/api/_use-cases/factories/make-fetch-all-users-use-case'
+import { makeFetchUserUseCase } from '@/app/api/_use-cases/factories/make-fetch-user-use-case'
+import { makeRegisterUseCase } from '@/app/api/_use-cases/factories/make-register-use-case'
+import { makeUpdateUserUseCase } from '@/app/api/_use-cases/factories/make-update-user-use-case'
 import { userSchema } from '@/auth/models/user'
 import { getUserPermissions } from '@/utils/get-user-permissions'
 
@@ -25,8 +24,7 @@ export async function GET(req: NextRequest) {
 
     if (cannot('manage', 'all')) throw new UnauthorizedError()
 
-    const usersRepository = new PrismaUserRepository()
-    const fetchAllUsers = new FetchAllUsersUseCase(usersRepository)
+    const fetchAllUsers = makeFetchAllUsersUseCase()
 
     const users = await fetchAllUsers.execute()
 
@@ -51,8 +49,7 @@ export async function POST(req: NextRequest) {
 
     const { name, email, password } = await userRequestSchema
 
-    const usersRepository = new PrismaUserRepository()
-    const registerUseCase = new RegisterUseCase(usersRepository)
+    const registerUseCase = makeRegisterUseCase()
 
     await registerUseCase.execute({ name, email, password })
 
@@ -89,9 +86,8 @@ export async function PATCH(req: NextRequest) {
     const { name, email, newEmail, password, avatarUrl } =
       await userRequestSchema
 
-    const usersRepository = new PrismaUserRepository()
-    const fetchUserUseCase = new FetchUserUseCase(usersRepository)
-    const updateUserUseCase = new UpdateUserUseCase(usersRepository)
+    const fetchUserUseCase = makeFetchUserUseCase()
+    const updateUserUseCase = makeUpdateUserUseCase()
 
     const { user } = await fetchUserUseCase.execute({ email })
 

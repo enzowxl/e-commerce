@@ -10,10 +10,9 @@ import { getUserPermissions } from '@/utils/get-user-permissions'
 
 import { CategoryAlreadyExistsError } from '../../_errors/category-already.exists-error'
 import { CategoryNotExistsError } from '../../_errors/category-not-exists-error'
-import { PrismaCategoriesRepository } from '../../_repository/prisma/prisma-categories-repository'
-import { CreateCategoryUseCase } from '../../_use-cases/create-category'
-import { FetchAllCategoriesUseCase } from '../../_use-cases/fetch-all-categories'
-import { UpdateCategoryUseCase } from '../../_use-cases/update-category'
+import { makeCreateCategoryUseCase } from '../../_use-cases/factories/make-create-category-use-case'
+import { makeFetchAllCategoriesUseCase } from '../../_use-cases/factories/make-fetch-all-categories-use-case'
+import { makeUpdateCategoryUseCase } from '../../_use-cases/factories/make-update-category-use-case'
 
 export async function GET() {
   try {
@@ -21,10 +20,7 @@ export async function GET() {
 
     // if (!token) throw new UnauthorizedError()
 
-    const categoriesRepository = new PrismaCategoriesRepository()
-    const fetchAllCategories = new FetchAllCategoriesUseCase(
-      categoriesRepository,
-    )
+    const fetchAllCategories = makeFetchAllCategoriesUseCase()
 
     const categories = await fetchAllCategories.execute()
 
@@ -53,10 +49,7 @@ export async function POST(req: NextRequest) {
 
     const { name, avatarUrl } = await categoryRequestSchema
 
-    const categoriesRepository = new PrismaCategoriesRepository()
-    const createCategoryUseCase = new CreateCategoryUseCase(
-      categoriesRepository,
-    )
+    const createCategoryUseCase = makeCreateCategoryUseCase()
 
     await createCategoryUseCase.execute({
       name,
@@ -98,10 +91,7 @@ export async function PATCH(req: NextRequest) {
       .parseAsync(await req.json())
     const { slug, name, avatarUrl } = await categoryRequestSchema
 
-    const categoriesRepository = new PrismaCategoriesRepository()
-    const updateCategoryUseCase = new UpdateCategoryUseCase(
-      categoriesRepository,
-    )
+    const updateCategoryUseCase = makeUpdateCategoryUseCase()
 
     await updateCategoryUseCase.execute({
       slug,

@@ -12,7 +12,7 @@ export class InMemoryUsersRepository implements UsersRepository {
   }
 
   async create(data: Prisma.UserCreateInput) {
-    const createUser = {
+    const createUser: User = {
       id: randomUUID(),
       name: data.name,
       email: data.email,
@@ -46,6 +46,14 @@ export class InMemoryUsersRepository implements UsersRepository {
 
   async findByEmail(email: string) {
     const findUser = this.users.find((user) => user.email === email)
+
+    if (!findUser) return null
+
+    return findUser
+  }
+
+  async findById(id: string) {
+    const findUser = this.users.find((user) => user.id === id)
 
     if (!findUser) return null
 
