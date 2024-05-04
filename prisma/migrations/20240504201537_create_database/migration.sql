@@ -42,18 +42,18 @@ CREATE TABLE "products" (
 );
 
 -- CreateTable
-CREATE TABLE "shopping_cart" (
+CREATE TABLE "carts" (
     "id" TEXT NOT NULL,
     "sessionId" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "user_id" TEXT,
 
-    CONSTRAINT "shopping_cart_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "carts_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "cart_item" (
+CREATE TABLE "cart_items" (
     "id" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -61,7 +61,7 @@ CREATE TABLE "cart_item" (
     "shopping_cart_id" TEXT NOT NULL,
     "product_id" TEXT NOT NULL,
 
-    CONSTRAINT "cart_item_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "cart_items_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -77,26 +77,28 @@ CREATE TABLE "categories" (
 );
 
 -- CreateTable
-CREATE TABLE "orders" (
+CREATE TABLE "oders" (
     "id" TEXT NOT NULL,
-    "status" "OrderStatus" NOT NULL DEFAULT 'WAITING_FOR_PAYMENT',
+    "status" TEXT NOT NULL DEFAULT 'WAITING_FOR_PAYMENT',
+    "total" DECIMAL(10,2) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "user_id" TEXT,
 
-    CONSTRAINT "orders_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "oders_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "OrderProduct" (
+CREATE TABLE "order_items" (
     "id" TEXT NOT NULL,
-    "price" DOUBLE PRECISION NOT NULL,
-    "quantity" DOUBLE PRECISION NOT NULL,
-    "discount" DOUBLE PRECISION,
-    "orderId" TEXT NOT NULL,
-    "productId" TEXT NOT NULL,
+    "quantity" INTEGER NOT NULL,
+    "price" DECIMAL(10,2) NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+    "order_id" TEXT NOT NULL,
+    "product_id" TEXT NOT NULL,
 
-    CONSTRAINT "OrderProduct_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "order_items_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -106,28 +108,28 @@ CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 CREATE UNIQUE INDEX "products_slug_key" ON "products"("slug");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "shopping_cart_sessionId_key" ON "shopping_cart"("sessionId");
+CREATE UNIQUE INDEX "carts_sessionId_key" ON "carts"("sessionId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "categories_slug_key" ON "categories"("slug");
 
 -- AddForeignKey
-ALTER TABLE "products" ADD CONSTRAINT "products_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "categories"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "products" ADD CONSTRAINT "products_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "categories"("slug") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "shopping_cart" ADD CONSTRAINT "shopping_cart_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "carts" ADD CONSTRAINT "carts_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "cart_item" ADD CONSTRAINT "cart_item_shopping_cart_id_fkey" FOREIGN KEY ("shopping_cart_id") REFERENCES "shopping_cart"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "cart_items" ADD CONSTRAINT "cart_items_shopping_cart_id_fkey" FOREIGN KEY ("shopping_cart_id") REFERENCES "carts"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "cart_item" ADD CONSTRAINT "cart_item_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "cart_items" ADD CONSTRAINT "cart_items_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "products"("slug") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "orders" ADD CONSTRAINT "orders_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "oders" ADD CONSTRAINT "oders_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "OrderProduct" ADD CONSTRAINT "OrderProduct_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "orders"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "order_items" ADD CONSTRAINT "order_items_order_id_fkey" FOREIGN KEY ("order_id") REFERENCES "oders"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "OrderProduct" ADD CONSTRAINT "OrderProduct_productId_fkey" FOREIGN KEY ("productId") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "order_items" ADD CONSTRAINT "order_items_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
