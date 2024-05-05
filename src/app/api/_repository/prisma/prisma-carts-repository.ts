@@ -2,9 +2,9 @@ import { Prisma } from '@prisma/client'
 
 import { prisma } from '@/lib/prisma'
 
-import { CartItemRepository, ShoppingCartRepository } from '../carts-repository'
+import { CartItemsRepository, CartsRepository } from '../carts-repository'
 
-export class PrismaCartItemRepository implements CartItemRepository {
+export class PrismaCartItemsRepository implements CartItemsRepository {
   async create(data: Prisma.CartItemUncheckedCreateInput) {
     return await prisma.cartItem.create({
       data,
@@ -20,42 +20,57 @@ export class PrismaCartItemRepository implements CartItemRepository {
     })
   }
 
-  async findWithProductSlugAndShoppingCartId(
-    productSlug: string,
-    shoppingCartId: string,
-  ) {
+  async findWithProductSlugAndCartId(productSlug: string, cartId: string) {
     return await prisma.cartItem.findFirst({
       where: {
         productSlug,
-        shoppingCartId,
+        cartId,
       },
     })
   }
 }
 
-export class PrismaShoppingCartRepository implements ShoppingCartRepository {
-  async update(
-    sessionId: string,
-    data: Prisma.ShoppingCartUncheckedUpdateInput,
-  ) {
-    return await prisma.shoppingCart.update({
+export class PrismaCartsRepository implements CartsRepository {
+  async update(sessionId: string, data: Prisma.CartUncheckedUpdateInput) {
+    return await prisma.cart.update({
       where: {
         sessionId,
       },
       data,
+      include: {
+        cartItems: {
+          include: {
+            product: true,
+          },
+        },
+      },
     })
   }
 
-  async create(data: Prisma.ShoppingCartUncheckedCreateInput) {
-    return await prisma.shoppingCart.create({
+  async create(data: Prisma.CartUncheckedCreateInput) {
+    return await prisma.cart.create({
       data,
+      include: {
+        cartItems: {
+          include: {
+            product: true,
+          },
+        },
+      },
     })
   }
 
   async findBySessionId(sessionId: string) {
-    return await prisma.shoppingCart.findUnique({
+    return await prisma.cart.findUnique({
       where: {
         sessionId,
+      },
+      include: {
+        cartItems: {
+          include: {
+            product: true,
+          },
+        },
       },
     })
   }

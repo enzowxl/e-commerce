@@ -1,19 +1,19 @@
 import {
-  PrismaCartItemRepository,
-  PrismaShoppingCartRepository,
+  PrismaCartItemsRepository,
+  PrismaCartsRepository,
 } from '../../_repository/prisma/prisma-carts-repository'
 import { PrismaProductsRepository } from '../../_repository/prisma/prisma-products-repository'
-import { PrismaUserRepository } from '../../_repository/prisma/prisma-users-repository'
+import { PrismaUsersRepository } from '../../_repository/prisma/prisma-users-repository'
 import { CreateCartUseCase } from '../create-cart'
 
 export function makeCreateCartUseCase() {
-  const cartitemRepository = new PrismaCartItemRepository()
-  const shoppingCartRepository = new PrismaShoppingCartRepository()
+  const cartItemsRepository = new PrismaCartItemsRepository()
+  const cartsRepository = new PrismaCartsRepository()
   const productsRepository = new PrismaProductsRepository()
-  const usersRepository = new PrismaUserRepository()
+  const usersRepository = new PrismaUsersRepository()
   const createCartUseCase = new CreateCartUseCase(
-    cartitemRepository,
-    shoppingCartRepository,
+    cartItemsRepository,
+    cartsRepository,
     productsRepository,
     usersRepository,
   )

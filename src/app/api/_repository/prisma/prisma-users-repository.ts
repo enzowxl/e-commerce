@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma'
 
 import { UsersRepository } from '../users-repository'
 
-export class PrismaUserRepository implements UsersRepository {
+export class PrismaUsersRepository implements UsersRepository {
   async findMany() {
     return await prisma.user.findMany()
   }

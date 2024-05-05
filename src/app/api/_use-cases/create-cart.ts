@@ -3,21 +3,20 @@ import { Prisma } from '@prisma/client'
 import { ProductNotExistsError } from '../_errors/product-not-exists-error'
 import { UserNotExistsError } from '../_errors/user-not-exists-error'
 import {
-  CartItemRepository,
-  ShoppingCartRepository,
+  CartItemsRepository,
+  CartsRepository,
 } from '../_repository/carts-repository'
 import { ProductsRepository } from '../_repository/products-repository'
 import { UsersRepository } from '../_repository/users-repository'
 
-interface CreateCartUseCaseRequest
-  extends Prisma.ShoppingCartUncheckedCreateInput {
+interface CreateCartUseCaseRequest extends Prisma.CartUncheckedCreateInput {
   slug: string
 }
 
 export class CreateCartUseCase {
   constructor(
-    private cartitemRepository: CartItemRepository,
-    private shoppingcartRepository: ShoppingCartRepository,
+    private cartItemsRepository: CartItemsRepository,
+    private cartsRepository: CartsRepository,
     private productsRepository: ProductsRepository,
     private usersRepository: UsersRepository,
   ) {}
@@ -36,48 +35,46 @@ export class CreateCartUseCase {
       if (!userWithId) throw new UserNotExistsError()
     }
 
-    let shoppingCart =
-      await this.shoppingcartRepository.findBySessionId(sessionId)
+    let cart = await this.cartsRepository.findBySessionId(sessionId)
 
-    if (!shoppingCart) {
-      shoppingCart = await this.shoppingcartRepository.create({
+    if (!cart) {
+      cart = await this.cartsRepository.create({
         sessionId,
         userId,
       })
     }
 
-    if (!shoppingCart.userId && userId) {
-      shoppingCart = await this.shoppingcartRepository.update(sessionId, {
+    if (!cart.userId && userId) {
+      cart = await this.cartsRepository.update(sessionId, {
         userId,
+      })
+      cart = await this.cartsRepository.findBySessionId(sessionId)
+    }
+
+    let cartWithProductSlugAndCartId =
+      await this.cartItemsRepository.findWithProductSlugAndCartId(
+        productWithSlug.slug,
+        cart?.id as string,
+      )
+
+    if (cartWithProductSlugAndCartId) {
+      cartWithProductSlugAndCartId = await this.cartItemsRepository.update(
+        cartWithProductSlugAndCartId.id,
+        {
+          quantity: { increment: 1 },
+        },
+      )
+    } else {
+      cartWithProductSlugAndCartId = await this.cartItemsRepository.create({
+        quantity: 1,
+        cartId: cart?.id as string,
+        productSlug: productWithSlug.slug,
       })
     }
 
-    let cartWithProductSlugAndShoppingCartId =
-      await this.cartitemRepository.findWithProductSlugAndShoppingCartId(
-        productWithSlug.id,
-        shoppingCart?.id as string,
-      )
-
-    if (cartWithProductSlugAndShoppingCartId) {
-      cartWithProductSlugAndShoppingCartId =
-        await this.cartitemRepository.update(
-          cartWithProductSlugAndShoppingCartId.id,
-          {
-            quantity: { increment: 1 },
-          },
-        )
-    } else {
-      cartWithProductSlugAndShoppingCartId =
-        await this.cartitemRepository.create({
-          quantity: 1,
-          shoppingCartId: shoppingCart?.id as string,
-          productSlug: productWithSlug.slug,
-        })
-    }
-
     return {
-      shoppingCart,
-      cartItem: cartWithProductSlugAndShoppingCartId,
+      cart,
+      cartItem: cartWithProductSlugAndCartId,
     }
   }
 }

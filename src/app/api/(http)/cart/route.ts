@@ -6,12 +6,23 @@ import { getSessionId } from '@/utils/get-session-id'
 import { BadRequestError } from '../../_errors/bad-request-error'
 import { ValidationError } from '../../_errors/validation-error'
 import { makeCreateCartUseCase } from '../../_use-cases/factories/make-create-cart-use-case'
+import { makeFetchCartUseCase } from '../../_use-cases/factories/make-fetch-cart-use-case'
+
+export async function GET() {
+  const sessionId = getSessionId()
+
+  const fetchCartUseCase = makeFetchCartUseCase()
+
+  const cart = await fetchCartUseCase.execute({ sessionId })
+
+  return NextResponse.json(cart, { status: 200 })
+}
 
 export async function POST(req: NextRequest) {
   try {
     const cartRequestSchema = z
       .object({
-        slug: z.string().uuid(),
+        slug: z.string(),
         userId: z.string().uuid().optional(),
       })
       .parseAsync(await req.json())

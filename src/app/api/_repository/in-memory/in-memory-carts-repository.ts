@@ -1,51 +1,46 @@
 import { randomUUID } from 'node:crypto'
 
-import { CartItem, Prisma, ShoppingCart } from '@prisma/client'
+import { Cart, CartItem, Prisma } from '@prisma/client'
 
-import { CartItemRepository, ShoppingCartRepository } from '../carts-repository'
+import { CartItemsRepository, CartsRepository } from '../carts-repository'
 
-export class InMemoryCartItemRepository implements CartItemRepository {
-  public cartItem: CartItem[] = []
+export class InMemoryCartItemsRepository implements CartItemsRepository {
+  public cartItems: CartItem[] = []
 
   async create(data: Prisma.CartItemUncheckedCreateInput) {
     const createCartItem: CartItem = {
       id: randomUUID(),
       productSlug: data.productSlug,
-      shoppingCartId: data.shoppingCartId,
+      cartId: data.cartId,
       quantity: data.quantity,
       createdAt: new Date(),
       updatedAt: new Date(),
     }
 
-    this.cartItem.push(createCartItem)
+    this.cartItems.push(createCartItem)
 
     return createCartItem
   }
 
   async update(id: string, data: Prisma.CartItemUpdateInput) {
-    const findCartItemIndex = this.cartItem.findIndex((cart) => cart.id === id)
+    const findCartItemIndex = this.cartItems.findIndex((cart) => cart.id === id)
 
     if (findCartItemIndex === -1) return null
 
-    const updatedCartItem = { ...this.cartItem[findCartItemIndex] }
+    const updatedCartItem = { ...this.cartItems[findCartItemIndex] }
 
     Object.assign(updatedCartItem, data)
 
     updatedCartItem.updatedAt = new Date()
 
-    this.cartItem[findCartItemIndex] = updatedCartItem
+    this.cartItems[findCartItemIndex] = updatedCartItem
 
     return updatedCartItem
   }
 
-  async findWithProductSlugAndShoppingCartId(
-    productSlug: string,
-    shoppingCartId: string,
-  ) {
-    const findCart = this.cartItem.find(
-      (cart) =>
-        cart.productSlug === productSlug &&
-        cart.shoppingCartId === shoppingCartId,
+  async findWithProductSlugAndCartId(productSlug: string, cartId: string) {
+    const findCart = this.cartItems.find(
+      (cart) => cart.productSlug === productSlug && cart.cartId === cartId,
     )
 
     if (!findCart) return null
@@ -54,11 +49,11 @@ export class InMemoryCartItemRepository implements CartItemRepository {
   }
 }
 
-export class InMemoryShoppingCartRepository implements ShoppingCartRepository {
-  public shoppingCart: ShoppingCart[] = []
+export class InMemoryCartsRepository implements CartsRepository {
+  public carts: Cart[] = []
 
-  async create(data: Prisma.ShoppingCartCreateInput) {
-    const createShoppingCart: ShoppingCart = {
+  async create(data: Prisma.CartCreateInput) {
+    const createCart: Cart = {
       id: randomUUID(),
       sessionId: data.sessionId,
       userId: data.user?.connect?.id as string,
@@ -66,36 +61,34 @@ export class InMemoryShoppingCartRepository implements ShoppingCartRepository {
       updatedAt: new Date(),
     }
 
-    this.shoppingCart.push(createShoppingCart)
+    this.carts.push(createCart)
 
-    return createShoppingCart
+    return createCart
   }
 
   async update(sessionId: string, data: Prisma.CartItemUpdateInput) {
-    const findShoppingCartIndex = this.shoppingCart.findIndex(
-      (shopping) => shopping.sessionId === sessionId,
+    const findCartIndex = this.carts.findIndex(
+      (cart) => cart.sessionId === sessionId,
     )
 
-    if (findShoppingCartIndex === -1) return null
+    if (findCartIndex === -1) return null
 
-    const updatedShoppingCart = { ...this.shoppingCart[findShoppingCartIndex] }
+    const updatedCart = { ...this.carts[findCartIndex] }
 
-    Object.assign(updatedShoppingCart, data)
+    Object.assign(updatedCart, data)
 
-    updatedShoppingCart.updatedAt = new Date()
+    updatedCart.updatedAt = new Date()
 
-    this.shoppingCart[findShoppingCartIndex] = updatedShoppingCart
+    this.carts[findCartIndex] = updatedCart
 
-    return updatedShoppingCart
+    return updatedCart
   }
 
   async findBySessionId(sessionId: string) {
-    const findShoppingCart = this.shoppingCart.find(
-      (shopping) => shopping.sessionId === sessionId,
-    )
+    const findCart = this.carts.find((cart) => cart.sessionId === sessionId)
 
-    if (!findShoppingCart) return null
+    if (!findCart) return null
 
-    return findShoppingCart
+    return findCart
   }
 }
