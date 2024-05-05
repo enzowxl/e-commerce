@@ -80,7 +80,6 @@ CREATE TABLE "categories" (
 CREATE TABLE "oders" (
     "id" TEXT NOT NULL,
     "status" TEXT NOT NULL DEFAULT 'WAITING_FOR_PAYMENT',
-    "total" DECIMAL(10,2) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "user_id" TEXT,
@@ -93,6 +92,7 @@ CREATE TABLE "order_items" (
     "id" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
     "price" DECIMAL(10,2) NOT NULL,
+    "discount" INTEGER NOT NULL DEFAULT 0,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "order_id" TEXT NOT NULL,

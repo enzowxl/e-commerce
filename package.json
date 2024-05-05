@@ -9,6 +9,8 @@
     "lint": "next lint",
     "test": "vitest run --dir src/app/api/_use-cases",
     "test:watch": "vitest --dir src/app/api/_use-cases",
+    "test:e2e": "vitest run --dir src/app/api/(http)",
+    "test:watch:e2e": "vitest --dir src/app/api/(http)",
     "test:components": "vitest run --dir src/app/components --environment jsdom",
     "test:watch:components": "vitest --dir src/app/components --environment jsdom",
     "test:coverage": "vitest run --coverage",
