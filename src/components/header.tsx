@@ -1,9 +1,12 @@
 import { CircleUserRound, Menu, Search, ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
 
+import { MenuSheet } from './menu-sheet'
+import { UserDropDown } from './user-drop-down'
+
 export function Header() {
   return (
-    <nav className="flex items-center justify-between">
+    <div className="flex items-center justify-between">
       <div className="flex items-center gap-5">
         <Link href="/" className="text-2xl font-extrabold text-white">
           shop.dev
@@ -23,9 +26,13 @@ export function Header() {
       </div>
       <div className="max-sm:hidden flex gap-7">
         <ShoppingCart className="min-w-5 min-h-5 cursor-pointer" />
-        <CircleUserRound className="min-w-5 min-h-5 cursor-pointer" />
+        <UserDropDown>
+          <CircleUserRound className="min-w-5 min-h-5 cursor-pointer" />
+        </UserDropDown>
       </div>
-      <Menu className="sm:hidden min-w-5 min-h-5 cursor-pointer" />
-    </nav>
+      <MenuSheet>
+        <Menu className="sm:hidden min-w-5 min-h-5 cursor-pointer" />
+      </MenuSheet>
+    </div>
   )
 }
