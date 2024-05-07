@@ -85,13 +85,13 @@ export function UserDropDown({ children }: { children: ReactNode }) {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <Link href={'/'} className="flex gap-3 items-center">
+                <Link href={'/dashboard'} className="flex gap-3 items-center">
                   <LayoutDashboard className="w-5 h-5" />
                   Dashboard
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link href={'/'} className="flex gap-3 items-center">
+                <Link href={'/settings'} className="flex gap-3 items-center">
                   <Settings className="w-5 h-5" />
                   Settings
                 </Link>

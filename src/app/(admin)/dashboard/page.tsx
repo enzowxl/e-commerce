@@ -1,3 +1,5 @@
+import { BasePage } from '@/components/base-page'
+
 export default function Dashboard() {
-  return <></>
+  return <BasePage title="Dashboard">opa</BasePage>
 }

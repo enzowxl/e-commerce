@@ -24,7 +24,7 @@ export default function ShopLayout({
     <html lang="en">
       <body className={inter.className}>
         <SessionProvider>
-          <div className="grid px-10 py-8 gap-8">
+          <div className="min-h-screen w-full flex flex-col px-8 py-8 gap-12">
             <Header />
             {children}
           </div>
