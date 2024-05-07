@@ -27,7 +27,7 @@ export default function DashboardLayout({
         <SessionProvider>
           <div className="min-h-screen w-full flex flex-col px-8 py-8 gap-12">
             <Header isDashboard />
-            <div className="flex-1 flex gap-10">
+            <div className="flex-1 flex gap-8">
               <SideBar />
               {children}
             </div>
