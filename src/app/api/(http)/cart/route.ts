@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z, ZodError } from 'zod'
 
+import { BadRequestError } from '@/app/api/_errors/bad-request-error'
+import { ValidationError } from '@/app/api/_errors/validation-error'
+import { makeCreateCartUseCase } from '@/app/api/_use-cases/factories/make-create-cart-use-case'
+import { makeFetchCartUseCase } from '@/app/api/_use-cases/factories/make-fetch-cart-use-case'
 import { getSessionId } from '@/utils/get-session-id'
-
-import { BadRequestError } from '../../_errors/bad-request-error'
-import { ValidationError } from '../../_errors/validation-error'
-import { makeCreateCartUseCase } from '../../_use-cases/factories/make-create-cart-use-case'
-import { makeFetchCartUseCase } from '../../_use-cases/factories/make-fetch-cart-use-case'
 
 export async function GET() {
   const sessionId = getSessionId()

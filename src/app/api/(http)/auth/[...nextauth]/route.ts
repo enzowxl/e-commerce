@@ -1,3 +1,4 @@
+import { NextAuthOptions } from 'next-auth'
 import NextAuth from 'next-auth/next'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { z, ZodError } from 'zod'
@@ -7,7 +8,7 @@ import { BadRequestError } from '@/app/api/_errors/bad-request-error'
 import { ValidationError } from '@/app/api/_errors/validation-error'
 import { makeAuthenticateUseCase } from '@/app/api/_use-cases/factories/make-authenticate'
 
-const handler = NextAuth({
+export const authOptions = {
   providers: [
     CredentialsProvider({
       id: 'credentials',
@@ -46,6 +47,26 @@ const handler = NextAuth({
       },
     }),
   ],
-})
+  callbacks: {
+    async jwt({ token }) {
+      return {
+        ...token,
+      }
+    },
+    async session({ session, token }) {
+      session.user.sub = token.sub as string
+      return {
+        ...session,
+      }
+    },
+  },
+  pages: {
+    error: '/',
+    signIn: '/signin',
+    signOut: '/',
+  },
+} as NextAuthOptions
+
+const handler = NextAuth(authOptions)
 
 export { handler as GET, handler as POST }

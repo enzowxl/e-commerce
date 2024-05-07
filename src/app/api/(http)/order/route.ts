@@ -2,11 +2,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getToken } from 'next-auth/jwt'
 import { z, ZodError } from 'zod'
 
+import { BadRequestError } from '@/app/api/_errors/bad-request-error'
+import { UnauthorizedError } from '@/app/api/_errors/unauthorized-error'
+import { ValidationError } from '@/app/api/_errors/validation-error'
 import { prisma } from '@/lib/prisma'
-
-import { BadRequestError } from '../../_errors/bad-request-error'
-import { UnauthorizedError } from '../../_errors/unauthorized-error'
-import { ValidationError } from '../../_errors/validation-error'
 
 export async function POST(req: NextRequest) {
   try {

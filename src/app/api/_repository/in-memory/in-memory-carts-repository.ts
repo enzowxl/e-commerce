@@ -52,11 +52,11 @@ export class InMemoryCartItemsRepository implements CartItemsRepository {
 export class InMemoryCartsRepository implements CartsRepository {
   public carts: Cart[] = []
 
-  async create(data: Prisma.CartCreateInput) {
+  async create(data: Prisma.CartUncheckedCreateInput) {
     const createCart: Cart = {
       id: randomUUID(),
       sessionId: data.sessionId,
-      userId: data.user?.connect?.id as string,
+      userId: data.userId as string,
       createdAt: new Date(),
       updatedAt: new Date(),
     }

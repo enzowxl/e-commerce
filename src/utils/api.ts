@@ -1,7 +1,7 @@
 import { env } from '@/env'
 
 export function api(path: string, init?: RequestInit) {
-  const baseUrl = env.NEXTAUTH_URL
+  const baseUrl = env.NEXT_PUBLIC_URL
   const apiPrefix = '/api'
   const url = new URL(apiPrefix.concat(path), baseUrl)
 

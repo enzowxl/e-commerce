@@ -15,7 +15,7 @@ export const env = createEnv({
     STRIPE_CANCEL_URL: z.string().url(),
   },
 
-  client: {},
+  client: { NEXT_PUBLIC_URL: z.string().url() },
 
   runtimeEnv: {
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
@@ -28,5 +28,6 @@ export const env = createEnv({
     STRIPE_CANCEL_URL: process.env.STRIPE_CANCEL_URL,
     STRIPE_SECRET_TEST: process.env.STRIPE_SECRET_TEST,
     STRIPE_PUBLIC_TEST: process.env.STRIPE_PUBLIC_TEST,
+    NEXT_PUBLIC_URL: process.env.NEXT_PUBLIC_URL,
   },
 })

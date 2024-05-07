@@ -8,7 +8,7 @@ export function BasePage({
   title: string
 }) {
   return (
-    <div className="flex flex-col flex-1 gap-12 border border-zinc-900 rounded-xl p-5">
+    <div className="flex flex-col flex-1 gap-12 rounded-xl p-5">
       {title && <h1 className="text-3xl font-bold text-white">{title}</h1>}
       <div>{children}</div>
     </div>

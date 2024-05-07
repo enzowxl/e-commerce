@@ -7,12 +7,12 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 
+import { UserDropDown } from './drop-down/user-drop-down'
 import { MenuSheet } from './menu-sheet'
-import { UserDropDown } from './user-drop-down'
 
 export function Header({ isDashboard }: { isDashboard?: boolean }) {
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between px-8 py-8 border-b border-zinc-900">
       <div className="flex items-center gap-5">
         <Link href="/" className="text-2xl font-extrabold text-white">
           shop.dev
