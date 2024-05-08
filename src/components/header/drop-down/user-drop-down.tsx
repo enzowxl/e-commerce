@@ -11,7 +11,6 @@ import Link from 'next/link'
 import { getServerSession } from 'next-auth'
 import React, { ReactNode } from 'react'
 
-import { authOptions } from '@/app/api/(http)/auth/[...nextauth]/route'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   DropdownMenu,
@@ -21,6 +20,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { authOptions } from '@/utils/auth-options'
 import { getUserPermissions } from '@/utils/get-user-permissions'
 
 import { DropDownLogOut } from './logout-drop-down'

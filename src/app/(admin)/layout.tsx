@@ -8,9 +8,8 @@ import { getServerSession } from 'next-auth'
 import { SideBar } from '@/app/(admin)/_components/sidebar'
 import { Header } from '@/components/header/header'
 import { SessionProvider } from '@/providers/session'
+import { authOptions } from '@/utils/auth-options'
 import { getUserPermissions } from '@/utils/get-user-permissions'
-
-import { authOptions } from '../api/(http)/auth/[...nextauth]/route'
 
 const inter = Inter({ subsets: ['latin'] })
 

@@ -1,9 +1,12 @@
 'use client'
 
-import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { signIn, SignInResponse } from 'next-auth/react'
 import { FormEvent } from 'react'
 
 export function SignInForm() {
+  const router = useRouter()
+
   async function handleSignIn(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
@@ -16,13 +19,19 @@ export function SignInForm() {
     if (!email && !password) {
       return null
     }
+    try {
+      await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      }).then((res: SignInResponse | undefined) => {
+        if (res?.error) return
 
-    await signIn('credentials', {
-      email,
-      password,
-      redirect: true,
-      callbackUrl: '/',
-    })
+        return router.push('/')
+      })
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (
@@ -34,6 +43,7 @@ export function SignInForm() {
           className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-14 px-4 outline-none"
           placeholder="johndoe@example.com"
           type="email"
+          required
         />
       </div>
       <div className="flex flex-col gap-3">
@@ -43,6 +53,7 @@ export function SignInForm() {
           className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-14 px-4 outline-none"
           placeholder="*************"
           type="password"
+          required
         />
       </div>
       <button

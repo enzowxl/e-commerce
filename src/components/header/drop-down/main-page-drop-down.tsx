@@ -12,22 +12,20 @@ export function MainPageDropDown({ permission }: { permission: boolean }) {
 
   return (
     <React.Fragment>
-      {pathname.includes('dashboard') ? (
+      {!pathname.includes('dashboard') && permission ? (
+        <DropdownMenuItem>
+          <Link href={'/dashboard'} className="flex gap-3 items-center">
+            <LayoutDashboard className="w-5 h-5" />
+            Dashboard
+          </Link>
+        </DropdownMenuItem>
+      ) : (
         <DropdownMenuItem>
           <Link href={'/'} className="flex gap-3 items-center w-full">
             <Store className="w-5 h-5" />
             Home
           </Link>
         </DropdownMenuItem>
-      ) : (
-        permission && (
-          <DropdownMenuItem>
-            <Link href={'/dashboard'} className="flex gap-3 items-center">
-              <LayoutDashboard className="w-5 h-5" />
-              Dashboard
-            </Link>
-          </DropdownMenuItem>
-        )
       )}
     </React.Fragment>
   )

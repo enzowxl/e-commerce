@@ -8,7 +8,7 @@ import { api } from '@/utils/api'
 export function SignUpForm() {
   const router = useRouter()
 
-  async function handleSignIn(event: FormEvent<HTMLFormElement>) {
+  async function handleSignUp(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
     const formData = new FormData(event.currentTarget)
@@ -22,20 +22,24 @@ export function SignUpForm() {
       return null
     }
 
-    await api('/auth/users', {
-      method: 'POST',
-      body: JSON.stringify({
-        name,
-        email,
-        password,
-      }),
-    })
+    try {
+      await api('/auth/users', {
+        method: 'POST',
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+      })
+    } catch (err) {
+      console.log(err)
+    }
 
-    return router.push('/')
+    return router.push('/signin')
   }
 
   return (
-    <form onSubmit={handleSignIn} className="w-full flex flex-col gap-8">
+    <form onSubmit={handleSignUp} className="w-full flex flex-col gap-8">
       <div className="flex flex-col gap-3">
         <label className="font-medium">Full name</label>
         <input
@@ -43,6 +47,7 @@ export function SignUpForm() {
           className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-14 px-4 outline-none"
           placeholder="John Doe"
           type="text"
+          required
         />
       </div>
       <div className="flex flex-col gap-3">
@@ -52,6 +57,7 @@ export function SignUpForm() {
           className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-14 px-4 outline-none"
           placeholder="johndoe@example.com"
           type="email"
+          required
         />
       </div>
       <div className="flex flex-col gap-3">
@@ -61,6 +67,7 @@ export function SignUpForm() {
           className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-14 px-4 outline-none"
           placeholder="*************"
           type="password"
+          required
         />
       </div>
       <button

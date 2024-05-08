@@ -3,6 +3,8 @@
 import { signOut } from 'next-auth/react'
 import { ReactNode } from 'react'
 
+import { env } from '@/env'
+
 export function DropDownLogOut({
   children,
   className,
@@ -11,7 +13,15 @@ export function DropDownLogOut({
   className: string
 }) {
   return (
-    <button className={className} onClick={() => signOut()}>
+    <button
+      className={className}
+      onClick={() =>
+        signOut({
+          callbackUrl: env.NEXT_PUBLIC_URL,
+          redirect: true,
+        })
+      }
+    >
       {children}
     </button>
   )
