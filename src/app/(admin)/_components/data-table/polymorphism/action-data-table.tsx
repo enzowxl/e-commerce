@@ -9,6 +9,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   updateVal: (val: boolean) => void
   tableType: TableTypes
   actionType: ActionTypes
+  tableId: string
 }
 export function ActionDataTableBody(props: ButtonProps) {
   const Component = props.actionType === 'update' ? UpdateDialog : DeleteDialog

@@ -18,9 +18,11 @@ import {
 
 import { DataTableContainer } from '../container-data-table'
 import { ActionDataTableBody } from '../polymorphism/action-data-table'
+
 export function DataTableUsers({ data }: { data: User[] }) {
   const [updateDialog, updateUpdateDialog] = React.useState(false)
   const [deleteDialog, updateDeleteDialog] = React.useState(false)
+  const [idDialog, updateIdDialog] = React.useState('')
 
   const columns: ColumnDef<unknown>[] = [
     {
@@ -56,7 +58,7 @@ export function DataTableUsers({ data }: { data: User[] }) {
     {
       id: 'actions',
       enableHiding: false,
-      cell: () => {
+      cell: ({ row }) => {
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -72,7 +74,10 @@ export function DataTableUsers({ data }: { data: User[] }) {
               <DropdownMenuSeparator />
 
               <DropdownMenuItem
-                onClick={() => updateUpdateDialog(!updateDialog)}
+                onClick={() => {
+                  updateIdDialog(row?.original.email)
+                  updateUpdateDialog(!updateDialog)
+                }}
                 className="flex gap-3 items-center w-full"
               >
                 <Pencil className="w-5 h-5" />
@@ -80,7 +85,10 @@ export function DataTableUsers({ data }: { data: User[] }) {
               </DropdownMenuItem>
 
               <DropdownMenuItem
-                onClick={() => updateDeleteDialog(!deleteDialog)}
+                onClick={() => {
+                  updateIdDialog(row?.original.email)
+                  updateDeleteDialog(!deleteDialog)
+                }}
                 className="flex gap-3 items-center w-full"
               >
                 <Trash2 className="w-5 h-5" />
@@ -88,12 +96,14 @@ export function DataTableUsers({ data }: { data: User[] }) {
               </DropdownMenuItem>
             </DropdownMenuContent>
             <ActionDataTableBody
+              tableId={idDialog}
               val={updateDialog}
               updateVal={updateUpdateDialog}
               actionType="update"
               tableType="user"
             />
             <ActionDataTableBody
+              tableId={idDialog}
               val={deleteDialog}
               updateVal={updateDeleteDialog}
               actionType="delete"

@@ -7,6 +7,7 @@ import { FormUpdateUser } from '../forms/form-update-user'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   tableType: TableTypes
+  tableId: string
 }
 
 export function FormUpdateDialog(props: ButtonProps) {
