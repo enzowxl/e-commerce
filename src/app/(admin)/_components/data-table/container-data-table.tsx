@@ -14,9 +14,9 @@ import {
 } from '@tanstack/react-table'
 import * as React from 'react'
 
-import { DataTableBody } from './data-table-body'
-import { DataTableHeader } from './data-table-header'
-import { TablePagination } from './data-table-pagination'
+import { DataTableBody } from './body-data-table'
+import { DataTableHeader } from './header-data-table'
+import { TablePagination } from './pagination-data-table'
 
 export type TableTypes = 'product' | 'user' | 'category'
 

@@ -3,7 +3,7 @@ import { Category } from '@prisma/client'
 import { BasePage } from '@/components/base-page'
 import { api } from '@/utils/api'
 
-import { DataTableCategories } from '../../_components/data-table/data-table-categories'
+import { DataTableCategories } from '../../_components/data-table/tables/categories-data-table'
 
 async function getCategories(): Promise<Category[]> {
   const response = await api('/category', {

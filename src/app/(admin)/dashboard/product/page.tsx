@@ -3,7 +3,7 @@ import { Product } from '@prisma/client'
 import { BasePage } from '@/components/base-page'
 import { api } from '@/utils/api'
 
-import { DataTableProducts } from '../../_components/data-table/data-table-products'
+import { DataTableProducts } from '../../_components/data-table/tables/products-data-table'
 
 async function getProducts(): Promise<Product[]> {
   const response = await api('/product', {

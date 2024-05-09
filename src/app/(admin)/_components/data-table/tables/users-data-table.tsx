@@ -1,6 +1,6 @@
 'use client'
 
-import { Product } from '@prisma/client'
+import { User } from '@prisma/client'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { ColumnDef } from '@tanstack/react-table'
 import { Ellipsis, Pencil, Trash2 } from 'lucide-react'
@@ -16,14 +16,14 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-import { DataTableContainer } from './data-table-container'
-export function DataTableProducts({ data }: { data: Product[] }) {
+import { DataTableContainer } from '../container-data-table'
+export function DataTableUsers({ data }: { data: User[] }) {
   const columns: ColumnDef<unknown>[] = [
     {
-      accessorKey: 'slug',
-      header: () => <div className="pl-5">Slug</div>,
+      accessorKey: 'id',
+      header: () => <div className="pl-5">Id</div>,
       cell: ({ row }) => (
-        <div className="capitalize pl-5">{row.getValue('slug')}</div>
+        <div className="capitalize pl-5">{row.getValue('id')}</div>
       ),
     },
     {
@@ -45,9 +45,16 @@ export function DataTableProducts({ data }: { data: Product[] }) {
       ),
     },
     {
-      accessorKey: 'quantity',
-      header: () => <div>Quantity</div>,
-      cell: () => <div className="capitalize">{data.length}</div>,
+      accessorKey: 'email',
+      header: () => <div>Email</div>,
+      cell: ({ row }) => <div>{row.getValue('email')}</div>,
+    },
+    {
+      accessorKey: 'role',
+      header: () => <div>Role</div>,
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue('role')}</div>
+      ),
     },
     {
       id: 'actions',
@@ -81,5 +88,5 @@ export function DataTableProducts({ data }: { data: Product[] }) {
     },
   ]
 
-  return <DataTableContainer type="product" data={data} columns={columns} />
+  return <DataTableContainer type="user" data={data} columns={columns} />
 }

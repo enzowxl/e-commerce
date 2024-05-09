@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 
-import { TableTypes } from './data-table-container'
+import { TableTypes } from './container-data-table'
 
 export function DataTableHeader({
   table,
@@ -38,7 +38,7 @@ export function DataTableHeader({
       </form>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button className="ml-auto bg-color-primary text-white h-12 rounded-xl flex gap-2">
+          <Button className="ml-auto bg-color-primary text-white py-5 rounded-xl flex gap-2">
             <Plus />
             New {type}
           </Button>

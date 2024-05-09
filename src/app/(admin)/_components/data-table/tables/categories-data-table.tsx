@@ -16,7 +16,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-import { DataTableContainer } from './data-table-container'
+import { DataTableContainer } from '../container-data-table'
 export function DataTableCategories({ data }: { data: Category[] }) {
   const columns: ColumnDef<unknown>[] = [
     {
