@@ -30,12 +30,12 @@ export async function GET(
     return NextResponse.json(category, { status: 200 })
   } catch (err) {
     if (err instanceof ZodError) {
-      throw new ValidationError()
+      return new ValidationError().error()
     }
     if (err instanceof CategoryNotExistsError) {
-      throw new CategoryNotExistsError()
+      return new CategoryNotExistsError().error()
     }
-    throw new BadRequestError()
+    return new BadRequestError().error()
   }
 }
 
@@ -67,11 +67,11 @@ export async function DELETE(
     return NextResponse.json({}, { status: 200 })
   } catch (err) {
     if (err instanceof ZodError) {
-      throw new ValidationError()
+      return new ValidationError().error()
     }
     if (err instanceof CategoryNotExistsError) {
-      throw new CategoryNotExistsError()
+      return new CategoryNotExistsError().error()
     }
-    throw new BadRequestError()
+    return new BadRequestError().error()
   }
 }

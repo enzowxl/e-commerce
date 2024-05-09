@@ -15,8 +15,8 @@ export function DropDownLogOut({
   return (
     <button
       className={className}
-      onClick={() =>
-        signOut({
+      onClick={async () =>
+        await signOut({
           callbackUrl: env.NEXT_PUBLIC_URL,
           redirect: true,
         })

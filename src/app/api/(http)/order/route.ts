@@ -58,11 +58,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(order, { status: 201 })
   } catch (err) {
     if (err instanceof ZodError) {
-      throw new ValidationError()
+      return new ValidationError().error()
     }
     if (err instanceof UnauthorizedError) {
-      throw new UnauthorizedError()
+      return new UnauthorizedError().error()
     }
-    throw new BadRequestError()
+    return new BadRequestError().error()
   }
 }

@@ -15,17 +15,13 @@ import { getUserPermissions } from '@/utils/get-user-permissions'
 
 export async function GET() {
   try {
-    // const token = await getToken({ req })
-
-    // if (!token) throw new UnauthorizedError()
-
     const fetchAllCategories = makeFetchAllCategoriesUseCase()
 
     const categories = await fetchAllCategories.execute()
 
     return NextResponse.json(categories, { status: 200 })
   } catch (err) {
-    throw new BadRequestError()
+    return new BadRequestError().error()
   }
 }
 
@@ -59,15 +55,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({}, { status: 201 })
   } catch (err) {
     if (err instanceof ZodError) {
-      throw new ValidationError()
+      throw new ValidationError().error()
     }
     if (err instanceof CategoryAlreadyExistsError) {
-      throw new CategoryAlreadyExistsError()
+      return new CategoryAlreadyExistsError().error()
     }
     if (err instanceof UnauthorizedError) {
-      throw new UnauthorizedError()
+      return new UnauthorizedError().error()
     }
-    throw new BadRequestError()
+    return new BadRequestError().error()
   }
 }
 
@@ -102,14 +98,14 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({}, { status: 201 })
   } catch (err) {
     if (err instanceof ZodError) {
-      throw new ValidationError()
+      return new ValidationError().error()
     }
     if (err instanceof CategoryNotExistsError) {
-      throw new CategoryNotExistsError()
+      return new CategoryNotExistsError().error()
     }
     if (err instanceof UnauthorizedError) {
-      throw new UnauthorizedError()
+      return new UnauthorizedError().error()
     }
-    throw new BadRequestError()
+    return new BadRequestError().error()
   }
 }

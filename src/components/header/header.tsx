@@ -1,10 +1,4 @@
-import {
-  CircleUserRound,
-  LayoutList,
-  Menu,
-  Search,
-  ShoppingCart,
-} from 'lucide-react'
+import { CircleUserRound, Menu, Search, ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
 
 import { UserDropDown } from './drop-down/user-drop-down'
@@ -33,9 +27,6 @@ export function Header({ isDashboard }: { isDashboard?: boolean }) {
         )}
       </div>
       <div className="max-sm:hidden flex gap-7">
-        <Link href={'/category'}>
-          <LayoutList className="min-w-5 min-h-5 cursor-pointer" />
-        </Link>
         <Link href={'/cart'}>
           <ShoppingCart className="min-w-5 min-h-5 cursor-pointer" />
         </Link>

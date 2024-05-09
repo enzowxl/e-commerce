@@ -1,7 +1,9 @@
 import {
+  LayoutDashboard,
   LayoutList,
   LogIn,
   LogOut,
+  Package,
   Settings,
   ShoppingCart,
   Store,
@@ -24,7 +26,6 @@ import { authOptions } from '@/utils/auth-options'
 import { getUserPermissions } from '@/utils/get-user-permissions'
 
 import { DropDownLogOut } from './logout-drop-down'
-import { MainPageDropDown } from './main-page-drop-down'
 
 export async function UserDropDown({ children }: { children: ReactNode }) {
   const data = await getServerSession(authOptions)
@@ -57,7 +58,32 @@ export async function UserDropDown({ children }: { children: ReactNode }) {
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <MainPageDropDown permission={permission} />
+              <DropdownMenuItem>
+                <Link href={'/'} className="flex gap-3 items-center w-full">
+                  <Store className="w-5 h-5" />
+                  Home
+                </Link>
+              </DropdownMenuItem>
+              {permission && (
+                <DropdownMenuItem>
+                  <Link
+                    href={'/dashboard'}
+                    className="flex gap-3 items-center w-full"
+                  >
+                    <LayoutDashboard className="w-5 h-5" />
+                    Dashboard
+                  </Link>
+                </DropdownMenuItem>
+              )}
+              <DropdownMenuItem>
+                <Link
+                  href={'/order'}
+                  className="flex gap-3 items-center w-full"
+                >
+                  <Package className="w-5 h-5" />
+                  My orders
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuItem>
                 <Link href={'/cart'} className="flex gap-3 items-center w-full">
                   <ShoppingCart className="w-5 h-5" />
@@ -74,7 +100,10 @@ export async function UserDropDown({ children }: { children: ReactNode }) {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link href={'/settings'} className="flex gap-3 items-center">
+                <Link
+                  href={'/settings'}
+                  className="flex gap-3 items-center w-full"
+                >
                   <Settings className="w-5 h-5" />
                   Settings
                 </Link>
@@ -82,7 +111,7 @@ export async function UserDropDown({ children }: { children: ReactNode }) {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <DropDownLogOut className="flex gap-3 items-center">
+              <DropDownLogOut className="flex gap-3 items-center w-full">
                 <LogOut className="w-5 h-5" />
                 Log out
               </DropDownLogOut>

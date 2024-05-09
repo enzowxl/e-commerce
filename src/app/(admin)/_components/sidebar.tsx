@@ -1,4 +1,9 @@
-import { LayoutDashboard, LayoutList, ShoppingBasket } from 'lucide-react'
+import {
+  LayoutDashboard,
+  LayoutList,
+  ShoppingBasket,
+  UsersRound,
+} from 'lucide-react'
 import Link from 'next/link'
 
 export function SideBar() {
@@ -20,6 +25,12 @@ export function SideBar() {
       name: 'Categories',
       href: '/dashboard/category',
       icon: LayoutList,
+    },
+    {
+      id: 4,
+      name: 'Users',
+      href: '/dashboard/user',
+      icon: UsersRound,
     },
   ]
 

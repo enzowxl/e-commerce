@@ -32,6 +32,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json({}, { status: 200 })
   } catch (err) {
-    throw new BadRequestError()
+    return new BadRequestError().error()
   }
 }

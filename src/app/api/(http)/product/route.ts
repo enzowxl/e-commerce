@@ -18,17 +18,13 @@ const ProductTypes = ['T_SHIRT', 'SHORTS', 'SHIRTS', 'HOODIE', 'JEANS'] as const
 
 export async function GET() {
   try {
-    // const token = await getToken({ req })
-
-    // if (!token) throw new UnauthorizedError()
-
     const fetchAllProducts = makeFetchAllProductsUseCase()
 
     const products = await fetchAllProducts.execute()
 
     return NextResponse.json(products, { status: 200 })
   } catch (err) {
-    throw new BadRequestError()
+    return new BadRequestError().error()
   }
 }
 
@@ -89,18 +85,18 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({}, { status: 201 })
   } catch (err) {
     if (err instanceof ZodError) {
-      throw new ValidationError()
+      return new ValidationError().error()
     }
     if (err instanceof CategoryNotExistsError) {
-      throw new CategoryNotExistsError()
+      return new CategoryNotExistsError().error()
     }
     if (err instanceof ProductAlreadyExistsError) {
-      throw new ProductAlreadyExistsError()
+      return new ProductAlreadyExistsError().error()
     }
     if (err instanceof UnauthorizedError) {
-      throw new UnauthorizedError()
+      return new UnauthorizedError().error()
     }
-    throw new BadRequestError()
+    return new BadRequestError().error()
   }
 }
 
@@ -160,14 +156,14 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({}, { status: 201 })
   } catch (err) {
     if (err instanceof ZodError) {
-      throw new ValidationError()
+      return new ValidationError().error()
     }
     if (err instanceof ProductNotExistsError) {
-      throw new ProductNotExistsError()
+      return new ProductNotExistsError().error()
     }
     if (err instanceof UnauthorizedError) {
-      throw new UnauthorizedError()
+      return new UnauthorizedError().error()
     }
-    throw new BadRequestError()
+    return new BadRequestError().error()
   }
 }

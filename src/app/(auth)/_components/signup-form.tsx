@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { FormEvent } from 'react'
+import toast from 'react-hot-toast'
 
 import { api } from '@/utils/api'
 
@@ -22,20 +23,30 @@ export function SignUpForm() {
       return null
     }
 
-    try {
-      await api('/auth/users', {
-        method: 'POST',
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-        }),
-      })
-    } catch (err) {
-      console.log(err)
-    }
+    await api('/auth/users', {
+      method: 'POST',
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+      }),
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          const { error } = await res.json()
+          return toast.error(error, {
+            duration: 3000,
+          })
+        }
 
-    return router.push('/signin')
+        toast.success('Successful sign up', {
+          duration: 3000,
+        })
+        return router.push('/signin')
+      })
+      .catch((err) => {
+        return console.log(err)
+      })
   }
 
   return (

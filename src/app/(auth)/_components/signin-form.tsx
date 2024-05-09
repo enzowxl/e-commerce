@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { signIn, SignInResponse } from 'next-auth/react'
 import { FormEvent } from 'react'
+import toast from 'react-hot-toast'
 
 export function SignInForm() {
   const router = useRouter()
@@ -19,19 +20,21 @@ export function SignInForm() {
     if (!email && !password) {
       return null
     }
-    try {
-      await signIn('credentials', {
-        email,
-        password,
-        redirect: false,
-      }).then((res: SignInResponse | undefined) => {
-        if (res?.error) return
 
-        return router.push('/')
+    await signIn('credentials', {
+      email,
+      password,
+      redirect: false,
+    }).then((res: SignInResponse | undefined) => {
+      if (res?.error)
+        return toast.error(res.error, {
+          duration: 3000,
+        })
+      toast.success('Successful sign in', {
+        duration: 3000,
       })
-    } catch (err) {
-      console.log(err)
-    }
+      return router.refresh()
+    })
   }
 
   return (

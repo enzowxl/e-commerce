@@ -8,13 +8,17 @@ import { makeFetchCartUseCase } from '@/app/api/_use-cases/factories/make-fetch-
 import { getSessionId } from '@/utils/get-session-id'
 
 export async function GET() {
-  const sessionId = getSessionId()
+  try {
+    const sessionId = getSessionId()
 
-  const fetchCartUseCase = makeFetchCartUseCase()
+    const fetchCartUseCase = makeFetchCartUseCase()
 
-  const cart = await fetchCartUseCase.execute({ sessionId })
+    const cart = await fetchCartUseCase.execute({ sessionId })
 
-  return NextResponse.json(cart, { status: 200 })
+    return NextResponse.json(cart, { status: 200 })
+  } catch (err) {
+    return new BadRequestError().error()
+  }
 }
 
 export async function POST(req: NextRequest) {
@@ -41,8 +45,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({}, { status: 201 })
   } catch (err) {
     if (err instanceof ZodError) {
-      throw new ValidationError()
+      return new ValidationError().error()
     }
-    throw new BadRequestError()
+    return new BadRequestError().error()
   }
 }

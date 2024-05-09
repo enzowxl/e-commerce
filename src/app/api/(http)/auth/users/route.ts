@@ -31,9 +31,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(users, { status: 200 })
   } catch (err) {
     if (err instanceof UnauthorizedError) {
-      throw new UnauthorizedError()
+      return new UnauthorizedError().error()
     }
-    throw new BadRequestError()
+    return new BadRequestError().error()
   }
 }
 
@@ -56,12 +56,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({}, { status: 201 })
   } catch (err) {
     if (err instanceof ZodError) {
-      throw new ValidationError()
+      return new ValidationError().error()
     }
     if (err instanceof UserAlreadyExistsError) {
-      throw new UserAlreadyExistsError()
+      return new UserAlreadyExistsError().error()
     }
-    throw new BadRequestError()
+    return new BadRequestError().error()
   }
 }
 
@@ -108,17 +108,17 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({}, { status: 201 })
   } catch (err) {
     if (err instanceof ZodError) {
-      throw new ValidationError()
+      return new ValidationError().error()
     }
     if (err instanceof UserAlreadyExistsError) {
-      throw new UserAlreadyExistsError()
+      return new UserAlreadyExistsError().error()
     }
     if (err instanceof UserNotExistsError) {
-      throw new UserNotExistsError()
+      return new UserNotExistsError().error()
     }
     if (err instanceof UnauthorizedError) {
-      throw new UnauthorizedError()
+      return new UnauthorizedError().error()
     }
-    throw new BadRequestError()
+    return new BadRequestError().error()
   }
 }

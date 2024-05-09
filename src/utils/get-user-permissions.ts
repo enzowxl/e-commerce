@@ -4,11 +4,15 @@ import { userSchema } from '@/auth/models/user'
 import { prisma } from '@/lib/prisma'
 
 export async function getUserPermissions(userId: string) {
-  const userDb = await prisma.user.findUnique({
-    where: {
-      id: userId,
-    },
-  })
+  const userDb = await prisma.user
+    .findUnique({
+      where: {
+        id: userId,
+      },
+    })
+    .finally(async () => {
+      await prisma.$disconnect()
+    })
 
   if (!userDb) throw new UserNotExistsError()
 
