@@ -5,15 +5,10 @@ import { Plus, Search } from 'lucide-react'
 import * as React from 'react'
 
 import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 
 import { TableTypes } from './container-data-table'
+import { NewButtonDataTableHeader } from './sheets/new-button'
 
 export function DataTableHeader({
   table,
@@ -36,31 +31,12 @@ export function DataTableHeader({
           className="flex-1 bg-transparent text-sm outline-none placeholder:text-zinc-500 border-0"
         />
       </form>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button className="ml-auto bg-color-primary text-white py-5 rounded-xl flex gap-2">
-            <Plus />
-            New {type}
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          {table
-            .getAllColumns()
-            .filter((column) => column.getCanHide())
-            .map((column) => {
-              return (
-                <DropdownMenuCheckboxItem
-                  key={column.id}
-                  className="capitalize"
-                  checked={column.getIsVisible()}
-                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                >
-                  {column.id}
-                </DropdownMenuCheckboxItem>
-              )
-            })}
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <NewButtonDataTableHeader tableType={type}>
+        <Button className="ml-auto bg-color-primary text-white py-5 rounded-xl flex gap-2">
+          <Plus />
+          New {type}
+        </Button>
+      </NewButtonDataTableHeader>
     </div>
   )
 }
