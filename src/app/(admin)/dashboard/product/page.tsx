@@ -19,7 +19,7 @@ export default async function DashboardProducts() {
   const products = await getProducts()
 
   return (
-    <BasePage className="px-0" classNameTitle="px-5" title="Products">
+    <BasePage className="px-0" classNameTitle="px-8" title="Products">
       <DataTableProducts data={products} />
     </BasePage>
   )

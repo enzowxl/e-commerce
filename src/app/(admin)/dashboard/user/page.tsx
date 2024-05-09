@@ -22,7 +22,7 @@ export default async function DashboardUsers() {
   const users = await getUsers()
 
   return (
-    <BasePage className="px-0" classNameTitle="px-5" title="Users">
+    <BasePage className="px-0" classNameTitle="px-8" title="Users">
       <DataTableUsers data={users} />
     </BasePage>
   )

@@ -19,7 +19,7 @@ export default async function DashboardCategories() {
   const categories = await getCategories()
 
   return (
-    <BasePage className="px-0" classNameTitle="px-5" title="Categories">
+    <BasePage className="px-0" classNameTitle="px-8" title="Categories">
       <DataTableCategories data={categories} />
     </BasePage>
   )

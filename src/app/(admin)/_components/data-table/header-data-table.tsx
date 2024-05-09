@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
 import { TableTypes } from './container-data-table'
-import { NewButtonDataTableHeader } from './sheets/new-button'
+import { NewButtonDataTableHeader } from './new-button-header-data-table'
 
 export function DataTableHeader({
   table,
@@ -18,7 +18,7 @@ export function DataTableHeader({
   type: TableTypes
 }) {
   return (
-    <div className="flex items-center px-5 gap-10">
+    <div className="flex items-center px-8 gap-10">
       <form className="flex max-w-sm items-center gap-3 rounded-xl bg-zinc-900 px-5 py-3">
         <Search className="w-5 h-5 text-zinc-500" />
 
