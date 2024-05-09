@@ -1,9 +1,12 @@
 'use client'
 
+import { Label } from '@radix-ui/react-dropdown-menu'
 import { useRouter } from 'next/navigation'
 import { signIn, SignInResponse } from 'next-auth/react'
 import { FormEvent } from 'react'
 import toast from 'react-hot-toast'
+
+import { Input } from '@/components/ui/input'
 
 export function SignInForm() {
   const router = useRouter()
@@ -40,20 +43,20 @@ export function SignInForm() {
   return (
     <form onSubmit={handleSignIn} className="w-full flex flex-col gap-8">
       <div className="flex flex-col gap-3">
-        <label className="font-medium">Email</label>
-        <input
+        <Label>Email</Label>
+        <Input
           name="email"
-          className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-14 px-4 outline-none"
+          className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-12 px-4 outline-none"
           placeholder="johndoe@example.com"
           type="email"
           required
         />
       </div>
       <div className="flex flex-col gap-3">
-        <label className="font-medium">Password</label>
-        <input
+        <Label>Password</Label>
+        <Input
           name="password"
-          className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-14 px-4 outline-none"
+          className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-12 px-4 outline-none"
           placeholder="*************"
           type="password"
           required
@@ -61,7 +64,7 @@ export function SignInForm() {
       </div>
       <button
         type="submit"
-        className="font-medium text-lg w-full bg-color-primary h-14 rounded-xl"
+        className="font-medium text-lg w-full bg-color-primary h-12 rounded-xl"
       >
         Go
       </button>

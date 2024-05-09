@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
 import { TableTypes } from './container-data-table'
-import { NewButtonDataTableHeader } from './new-button-header-data-table'
+import { NewButtonDataTableHeader } from './polymorphism/new-button-data-table'
 
 export function DataTableHeader({
   table,
@@ -18,8 +18,8 @@ export function DataTableHeader({
   type: TableTypes
 }) {
   return (
-    <div className="flex items-center px-8 gap-10">
-      <form className="flex max-w-sm items-center gap-3 rounded-xl bg-zinc-900 px-5 py-3">
+    <div className="flex items-center px-8 gap-10 justify-between">
+      <form className="flex max-w-sm items-center gap-3 rounded-xl bg-zinc-900 px-5 h-12">
         <Search className="w-5 h-5 text-zinc-500" />
 
         <Input
@@ -32,7 +32,7 @@ export function DataTableHeader({
         />
       </form>
       <NewButtonDataTableHeader tableType={type}>
-        <Button className="ml-auto bg-color-primary text-white py-5 rounded-xl flex gap-2">
+        <Button className="bg-color-primary text-white h-12 rounded-xl flex gap-2">
           <Plus />
           New {type}
         </Button>

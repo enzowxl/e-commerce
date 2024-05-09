@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import { getServerSession } from 'next-auth'
 
 import { SideBar } from '@/app/(admin)/_components/sidebar'
@@ -24,7 +24,7 @@ export default async function AdminLayout({
   const { cannot } = await getUserPermissions(data?.user?.sub as string)
 
   if (cannot('manage', 'all')) {
-    return redirect('/')
+    return notFound()
   }
   return (
     <div className="min-h-screen w-full flex flex-col">

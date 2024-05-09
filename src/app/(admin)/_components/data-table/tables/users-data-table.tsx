@@ -17,22 +17,19 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 import { DataTableContainer } from '../container-data-table'
+import { ActionDataTableBody } from '../polymorphism/action-data-table'
 export function DataTableUsers({ data }: { data: User[] }) {
+  const [updateDialog, updateUpdateDialog] = React.useState(false)
+  const [deleteDialog, updateDeleteDialog] = React.useState(false)
+
   const columns: ColumnDef<unknown>[] = [
-    {
-      accessorKey: 'id',
-      header: () => <div className="pl-5">Id</div>,
-      cell: ({ row }) => (
-        <div className="capitalize pl-5">{row.getValue('id')}</div>
-      ),
-    },
     {
       accessorKey: 'name',
       header: ({ column }) => {
         return (
           <Button
             variant="ghost"
-            className="p-0 hover:bg-transparent"
+            className="p-0 hover:bg-transparent pl-5"
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
             Name
@@ -41,7 +38,7 @@ export function DataTableUsers({ data }: { data: User[] }) {
         )
       },
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue('name')}</div>
+        <div className="capitalize pl-5">{row.getValue('name')}</div>
       ),
     },
     {
@@ -73,15 +70,35 @@ export function DataTableUsers({ data }: { data: User[] }) {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="flex gap-3 items-center w-full">
+
+              <DropdownMenuItem
+                onClick={() => updateUpdateDialog(!updateDialog)}
+                className="flex gap-3 items-center w-full"
+              >
                 <Pencil className="w-5 h-5" />
                 Update
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex gap-3 items-center w-full">
+
+              <DropdownMenuItem
+                onClick={() => updateDeleteDialog(!deleteDialog)}
+                className="flex gap-3 items-center w-full"
+              >
                 <Trash2 className="w-5 h-5" />
                 Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
+            <ActionDataTableBody
+              val={updateDialog}
+              updateVal={updateUpdateDialog}
+              actionType="update"
+              tableType="user"
+            />
+            <ActionDataTableBody
+              val={deleteDialog}
+              updateVal={updateDeleteDialog}
+              actionType="delete"
+              tableType="user"
+            />
           </DropdownMenu>
         )
       },

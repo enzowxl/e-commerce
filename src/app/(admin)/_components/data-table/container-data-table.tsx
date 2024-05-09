@@ -19,6 +19,7 @@ import { DataTableHeader } from './header-data-table'
 import { TablePagination } from './pagination-data-table'
 
 export type TableTypes = 'product' | 'user' | 'category'
+export type ActionTypes = 'update' | 'delete'
 
 export function DataTableContainer({
   data,

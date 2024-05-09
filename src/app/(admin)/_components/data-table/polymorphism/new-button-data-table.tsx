@@ -1,9 +1,9 @@
 import { ButtonHTMLAttributes } from 'react'
 
-import { TableTypes } from './container-data-table'
-import { NewCategorySheet } from './sheets/new-category-sheet'
-import { NewProductSheet } from './sheets/new-product-sheet'
-import { NewUserSheet } from './sheets/new-user-sheet'
+import { TableTypes } from '../container-data-table'
+import { NewCategorySheet } from '../sheets/new-category-sheet'
+import { NewProductSheet } from '../sheets/new-product-sheet'
+import { NewUserSheet } from '../sheets/new-user-sheet'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   tableType: TableTypes

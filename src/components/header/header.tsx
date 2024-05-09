@@ -1,6 +1,7 @@
 import { CircleUserRound, Menu, Search, ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
 
+import { Input } from '../ui/input'
 import { UserDropDown } from './drop-down/user-drop-down'
 import { MenuSheet } from './menu-sheet'
 
@@ -13,15 +14,15 @@ export function Header({ isDashboard }: { isDashboard?: boolean }) {
         </Link>
 
         {!isDashboard && (
-          <form className="max-sm:hidden flex w-full items-center gap-3 rounded-xl bg-zinc-900 px-5 py-3">
+          <form className="flex max-w-sm items-center gap-3 rounded-xl bg-zinc-900 px-5 h-12">
             <Search className="w-5 h-5 text-zinc-500" />
 
-            <input
+            <Input
               name="q"
               type="text"
               placeholder="Search products"
-              className="flex-1 bg-transparent text-sm outline-none placeholder:text-zinc-500"
               required
+              className="flex-1 bg-transparent text-sm outline-none placeholder:text-zinc-500 border-0"
             />
           </form>
         )}
