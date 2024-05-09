@@ -7,14 +7,14 @@ import { MenuSheet } from './menu-sheet'
 
 export function Header({ isDashboard }: { isDashboard?: boolean }) {
   return (
-    <div className="flex items-center justify-between px-8 py-8 border-b border-zinc-900">
+    <header className="flex items-center justify-between px-8 py-8 border-b border-zinc-900">
       <div className="flex items-center gap-5">
         <Link href="/" className="text-2xl font-extrabold text-white">
           shop.dev
         </Link>
 
         {!isDashboard && (
-          <form className="flex max-w-sm items-center gap-3 rounded-xl bg-zinc-900 px-5 h-12">
+          <form className="max-sm:hidden flex max-w-sm items-center gap-3 rounded-xl bg-zinc-900 px-5 h-12">
             <Search className="w-5 h-5 text-zinc-500" />
 
             <Input
@@ -40,6 +40,6 @@ export function Header({ isDashboard }: { isDashboard?: boolean }) {
           <Menu className="min-w-5 min-h-5 cursor-pointer" />
         </MenuSheet>
       </div>
-    </div>
+    </header>
   )
 }

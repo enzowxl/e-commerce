@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -31,12 +32,12 @@ export function DeleteDialog({
         <div className="flex flex-col gap-8 max-sm:text-center">
           Are you sure you want to delete a {tableType}?
           <div className="w-full flex flex-col gap-8">
-            <button
+            <Button
               type="submit"
-              className="w-full bg-color-primary h-12 rounded-xl"
+              className="text-white w-full bg-color-primary h-12 rounded-xl"
             >
               Delete
-            </button>
+            </Button>
           </div>
         </div>
       </DialogContent>

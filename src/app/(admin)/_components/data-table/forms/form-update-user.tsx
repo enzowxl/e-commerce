@@ -2,6 +2,7 @@
 
 import { FormEvent } from 'react'
 
+import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
@@ -56,9 +57,12 @@ export function FormUpdateUser() {
           </SelectContent>
         </Select>
       </div>
-      <button type="submit" className="w-full bg-color-primary h-12 rounded-xl">
+      <Button
+        type="submit"
+        className="text-white w-full bg-color-primary h-12 rounded-xl"
+      >
         Update
-      </button>
+      </Button>
     </form>
   )
 }

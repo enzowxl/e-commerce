@@ -6,6 +6,7 @@ import { signIn, SignInResponse } from 'next-auth/react'
 import { FormEvent } from 'react'
 import toast from 'react-hot-toast'
 
+import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
 export function SignInForm() {
@@ -62,12 +63,12 @@ export function SignInForm() {
           required
         />
       </div>
-      <button
+      <Button
         type="submit"
-        className="font-medium text-lg w-full bg-color-primary h-12 rounded-xl"
+        className="text-white font-medium text-lg w-full bg-color-primary h-12 rounded-xl"
       >
         Go
-      </button>
+      </Button>
     </form>
   )
 }
