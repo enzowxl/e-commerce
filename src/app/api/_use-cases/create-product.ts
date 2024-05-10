@@ -24,7 +24,6 @@ export class CreateProductUseCase {
     slug,
     categorySlug,
     colors,
-    photos,
     sizes,
   }: CreateProductUseCaseRequest) {
     const productWithSlug = await this.productsRepository.findBySlug(slug)
@@ -45,7 +44,6 @@ export class CreateProductUseCase {
       slug,
       categorySlug,
       colors,
-      photos,
       sizes,
     })
 

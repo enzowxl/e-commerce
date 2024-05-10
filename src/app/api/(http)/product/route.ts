@@ -49,7 +49,6 @@ export async function POST(req: NextRequest) {
         discount: z.number().int().optional(),
         sizes: z.string().array().optional(),
         colors: z.string().array().optional(),
-        photos: z.string().array().optional(),
       })
       .parseAsync(await req.json())
 
@@ -63,7 +62,6 @@ export async function POST(req: NextRequest) {
       categorySlug,
       sizes,
       colors,
-      photos,
     } = await productRequestSchema
 
     const createProductUseCase = makeCreateProductUseCase()
@@ -78,7 +76,6 @@ export async function POST(req: NextRequest) {
       avatarUrl,
       sizes,
       colors,
-      photos,
       slug: createSlug(name),
     })
 
@@ -121,7 +118,6 @@ export async function PATCH(req: NextRequest) {
         discount: z.number().int().optional(),
         sizes: z.string().array().optional(),
         colors: z.string().array().optional(),
-        photos: z.string().array().optional(),
       })
       .parseAsync(await req.json())
     const {
@@ -133,7 +129,6 @@ export async function PATCH(req: NextRequest) {
       description,
       avatarUrl,
       colors,
-      photos,
       sizes,
     } = await productRequestSchema
 
@@ -149,7 +144,6 @@ export async function PATCH(req: NextRequest) {
         description,
         avatarUrl,
         colors,
-        photos,
         sizes,
       },
     })

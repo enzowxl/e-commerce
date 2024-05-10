@@ -23,7 +23,6 @@ export class InMemoryProductsRepository implements ProductsRepository {
       discount: data.discount as number,
       avatarUrl: data.avatarUrl as string,
       colors: data.colors as string[],
-      photos: data.photos as string[],
       sizes: data.sizes as string[],
       createdAt: new Date(),
       updatedAt: new Date(),
