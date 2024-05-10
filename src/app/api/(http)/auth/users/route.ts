@@ -14,6 +14,8 @@ import { makeRegisterUseCase } from '@/app/api/_use-cases/factories/make-registe
 import { makeUpdateUserUseCase } from '@/app/api/_use-cases/factories/make-update-user-use-case'
 import { userSchema } from '@/auth/models/user'
 
+const RoleTypes = ['ADMIN', 'MEMBER'] as const
+
 export async function GET(req: NextRequest) {
   try {
     const token = await getToken({ req })
@@ -80,7 +82,7 @@ export async function PATCH(req: NextRequest) {
         newEmail: z.string().email().optional(),
         password: z.string().min(8).optional(),
         avatarUrl: z.string().url().optional(),
-        role: z.enum(['ADMIN', 'MEMBER']).optional(),
+        role: z.enum(RoleTypes).optional(),
       })
       .parseAsync(await req.json())
 

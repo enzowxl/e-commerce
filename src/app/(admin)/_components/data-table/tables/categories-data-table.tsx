@@ -22,9 +22,7 @@ export function DataTableCategories({ data }: { data: Category[] }) {
     {
       accessorKey: 'slug',
       header: () => <div className="pl-5">Slug</div>,
-      cell: ({ row }) => (
-        <div className="capitalize pl-5">{row.getValue('slug')}</div>
-      ),
+      cell: ({ row }) => <div className="pl-5">{row.getValue('slug')}</div>,
     },
     {
       accessorKey: 'name',
@@ -43,11 +41,6 @@ export function DataTableCategories({ data }: { data: Category[] }) {
       cell: ({ row }) => (
         <div className="capitalize">{row.getValue('name')}</div>
       ),
-    },
-    {
-      accessorKey: 'quantity',
-      header: () => <div>Quantity</div>,
-      cell: () => <div className="capitalize">{data.length}</div>,
     },
     {
       id: 'actions',

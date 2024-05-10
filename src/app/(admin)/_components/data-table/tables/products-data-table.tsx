@@ -1,6 +1,6 @@
 'use client'
 
-import { Product } from '@prisma/client'
+import { Category, Product } from '@prisma/client'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { ColumnDef } from '@tanstack/react-table'
 import { Ellipsis, Pencil, Trash2 } from 'lucide-react'
@@ -15,16 +15,27 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { formatPrice } from '@/utils/format-price'
 
 import { DataTableContainer } from '../container-data-table'
-export function DataTableProducts({ data }: { data: Product[] }) {
+import { DeleteProductDialog } from '../dialogs/delete-product-dialog'
+
+export function DataTableProducts({
+  data,
+  complementCategoryData,
+}: {
+  data: Product[]
+  complementCategoryData?: Category[]
+}) {
+  const [updateDialog, updateUpdateDialog] = React.useState(false)
+  const [deleteDialog, updateDeleteDialog] = React.useState(false)
+  const [slugDialog, updateSlugDialog] = React.useState('')
+
   const columns: ColumnDef<unknown>[] = [
     {
       accessorKey: 'slug',
       header: () => <div className="pl-5">Slug</div>,
-      cell: ({ row }) => (
-        <div className="capitalize pl-5">{row.getValue('slug')}</div>
-      ),
+      cell: ({ row }) => <div className="pl-5">{row.getValue('slug')}</div>,
     },
     {
       accessorKey: 'name',
@@ -45,6 +56,11 @@ export function DataTableProducts({ data }: { data: Product[] }) {
       ),
     },
     {
+      accessorKey: 'price',
+      header: () => <div>Price</div>,
+      cell: ({ row }) => <div>{formatPrice(row.getValue('price'))}</div>,
+    },
+    {
       accessorKey: 'quantity',
       header: () => <div>Quantity</div>,
       cell: () => <div className="capitalize">{data.length}</div>,
@@ -52,7 +68,7 @@ export function DataTableProducts({ data }: { data: Product[] }) {
     {
       id: 'actions',
       enableHiding: false,
-      cell: () => {
+      cell: ({ row }) => {
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -66,20 +82,49 @@ export function DataTableProducts({ data }: { data: Product[] }) {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="flex gap-3 items-center w-full">
+              <DropdownMenuItem
+                onClick={() => {
+                  updateSlugDialog(row.original.slug)
+                  updateUpdateDialog(!updateDialog)
+                }}
+                className="flex gap-3 items-center w-full"
+              >
                 <Pencil className="w-5 h-5" />
                 Update
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex gap-3 items-center w-full">
+              <DropdownMenuItem
+                onClick={() => {
+                  updateSlugDialog(row.original.slug)
+                  updateDeleteDialog(!deleteDialog)
+                }}
+                className="flex gap-3 items-center w-full"
+              >
                 <Trash2 className="w-5 h-5" />
                 Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
+            <DeleteProductDialog
+              slug={slugDialog}
+              open={deleteDialog}
+              onOpenChange={updateDeleteDialog}
+            />
+            {/* <UpdateUserDialog
+              email={emailDialog}
+              open={updateDialog}
+              onOpenChange={updateUpdateDialog}
+            /> */}
           </DropdownMenu>
         )
       },
     },
   ]
 
-  return <DataTableContainer type="product" data={data} columns={columns} />
+  return (
+    <DataTableContainer
+      complementCategoryData={complementCategoryData}
+      type="product"
+      data={data}
+      columns={columns}
+    />
+  )
 }

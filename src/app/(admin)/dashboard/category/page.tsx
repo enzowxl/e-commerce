@@ -8,6 +8,7 @@ import { DataTableCategories } from '../../_components/data-table/tables/categor
 async function getCategories(): Promise<Category[]> {
   const response = await api('/category', {
     method: 'GET',
+    cache: 'no-cache',
   })
 
   const { categories } = (await response.json()) as { categories: Category[] }

@@ -1,5 +1,6 @@
 'use client'
 
+import { Category } from '@prisma/client'
 import { Table } from '@tanstack/react-table'
 import { Plus, Search } from 'lucide-react'
 import * as React from 'react'
@@ -13,9 +14,11 @@ import { NewButtonDataTableHeader } from './polymorphism/new-button-data-table'
 export function DataTableHeader({
   table,
   type,
+  complementCategoryData,
 }: {
   table: Table<unknown>
   type: TableTypes
+  complementCategoryData?: Category[]
 }) {
   const [openSheet, updateOpenSheet] = React.useState(false)
 
@@ -34,6 +37,7 @@ export function DataTableHeader({
         />
       </form>
       <NewButtonDataTableHeader
+        complementCategoryData={complementCategoryData}
         open={openSheet}
         onOpenChange={updateOpenSheet}
         tableType={type}

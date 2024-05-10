@@ -25,10 +25,12 @@ export function DataTableContainer({
   data,
   columns,
   type,
+  complementCategoryData,
 }: {
   data: Product[] | User[] | Category[]
   columns: ColumnDef<unknown>[]
   type: TableTypes
+  complementCategoryData?: Category[]
 }) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -59,7 +61,11 @@ export function DataTableContainer({
 
   return (
     <div className="w-full flex flex-col gap-4">
-      <DataTableHeader type={type} table={table} />
+      <DataTableHeader
+        complementCategoryData={complementCategoryData}
+        type={type}
+        table={table}
+      />
 
       <DataTableBody table={table} columns={columns} />
 

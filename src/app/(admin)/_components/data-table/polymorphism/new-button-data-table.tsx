@@ -1,3 +1,4 @@
+import { Category } from '@prisma/client'
 import { ButtonHTMLAttributes } from 'react'
 
 import { TableTypes } from '../container-data-table'
@@ -9,6 +10,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   tableType: TableTypes
   open: boolean
   onOpenChange: (open: boolean) => void
+  complementCategoryData?: Category[]
 }
 
 export function NewButtonDataTableHeader(props: ButtonProps) {
