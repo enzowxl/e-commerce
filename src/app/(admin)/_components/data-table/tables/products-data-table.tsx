@@ -62,9 +62,14 @@ export function DataTableProducts({
       cell: ({ row }) => <div>{formatPrice(row.getValue('price'))}</div>,
     },
     {
-      accessorKey: 'quantity',
-      header: () => <div>Quantity</div>,
-      cell: () => <div className="capitalize">{data.length}</div>,
+      accessorKey: 'categorySlug',
+      header: () => <div>Category</div>,
+      cell: ({ row }) => (
+        <div>
+          {String(row.getValue('categorySlug'))[0].toUpperCase() +
+            String(row.getValue('categorySlug')).slice(1)}
+        </div>
+      ),
     },
     {
       id: 'actions',
@@ -110,7 +115,7 @@ export function DataTableProducts({
               onOpenChange={updateDeleteDialog}
             />
             <UpdateProductDialog
-              complementCategoryData={complementCategoryData}
+              // complementCategoryData={complementCategoryData}
               slug={slugDialog}
               open={updateDialog}
               onOpenChange={updateUpdateDialog}

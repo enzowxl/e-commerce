@@ -10,25 +10,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { api } from '@/utils/api'
 
-export function UpdateUserDialog({
+export function UpdateCategoryDialog({
   open,
-  email,
+  slug,
   onOpenChange,
 }: {
   open: boolean
-  email: string
+  slug: string
   onOpenChange: (open: boolean) => void
 }) {
   const router = useRouter()
@@ -39,16 +31,16 @@ export function UpdateUserDialog({
     const formData = new FormData(event.currentTarget)
     const data = Object.fromEntries(formData)
 
-    const role = data.role
+    const name = data.name
 
     const headers = await getHeaders()
 
-    await api('/auth/users', {
+    await api('/category', {
       method: 'PATCH',
       headers,
       body: JSON.stringify({
-        email,
-        role,
+        slug,
+        name,
       }),
     })
       .then(async (res) => {
@@ -59,7 +51,7 @@ export function UpdateUserDialog({
           })
         }
 
-        toast.success('User updated successfully', {
+        toast.success('Category updated successfully', {
           duration: 3000,
         })
       })
@@ -75,23 +67,18 @@ export function UpdateUserDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px] z-50">
         <DialogHeader>
-          <DialogTitle>Edit user</DialogTitle>
+          <DialogTitle>Edit category</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleUpdate} className="w-full flex flex-col gap-8">
           <div className="flex flex-col gap-3">
-            <Label>Role</Label>
-            <Select required name="role">
-              <SelectTrigger className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-12 px-4 outline-none">
-                <SelectValue placeholder="Select role" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Roles</SelectLabel>
-                  <SelectItem value="ADMIN">ADMIN</SelectItem>
-                  <SelectItem value="MEMBER">MEMBER</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            <Label>Name</Label>
+            <Input
+              name="name"
+              className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-12 px-4 outline-none"
+              placeholder="Gym"
+              type="text"
+              required
+            />
           </div>
           <Button
             type="submit"

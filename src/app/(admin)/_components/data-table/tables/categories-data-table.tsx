@@ -17,7 +17,13 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 import { DataTableContainer } from '../container-data-table'
+import { DeleteCategoryDialog } from '../dialogs/delete-category-dialog'
+import { UpdateCategoryDialog } from '../dialogs/update-category-dialog'
 export function DataTableCategories({ data }: { data: Category[] }) {
+  const [updateDialog, updateUpdateDialog] = React.useState(false)
+  const [deleteDialog, updateDeleteDialog] = React.useState(false)
+  const [slugDialog, updateSlugDialog] = React.useState('')
+
   const columns: ColumnDef<unknown>[] = [
     {
       accessorKey: 'slug',
@@ -45,7 +51,7 @@ export function DataTableCategories({ data }: { data: Category[] }) {
     {
       id: 'actions',
       enableHiding: false,
-      cell: () => {
+      cell: ({ row }) => {
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -59,15 +65,37 @@ export function DataTableCategories({ data }: { data: Category[] }) {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="flex gap-3 items-center w-full">
+              <DropdownMenuItem
+                onClick={() => {
+                  updateSlugDialog(row.original.slug)
+                  updateUpdateDialog(!updateDialog)
+                }}
+                className="flex gap-3 items-center w-full"
+              >
                 <Pencil className="w-5 h-5" />
                 Update
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex gap-3 items-center w-full">
+              <DropdownMenuItem
+                onClick={() => {
+                  updateSlugDialog(row.original.slug)
+                  updateDeleteDialog(!deleteDialog)
+                }}
+                className="flex gap-3 items-center w-full"
+              >
                 <Trash2 className="w-5 h-5" />
                 Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
+            <DeleteCategoryDialog
+              slug={slugDialog}
+              open={deleteDialog}
+              onOpenChange={updateDeleteDialog}
+            />
+            <UpdateCategoryDialog
+              slug={slugDialog}
+              open={updateDialog}
+              onOpenChange={updateUpdateDialog}
+            />
           </DropdownMenu>
         )
       },
