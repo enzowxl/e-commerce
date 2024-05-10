@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getToken } from 'next-auth/jwt'
 import { z, ZodError } from 'zod'
 
+import { getUserPermissions } from '@/actions/get-user-permissions'
 import { BadRequestError } from '@/app/api/_errors/bad-request-error'
 import { CategoryAlreadyExistsError } from '@/app/api/_errors/category-already.exists-error'
 import { CategoryNotExistsError } from '@/app/api/_errors/category-not-exists-error'
@@ -11,7 +12,6 @@ import { makeCreateCategoryUseCase } from '@/app/api/_use-cases/factories/make-c
 import { makeFetchAllCategoriesUseCase } from '@/app/api/_use-cases/factories/make-fetch-all-categories-use-case'
 import { makeUpdateCategoryUseCase } from '@/app/api/_use-cases/factories/make-update-category-use-case'
 import { createSlug } from '@/utils/create-slug'
-import { getUserPermissions } from '@/utils/get-user-permissions'
 
 export async function GET() {
   try {

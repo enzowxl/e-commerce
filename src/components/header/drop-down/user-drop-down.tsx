@@ -13,6 +13,7 @@ import Link from 'next/link'
 import { getServerSession } from 'next-auth'
 import React, { ReactNode } from 'react'
 
+import { getUserPermissions } from '@/actions/get-user-permissions'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   DropdownMenu,
@@ -23,7 +24,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { authOptions } from '@/utils/auth-options'
-import { getUserPermissions } from '@/utils/get-user-permissions'
 
 import { DropDownLogOut } from './logout-drop-down'
 

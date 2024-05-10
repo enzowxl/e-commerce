@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z, ZodError } from 'zod'
 
+import { getSessionId } from '@/actions/get-session-id'
 import { BadRequestError } from '@/app/api/_errors/bad-request-error'
 import { ValidationError } from '@/app/api/_errors/validation-error'
 import { makeCreateCartUseCase } from '@/app/api/_use-cases/factories/make-create-cart-use-case'
 import { makeFetchCartUseCase } from '@/app/api/_use-cases/factories/make-fetch-cart-use-case'
-import { getSessionId } from '@/utils/get-session-id'
 
 export async function GET() {
   try {
-    const sessionId = getSessionId()
+    const sessionId = await getSessionId()
 
     const fetchCartUseCase = makeFetchCartUseCase()
 
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
 
     const { slug, userId } = await cartRequestSchema
 
-    const sessionId = getSessionId()
+    const sessionId = await getSessionId()
 
     const createCartUseCase = makeCreateCartUseCase()
 

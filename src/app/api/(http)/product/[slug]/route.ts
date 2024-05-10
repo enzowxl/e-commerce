@@ -2,13 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getToken } from 'next-auth/jwt'
 import { z, ZodError } from 'zod'
 
+import { getUserPermissions } from '@/actions/get-user-permissions'
 import { BadRequestError } from '@/app/api/_errors/bad-request-error'
 import { ProductNotExistsError } from '@/app/api/_errors/product-not-exists-error'
 import { UnauthorizedError } from '@/app/api/_errors/unauthorized-error'
 import { ValidationError } from '@/app/api/_errors/validation-error'
 import { makeDeleteProductUseCase } from '@/app/api/_use-cases/factories/make-delete-product-use-case'
 import { makeFetchProductUseCase } from '@/app/api/_use-cases/factories/make-fetch-product-use-case'
-import { getUserPermissions } from '@/utils/get-user-permissions'
 
 export async function GET(
   _: NextRequest,

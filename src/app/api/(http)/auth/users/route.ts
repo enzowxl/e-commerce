@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getToken } from 'next-auth/jwt'
 import { z, ZodError } from 'zod'
 
+import { getUserPermissions } from '@/actions/get-user-permissions'
 import { BadRequestError } from '@/app/api/_errors/bad-request-error'
 import { UnauthorizedError } from '@/app/api/_errors/unauthorized-error'
 import { UserAlreadyExistsError } from '@/app/api/_errors/user-already-exists-error'
@@ -12,7 +13,6 @@ import { makeFetchUserUseCase } from '@/app/api/_use-cases/factories/make-fetch-
 import { makeRegisterUseCase } from '@/app/api/_use-cases/factories/make-register-use-case'
 import { makeUpdateUserUseCase } from '@/app/api/_use-cases/factories/make-update-user-use-case'
 import { userSchema } from '@/auth/models/user'
-import { getUserPermissions } from '@/utils/get-user-permissions'
 
 export async function GET(req: NextRequest) {
   try {
@@ -80,10 +80,11 @@ export async function PATCH(req: NextRequest) {
         newEmail: z.string().email().optional(),
         password: z.string().min(8).optional(),
         avatarUrl: z.string().url().optional(),
+        role: z.enum(['ADMIN', 'MEMBER']).optional(),
       })
       .parseAsync(await req.json())
 
-    const { name, email, newEmail, password, avatarUrl } =
+    const { name, email, newEmail, password, avatarUrl, role } =
       await userRequestSchema
 
     const fetchUserUseCase = makeFetchUserUseCase()
@@ -102,6 +103,7 @@ export async function PATCH(req: NextRequest) {
         email: newEmail,
         passwordHash: password,
         avatarUrl,
+        role,
       },
     })
 

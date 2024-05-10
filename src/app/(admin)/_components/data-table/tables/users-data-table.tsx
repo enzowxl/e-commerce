@@ -17,12 +17,13 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 import { DataTableContainer } from '../container-data-table'
-import { ActionDataTableBody } from '../polymorphism/action-data-table'
+import { DeleteUserDialog } from '../dialogs/delete-user-dialog'
+import { UpdateUserDialog } from '../dialogs/update-user-dialog'
 
 export function DataTableUsers({ data }: { data: User[] }) {
   const [updateDialog, updateUpdateDialog] = React.useState(false)
   const [deleteDialog, updateDeleteDialog] = React.useState(false)
-  const [idDialog, updateIdDialog] = React.useState('')
+  const [emailDialog, updateEmailDialog] = React.useState('')
 
   const columns: ColumnDef<unknown>[] = [
     {
@@ -75,7 +76,7 @@ export function DataTableUsers({ data }: { data: User[] }) {
 
               <DropdownMenuItem
                 onClick={() => {
-                  updateIdDialog(row?.original.email)
+                  updateEmailDialog(row?.original.email)
                   updateUpdateDialog(!updateDialog)
                 }}
                 className="flex gap-3 items-center w-full"
@@ -86,7 +87,7 @@ export function DataTableUsers({ data }: { data: User[] }) {
 
               <DropdownMenuItem
                 onClick={() => {
-                  updateIdDialog(row?.original.email)
+                  updateEmailDialog(row?.original.email)
                   updateDeleteDialog(!deleteDialog)
                 }}
                 className="flex gap-3 items-center w-full"
@@ -95,19 +96,15 @@ export function DataTableUsers({ data }: { data: User[] }) {
                 Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
-            <ActionDataTableBody
-              tableId={idDialog}
-              val={updateDialog}
-              updateVal={updateUpdateDialog}
-              actionType="update"
-              tableType="user"
+            <DeleteUserDialog
+              email={emailDialog}
+              open={deleteDialog}
+              onOpenChange={updateDeleteDialog}
             />
-            <ActionDataTableBody
-              tableId={idDialog}
-              val={deleteDialog}
-              updateVal={updateDeleteDialog}
-              actionType="delete"
-              tableType="user"
+            <UpdateUserDialog
+              email={emailDialog}
+              open={updateDialog}
+              onOpenChange={updateUpdateDialog}
             />
           </DropdownMenu>
         )

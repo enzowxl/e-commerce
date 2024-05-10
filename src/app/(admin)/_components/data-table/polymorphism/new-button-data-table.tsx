@@ -15,7 +15,9 @@ export function NewButtonDataTableHeader(props: ButtonProps) {
       ? NewUserSheet
       : props.tableType === 'product'
         ? NewProductSheet
-        : NewCategorySheet
+        : props.tableType === 'category'
+          ? NewCategorySheet
+          : 'button'
 
   return <Component {...props}>{props.children}</Component>
 }

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getToken } from 'next-auth/jwt'
 import { z, ZodError } from 'zod'
 
+import { getUserPermissions } from '@/actions/get-user-permissions'
 import { BadRequestError } from '@/app/api/_errors/bad-request-error'
 import { CategoryNotExistsError } from '@/app/api/_errors/category-not-exists-error'
 import { ProductAlreadyExistsError } from '@/app/api/_errors/product-already-exists-error'
@@ -12,7 +13,6 @@ import { makeCreateProductUseCase } from '@/app/api/_use-cases/factories/make-cr
 import { makeFetchAllProductsUseCase } from '@/app/api/_use-cases/factories/make-fetch-all-products-use-case'
 import { makeUpdateProductUseCase } from '@/app/api/_use-cases/factories/make-update-product-use-case'
 import { createSlug } from '@/utils/create-slug'
-import { getUserPermissions } from '@/utils/get-user-permissions'
 
 const ProductTypes = ['T_SHIRT', 'SHORTS', 'SHIRTS', 'HOODIE', 'JEANS'] as const
 

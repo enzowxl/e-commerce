@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getToken } from 'next-auth/jwt'
 import { z, ZodError } from 'zod'
 
+import { getUserPermissions } from '@/actions/get-user-permissions'
 import { BadRequestError } from '@/app/api/_errors/bad-request-error'
 import { UnauthorizedError } from '@/app/api/_errors/unauthorized-error'
 import { UserNotExistsError } from '@/app/api/_errors/user-not-exists-error'
@@ -9,7 +10,6 @@ import { ValidationError } from '@/app/api/_errors/validation-error'
 import { makeDeleteUserUseCase } from '@/app/api/_use-cases/factories/make-delete-user-use-case'
 import { makeFetchUserUseCase } from '@/app/api/_use-cases/factories/make-fetch-user-use-case'
 import { userSchema } from '@/auth/models/user'
-import { getUserPermissions } from '@/utils/get-user-permissions'
 
 export async function GET(
   req: NextRequest,

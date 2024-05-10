@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto'
 
 import { cookies } from 'next/headers'
 
-export function getSessionId(): string {
+export async function getSessionId(): Promise<string> {
   const cookieStore = cookies()
   let sessionId = cookieStore.get('sessionId')?.value
 

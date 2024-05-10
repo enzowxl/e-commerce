@@ -2,10 +2,10 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getServerSession } from 'next-auth'
 
+import { getUserPermissions } from '@/actions/get-user-permissions'
 import { SideBar } from '@/app/(admin)/_components/sidebar'
 import { Header } from '@/components/header/header'
 import { authOptions } from '@/utils/auth-options'
-import { getUserPermissions } from '@/utils/get-user-permissions'
 
 export const metadata: Metadata = {
   title: {

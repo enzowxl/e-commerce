@@ -2,13 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getToken } from 'next-auth/jwt'
 import { z, ZodError } from 'zod'
 
+import { getUserPermissions } from '@/actions/get-user-permissions'
 import { BadRequestError } from '@/app/api/_errors/bad-request-error'
 import { CategoryNotExistsError } from '@/app/api/_errors/category-not-exists-error'
 import { UnauthorizedError } from '@/app/api/_errors/unauthorized-error'
 import { ValidationError } from '@/app/api/_errors/validation-error'
 import { makeDeleteCategoryUseCase } from '@/app/api/_use-cases/factories/make-delete-category-use-case'
 import { makeFetchCategoryUseCase } from '@/app/api/_use-cases/factories/make-fetch-category-use-case'
-import { getUserPermissions } from '@/utils/get-user-permissions'
 
 export async function GET(
   _: NextRequest,
