@@ -7,6 +7,8 @@ import { NewUserSheet } from '../sheets/new-user-sheet'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   tableType: TableTypes
+  open: boolean
+  onOpenChange: (open: boolean) => void
 }
 
 export function NewButtonDataTableHeader(props: ButtonProps) {

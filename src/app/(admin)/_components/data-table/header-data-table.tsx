@@ -17,6 +17,8 @@ export function DataTableHeader({
   table: Table<unknown>
   type: TableTypes
 }) {
+  const [openSheet, updateOpenSheet] = React.useState(false)
+
   return (
     <div className="flex items-center px-8 gap-10 justify-between">
       <form className="flex max-w-sm items-center gap-3 rounded-xl bg-zinc-900 px-5 h-12">
@@ -31,7 +33,11 @@ export function DataTableHeader({
           className="flex-1 bg-transparent text-sm outline-none placeholder:text-zinc-500 border-0"
         />
       </form>
-      <NewButtonDataTableHeader tableType={type}>
+      <NewButtonDataTableHeader
+        open={openSheet}
+        onOpenChange={updateOpenSheet}
+        tableType={type}
+      >
         <Button className="bg-color-primary text-white h-12 rounded-xl flex gap-2">
           <Plus />
           New {type}
