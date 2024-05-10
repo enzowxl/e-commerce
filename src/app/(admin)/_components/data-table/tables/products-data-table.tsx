@@ -19,6 +19,7 @@ import { formatPrice } from '@/utils/format-price'
 
 import { DataTableContainer } from '../container-data-table'
 import { DeleteProductDialog } from '../dialogs/delete-product-dialog'
+import { UpdateProductDialog } from '../dialogs/update-product-dialog'
 
 export function DataTableProducts({
   data,
@@ -108,11 +109,12 @@ export function DataTableProducts({
               open={deleteDialog}
               onOpenChange={updateDeleteDialog}
             />
-            {/* <UpdateUserDialog
-              email={emailDialog}
+            <UpdateProductDialog
+              complementCategoryData={complementCategoryData}
+              slug={slugDialog}
               open={updateDialog}
               onOpenChange={updateUpdateDialog}
-            /> */}
+            />
           </DropdownMenu>
         )
       },

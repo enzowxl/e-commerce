@@ -116,10 +116,10 @@ export async function PATCH(req: NextRequest) {
     const productRequestSchema = z
       .object({
         slug: z.string(),
-        name: z.string(),
-        price: z.number().int(),
-        type: z.enum(ProductTypes),
-        description: z.string(),
+        name: z.string().optional(),
+        price: z.number().int().optional(),
+        description: z.string().optional(),
+        type: z.enum(ProductTypes).optional(),
         avatarUrl: z.string().optional(),
         discount: z.number().int().optional(),
         sizes: z.string().array().optional(),
