@@ -109,17 +109,21 @@ export function DataTableProducts({
                 Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
-            <DeleteProductDialog
-              slug={slugDialog}
-              open={deleteDialog}
-              onOpenChange={updateDeleteDialog}
-            />
-            <UpdateProductDialog
-              // complementCategoryData={complementCategoryData}
-              slug={slugDialog}
-              open={updateDialog}
-              onOpenChange={updateUpdateDialog}
-            />
+            {deleteDialog && (
+              <DeleteProductDialog
+                slug={slugDialog}
+                open={deleteDialog}
+                onOpenChange={updateDeleteDialog}
+              />
+            )}
+            {updateDialog && (
+              <UpdateProductDialog
+                // complementCategoryData={complementCategoryData}
+                slug={slugDialog}
+                open={updateDialog}
+                onOpenChange={updateUpdateDialog}
+              />
+            )}
           </DropdownMenu>
         )
       },

@@ -86,16 +86,20 @@ export function DataTableCategories({ data }: { data: Category[] }) {
                 Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
-            <DeleteCategoryDialog
-              slug={slugDialog}
-              open={deleteDialog}
-              onOpenChange={updateDeleteDialog}
-            />
-            <UpdateCategoryDialog
-              slug={slugDialog}
-              open={updateDialog}
-              onOpenChange={updateUpdateDialog}
-            />
+            {deleteDialog && (
+              <DeleteCategoryDialog
+                slug={slugDialog}
+                open={deleteDialog}
+                onOpenChange={updateDeleteDialog}
+              />
+            )}
+            {updateDialog && (
+              <UpdateCategoryDialog
+                slug={slugDialog}
+                open={updateDialog}
+                onOpenChange={updateUpdateDialog}
+              />
+            )}
           </DropdownMenu>
         )
       },

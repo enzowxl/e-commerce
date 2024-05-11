@@ -96,16 +96,20 @@ export function DataTableUsers({ data }: { data: User[] }) {
                 Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
-            <DeleteUserDialog
-              email={emailDialog}
-              open={deleteDialog}
-              onOpenChange={updateDeleteDialog}
-            />
-            <UpdateUserDialog
-              email={emailDialog}
-              open={updateDialog}
-              onOpenChange={updateUpdateDialog}
-            />
+            {deleteDialog && (
+              <DeleteUserDialog
+                email={emailDialog}
+                open={deleteDialog}
+                onOpenChange={updateDeleteDialog}
+              />
+            )}
+            {updateDialog && (
+              <UpdateUserDialog
+                email={emailDialog}
+                open={updateDialog}
+                onOpenChange={updateUpdateDialog}
+              />
+            )}
           </DropdownMenu>
         )
       },
