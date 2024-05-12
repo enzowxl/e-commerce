@@ -35,7 +35,7 @@ export function SideBar() {
   ]
 
   return (
-    <aside className="z-40 max-w-60 flex-1 max-sm:hidden px-8 py-8 border-r border-zinc-900">
+    <aside className="z-40 flex-1 max-sm:hidden px-8 py-8 border-r border-zinc-900">
       <div className="h-full overflow-y-auto">
         <ul className="space-y-4 font-medium">
           {pages.map((page) => {

@@ -1,6 +1,7 @@
 import { v2 as cloudinary } from 'cloudinary'
 import { NextRequest, NextResponse } from 'next/server'
 
+import { BadRequestError } from '@/app/api/_errors/bad-request-error'
 import { env } from '@/env'
 
 cloudinary.config({
@@ -13,22 +14,26 @@ export async function DELETE(
   req: NextRequest,
   { params: { image } }: { params: { image: string } },
 ) {
-  const results = await new Promise((resolve, reject) => {
-    cloudinary.api.delete_resources(
-      [image],
-      {
-        type: 'upload',
-        resource_type: 'image',
-      },
-      (err, result) => {
-        if (err) {
-          reject(err)
-          return
-        }
-        resolve(result)
-      },
-    )
-  })
+  try {
+    const results = await new Promise((resolve, reject) => {
+      cloudinary.api.delete_resources(
+        [image],
+        {
+          type: 'upload',
+          resource_type: 'image',
+        },
+        (err, result) => {
+          if (err) {
+            reject(err)
+            return
+          }
+          resolve(result)
+        },
+      )
+    })
 
-  return NextResponse.json(results, { status: 200 })
+    return NextResponse.json(results, { status: 200 })
+  } catch (err) {
+    return new BadRequestError().error()
+  }
 }

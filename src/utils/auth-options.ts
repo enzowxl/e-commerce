@@ -54,9 +54,13 @@ export const authOptions = {
       }
     },
     async session({ session, token }) {
-      const findUserById = await prisma.user.findUnique({
-        where: { id: token.sub },
-      })
+      const findUserById = await prisma.user
+        .findUnique({
+          where: { id: token.sub },
+        })
+        .finally(async () => {
+          await prisma.$disconnect()
+        })
       if (findUserById) {
         session.user.role = findUserById?.role
       }

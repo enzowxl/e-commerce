@@ -20,7 +20,7 @@ export default function ShopLayout({
     <div className="min-h-screen w-full flex flex-col">
       <HeaderPromotion />
       <Header />
-      <div className="flex-1 flex">{children}</div>
+      <div className="w-full">{children}</div>
     </div>
   )
 }

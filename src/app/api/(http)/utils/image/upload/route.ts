@@ -1,6 +1,7 @@
 import { v2 as cloudinary } from 'cloudinary'
 import { NextRequest, NextResponse } from 'next/server'
 
+import { BadRequestError } from '@/app/api/_errors/bad-request-error'
 import { env } from '@/env'
 
 cloudinary.config({
@@ -10,22 +11,26 @@ cloudinary.config({
 })
 
 export async function POST(req: NextRequest) {
-  const formData = await req.formData()
-  const file = formData.get('photo') as File
-  const arrayBuffer = await file.arrayBuffer()
-  const buffer = new Uint8Array(arrayBuffer)
+  try {
+    const formData = await req.formData()
+    const file = formData.get('photo') as File
+    const arrayBuffer = await file.arrayBuffer()
+    const buffer = new Uint8Array(arrayBuffer)
 
-  const results = await new Promise((resolve, reject) => {
-    cloudinary.uploader
-      .upload_stream({}, (err, result) => {
-        if (err) {
-          reject(err)
-          return
-        }
-        resolve(result)
-      })
-      .end(buffer)
-  })
+    const results = await new Promise((resolve, reject) => {
+      cloudinary.uploader
+        .upload_stream({}, (err, result) => {
+          if (err) {
+            reject(err)
+            return
+          }
+          resolve(result)
+        })
+        .end(buffer)
+    })
 
-  return NextResponse.json(results, { status: 200 })
+    return NextResponse.json(results, { status: 200 })
+  } catch (err) {
+    return new BadRequestError().error()
+  }
 }

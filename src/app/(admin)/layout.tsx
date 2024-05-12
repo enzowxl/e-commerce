@@ -28,7 +28,7 @@ export default async function AdminLayout({
       <Header isDashboard />
       <div className="flex-1 flex">
         <SideBar />
-        <div className="flex-1 flex">{children}</div>
+        <div className="w-full">{children}</div>
       </div>
     </div>
   )
