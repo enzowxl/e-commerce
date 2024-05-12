@@ -38,17 +38,17 @@ export async function POST(req: NextRequest) {
     const categoryRequestSchema = z
       .object({
         name: z.string(),
-        avatarUrl: z.string().optional(),
+        photoUrl: z.string().optional(),
       })
       .parseAsync(await req.json())
 
-    const { name, avatarUrl } = await categoryRequestSchema
+    const { name, photoUrl } = await categoryRequestSchema
 
     const createCategoryUseCase = makeCreateCategoryUseCase()
 
     await createCategoryUseCase.execute({
       name,
-      avatarUrl,
+      photoUrl,
       slug: createSlug(name),
     })
 
@@ -81,10 +81,10 @@ export async function PATCH(req: NextRequest) {
       .object({
         slug: z.string(),
         name: z.string().optional(),
-        avatarUrl: z.string().optional(),
+        photoUrl: z.string().optional(),
       })
       .parseAsync(await req.json())
-    const { slug, name, avatarUrl } = await categoryRequestSchema
+    const { slug, name, photoUrl } = await categoryRequestSchema
 
     const updateCategoryUseCase = makeUpdateCategoryUseCase()
 
@@ -92,7 +92,7 @@ export async function PATCH(req: NextRequest) {
       slug,
       data: {
         name,
-        avatarUrl,
+        photoUrl,
       },
     })
     return NextResponse.json({}, { status: 201 })

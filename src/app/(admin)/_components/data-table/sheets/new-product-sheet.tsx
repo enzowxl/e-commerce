@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import { FormEvent, ReactNode } from 'react'
 import toast from 'react-hot-toast'
 
-import { getHeaders } from '@/actions/get-headers'
 import { ProductTypes } from '@/app/api/(http)/product/route'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -43,28 +42,10 @@ export function NewProductSheet({
     event.preventDefault()
 
     const formData = new FormData(event.currentTarget)
-    const data = Object.fromEntries(formData)
-
-    const name = data.name
-    const price = Number(data.price)
-    const type = data.type
-    const description = data.description
-    const category = data.category
-
-    if (!name && !price && !type && !description && !category) return null
-
-    const headers = await getHeaders()
 
     await api('/product', {
       method: 'POST',
-      headers,
-      body: JSON.stringify({
-        name,
-        price,
-        type,
-        description,
-        categorySlug: category,
-      }),
+      body: formData,
     })
       .then(async (res) => {
         if (!res.ok) {
@@ -125,8 +106,17 @@ export function NewProductSheet({
               />
             </div>
             <div className="flex flex-col gap-3">
+              <Label>Discount percent</Label>
+              <Input
+                name="discount"
+                className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-12 px-4 outline-none"
+                placeholder="10"
+                type="number"
+              />
+            </div>
+            <div className="flex flex-col gap-3">
               <Label>Type</Label>
-              <Select required name="type">
+              <Select name="type">
                 <SelectTrigger className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-12 px-4 outline-none">
                   <SelectValue placeholder="Select type" />
                 </SelectTrigger>
@@ -151,12 +141,11 @@ export function NewProductSheet({
                 className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-12 px-4 outline-none"
                 placeholder="This is a black shirt"
                 type="text"
-                required
               />
             </div>
             <div className="flex flex-col gap-3">
               <Label>Category</Label>
-              <Select required name="category">
+              <Select name="categorySlug">
                 <SelectTrigger className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-12 px-4 outline-none">
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
@@ -173,6 +162,19 @@ export function NewProductSheet({
                   </SelectGroup>
                 </SelectContent>
               </Select>
+            </div>
+            <div className="flex flex-col gap-3">
+              <Label>Photo</Label>
+              <div className="flex items-center w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-12 outline-none">
+                <Input
+                  name="photo"
+                  className="flex-1 h-full z-50 opacity-0"
+                  placeholder="This is a black shirt"
+                  type="file"
+                  accept="image/*"
+                />
+                <Label className="px-4 absolute">Select photo</Label>
+              </div>
             </div>
             <Button
               type="submit"

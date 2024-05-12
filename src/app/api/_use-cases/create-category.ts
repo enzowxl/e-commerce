@@ -7,14 +7,14 @@ interface CreateCategoriesUseCaseRequest extends Prisma.CategoryCreateInput {}
 
 export class CreateCategoryUseCase {
   constructor(private categoriesRepository: CategoriesRepository) {}
-  async execute({ name, avatarUrl, slug }: CreateCategoriesUseCaseRequest) {
+  async execute({ name, photoUrl, slug }: CreateCategoriesUseCaseRequest) {
     const categoryWithSlug = await this.categoriesRepository.findBySlug(slug)
 
     if (categoryWithSlug) throw new CategoryAlreadyExistsError()
 
     const createCategory = await this.categoriesRepository.create({
       name,
-      avatarUrl,
+      photoUrl,
       slug,
     })
 

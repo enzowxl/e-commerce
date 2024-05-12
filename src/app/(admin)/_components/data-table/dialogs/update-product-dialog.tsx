@@ -3,7 +3,6 @@ import { useRouter } from 'next/navigation'
 import { FormEvent } from 'react'
 import toast from 'react-hot-toast'
 
-import { getHeaders } from '@/actions/get-headers'
 import { ProductTypes } from '@/app/api/(http)/product/route'
 import { Button } from '@/components/ui/button'
 import {
@@ -44,8 +43,6 @@ export function UpdateProductDialog({
     const formData = new FormData(event.currentTarget)
     const data = Object.fromEntries(formData)
 
-    const headers = await getHeaders()
-
     const productData = {
       name: data.name,
       price: Number(data.price),
@@ -60,7 +57,6 @@ export function UpdateProductDialog({
 
     await api('/product', {
       method: 'PATCH',
-      headers,
       body: JSON.stringify({
         slug,
         ...filteredProductData,

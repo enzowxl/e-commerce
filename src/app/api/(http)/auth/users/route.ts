@@ -81,12 +81,12 @@ export async function PATCH(req: NextRequest) {
         name: z.string().min(4).max(255).optional(),
         newEmail: z.string().email().optional(),
         password: z.string().min(8).optional(),
-        avatarUrl: z.string().url().optional(),
+        photoUrl: z.string().url().optional(),
         role: z.enum(RoleTypes).optional(),
       })
       .parseAsync(await req.json())
 
-    const { name, email, newEmail, password, avatarUrl, role } =
+    const { name, email, newEmail, password, photoUrl, role } =
       await userRequestSchema
 
     const fetchUserUseCase = makeFetchUserUseCase()
@@ -104,7 +104,7 @@ export async function PATCH(req: NextRequest) {
         name,
         email: newEmail,
         passwordHash: password,
-        avatarUrl,
+        photoUrl,
         role,
       },
     })

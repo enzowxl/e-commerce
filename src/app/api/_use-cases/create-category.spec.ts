@@ -51,7 +51,6 @@ describe('Create category Use Case', () => {
     const { category } = await sut.execute({
       name: 'Gym',
       slug: createSlug('Gym'),
-      avatarUrl: '',
     })
 
     expect(category.slug).toEqual('gym')

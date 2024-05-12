@@ -1,7 +1,6 @@
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 
-import { getHeaders } from '@/actions/get-headers'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -23,11 +22,8 @@ export function DeleteCategoryDialog({
   const router = useRouter()
 
   async function handleDelete() {
-    const headers = await getHeaders()
-
     await api(`/category/${slug}`, {
       method: 'DELETE',
-      headers,
     })
       .then(async (res) => {
         if (!res.ok) {

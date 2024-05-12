@@ -31,26 +31,28 @@ model User {
   email        String    @unique
   role         UserRoles @default(MEMBER)
   passwordHash String    @map("password_hash")
-  avatarUrl    String?   @map("avatar_url")
+  photoUrl     String?   @map("photo_url")
+  photoId      String?   @map("photo_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  cart  Cart[]
+  // cart  Cart[]
   order Order[]
 
   @@map("users")
 }
 
 model Product {
-  id          String       @id @default(uuid())
-  slug        String       @unique
+  id          String        @id @default(uuid())
+  slug        String        @unique
   name        String
-  description String
-  price       Decimal      @db.Decimal(10, 2)
-  discount    Int          @default(0)
-  avatarUrl   String?      @map("avatar_url")
-  type        ProductTypes
+  price       Decimal       @db.Decimal(10, 2)
+  discount    Int           @default(0)
+  description String?
+  photoUrl    String?       @map("photo_url")
+  photoId     String?       @map("photo_id")
+  type        ProductTypes?
   sizes       String[]
   colors      String[]
 
@@ -60,51 +62,52 @@ model Product {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  category     Category @relation(fields: [categorySlug], references: [slug])
-  categorySlug String   @map("category_id")
+  category     Category? @relation(fields: [categorySlug], references: [slug])
+  categorySlug String?   @map("category_id")
 
-  cartItems  CartItem[]
+  // cartItems  CartItem[]
   orderItems OrderItem[]
 
   @@map("products")
 }
 
-model Cart {
-  id        String @id @default(uuid())
-  sessionId String @unique
+// model Cart {
+//   id        String @id @default(uuid())
+//   sessionId String @unique
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+//   createdAt DateTime @default(now()) @map("created_at")
+//   updatedAt DateTime @updatedAt @map("updated_at")
 
-  user   User?   @relation(fields: [userId], references: [id])
-  userId String? @map("user_id")
+//   user   User?   @relation(fields: [userId], references: [id])
+//   userId String? @map("user_id")
 
-  cartItems CartItem[]
+//   cartItems CartItem[]
 
-  @@map("carts")
-}
+//   @@map("carts")
+// }
 
-model CartItem {
-  id       String @id @default(uuid())
-  quantity Int
+// model CartItem {
+//   id       String @id @default(uuid())
+//   quantity Int
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+//   createdAt DateTime @default(now()) @map("created_at")
+//   updatedAt DateTime @updatedAt @map("updated_at")
 
-  cart   Cart   @relation(fields: [cartId], references: [id])
-  cartId String @map("cart_id")
+//   cart   Cart   @relation(fields: [cartId], references: [id])
+//   cartId String @map("cart_id")
 
-  product     Product @relation(fields: [productSlug], references: [slug])
-  productSlug String  @map("product_id")
+//   product     Product @relation(fields: [productSlug], references: [slug])
+//   productSlug String  @map("product_id")
 
-  @@map("cart_items")
-}
+//   @@map("cart_items")
+// }
 
 model Category {
-  id        String  @id @default(uuid())
-  slug      String  @unique
-  name      String
-  avatarUrl String? @map("avatar_url")
+  id       String  @id @default(uuid())
+  slug     String  @unique
+  name     String
+  photoUrl String? @map("photo_url")
+  photoId  String? @map("photo_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -121,8 +124,8 @@ model Order {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  user   User?   @relation(fields: [userId], references: [id])
-  userId String? @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @map("user_id")
 
   orderItems OrderItem[]
 

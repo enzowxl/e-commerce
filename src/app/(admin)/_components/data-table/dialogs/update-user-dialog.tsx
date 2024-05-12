@@ -2,7 +2,6 @@ import { useRouter } from 'next/navigation'
 import { FormEvent } from 'react'
 import toast from 'react-hot-toast'
 
-import { getHeaders } from '@/actions/get-headers'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -41,11 +40,8 @@ export function UpdateUserDialog({
 
     const role = data.role
 
-    const headers = await getHeaders()
-
     await api('/auth/users', {
       method: 'PATCH',
-      headers,
       body: JSON.stringify({
         email,
         role,

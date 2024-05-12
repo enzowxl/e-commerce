@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation'
 import { FormEvent, ReactNode } from 'react'
 import toast from 'react-hot-toast'
 
-import { getHeaders } from '@/actions/get-headers'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -38,11 +37,8 @@ export function NewUserSheet({
 
     if (!name && !email && !password) return null
 
-    const headers = await getHeaders()
-
     await api('/auth/users', {
       method: 'POST',
-      headers,
       body: JSON.stringify({
         name,
         email,

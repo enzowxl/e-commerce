@@ -2,7 +2,6 @@ import { useRouter } from 'next/navigation'
 import { FormEvent } from 'react'
 import toast from 'react-hot-toast'
 
-import { getHeaders } from '@/actions/get-headers'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -33,11 +32,8 @@ export function UpdateCategoryDialog({
 
     const name = data.name
 
-    const headers = await getHeaders()
-
     await api('/category', {
       method: 'PATCH',
-      headers,
       body: JSON.stringify({
         slug,
         name,

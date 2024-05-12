@@ -4,6 +4,7 @@ import { Category, Product } from '@prisma/client'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { ColumnDef } from '@tanstack/react-table'
 import { Ellipsis, Pencil, Trash2 } from 'lucide-react'
+import Link from 'next/link'
 import * as React from 'react'
 
 import { Button } from '@/components/ui/button'
@@ -62,13 +63,34 @@ export function DataTableProducts({
       cell: ({ row }) => <div>{formatPrice(row.getValue('price'))}</div>,
     },
     {
+      accessorKey: 'photoUrl',
+      header: () => <div>Photo</div>,
+      cell: ({ row }) => (
+        <>
+          {row.getValue('photoUrl') ? (
+            <Link target="_blank" href={row.getValue('photoUrl')}>
+              Visit
+            </Link>
+          ) : (
+            <div>Does not have</div>
+          )}
+        </>
+      ),
+    },
+    {
       accessorKey: 'categorySlug',
       header: () => <div>Category</div>,
       cell: ({ row }) => (
-        <div>
-          {String(row.getValue('categorySlug'))[0].toUpperCase() +
-            String(row.getValue('categorySlug')).slice(1)}
-        </div>
+        <>
+          {row.getValue('categorySlug') ? (
+            <div>
+              {String(row.getValue('categorySlug'))[0].toUpperCase() +
+                String(row.getValue('categorySlug')).slice(1)}
+            </div>
+          ) : (
+            <div>Does not have</div>
+          )}
+        </>
       ),
     },
     {

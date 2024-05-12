@@ -1,3 +1,4 @@
+import { api } from '../../../utils/api'
 import { ProductNotExistsError } from '../_errors/product-not-exists-error'
 import { ProductsRepository } from '../_repository/products-repository'
 
@@ -11,6 +12,12 @@ export class DeleteProductUseCase {
     const productWithSlug = await this.productsRepository.findBySlug(slug)
 
     if (!productWithSlug) throw new ProductNotExistsError()
+
+    if (productWithSlug.photoId) {
+      await api(`/utils/image/delete/${productWithSlug.photoId}`, {
+        method: 'DELETE',
+      })
+    }
 
     const deleteProduct = await this.productsRepository.delete(slug)
 

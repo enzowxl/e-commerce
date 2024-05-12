@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getToken } from 'next-auth/jwt'
 import { z, ZodError } from 'zod'
+import { zfd } from 'zod-form-data'
 
 import { getUserPermissions } from '@/actions/get-user-permissions'
 import { BadRequestError } from '@/app/api/_errors/bad-request-error'
@@ -44,49 +45,63 @@ export async function POST(req: NextRequest) {
 
     if (cannot('create', 'Product')) throw new UnauthorizedError()
 
-    const productRequestSchema = z
-      .object({
+    const stringToNull = (value: string): string | null => {
+      return value.trim() === '' ? null : value
+    }
+
+    const productRequestSchema = zfd
+      .formData({
         name: z.string(),
-        price: z.number().int(),
-        type: z.enum(ProductTypes),
-        description: z.string(),
-        categorySlug: z.string(),
-        avatarUrl: z.string().optional(),
-        discount: z.number().int().optional(),
+        price: z.string(),
+        description: z.string().transform(stringToNull).optional(),
+        categorySlug: z.string().transform(stringToNull).optional(),
+        photo: z.instanceof(File).optional(),
+        discount: z.string().optional(),
         sizes: z.string().array().optional(),
         colors: z.string().array().optional(),
       })
-      .parseAsync(await req.json())
+      .parseAsync(await req.formData())
 
     const {
       name,
-      price,
-      type,
-      discount,
+      price: priceRequest,
+      discount: discountRequest,
       description,
-      avatarUrl,
+      photo,
       categorySlug,
       sizes,
       colors,
     } = await productRequestSchema
 
+    const itemsNumberSchema = z
+      .object({
+        price: z.number(),
+        discount: z.number().int(),
+      })
+      .parse({
+        price: Number(priceRequest),
+        discount: Number(discountRequest),
+      })
+
+    const { price, discount } = itemsNumberSchema
+
     const createProductUseCase = makeCreateProductUseCase()
 
     await createProductUseCase.execute({
-      categorySlug,
       name,
-      price,
-      type,
       discount,
       description,
-      avatarUrl,
       sizes,
       colors,
+      photo,
+      categorySlug,
+      price: Number(price),
       slug: createSlug(name),
     })
 
     return NextResponse.json({}, { status: 201 })
   } catch (err) {
+    console.log(err)
     if (err instanceof ZodError) {
       return new ValidationError().error()
     }
@@ -120,7 +135,7 @@ export async function PATCH(req: NextRequest) {
         price: z.number().int().optional(),
         description: z.string().optional(),
         type: z.enum(ProductTypes).optional(),
-        avatarUrl: z.string().optional(),
+        photoUrl: z.string().optional(),
         discount: z.number().int().optional(),
         sizes: z.string().array().optional(),
         colors: z.string().array().optional(),
@@ -133,7 +148,7 @@ export async function PATCH(req: NextRequest) {
       type,
       discount,
       description,
-      avatarUrl,
+      photoUrl,
       colors,
       sizes,
     } = await productRequestSchema
@@ -148,7 +163,7 @@ export async function PATCH(req: NextRequest) {
         type,
         discount,
         description,
-        avatarUrl,
+        photoUrl,
         colors,
         sizes,
       },
