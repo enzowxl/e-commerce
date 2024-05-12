@@ -15,14 +15,6 @@ import { makeFetchAllProductsUseCase } from '@/app/api/_use-cases/factories/make
 import { makeUpdateProductUseCase } from '@/app/api/_use-cases/factories/make-update-product-use-case'
 import { createSlug } from '@/utils/create-slug'
 
-export const ProductTypes = [
-  'T_SHIRT',
-  'SHORTS',
-  'SHIRTS',
-  'HOODIE',
-  'JEANS',
-] as const
-
 export async function GET() {
   try {
     const fetchAllProducts = makeFetchAllProductsUseCase()

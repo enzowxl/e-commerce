@@ -18,7 +18,6 @@ describe('Fetching all products Use Case', () => {
       price: 30,
       description: 'This is a black shirt',
       slug: createSlug('Black shirt'),
-      type: 'T_SHIRT',
       categorySlug: 'slug',
     })
 
@@ -27,7 +26,6 @@ describe('Fetching all products Use Case', () => {
       price: 30,
       description: 'This is a red shirt',
       slug: createSlug('Red shirt'),
-      type: 'T_SHIRT',
       categorySlug: 'slug',
     })
 

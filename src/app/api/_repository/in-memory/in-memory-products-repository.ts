@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto'
 
-import { Prisma, Product, ProductTypes } from '@prisma/client'
+import { Prisma, Product } from '@prisma/client'
 
 import { ProductsRepository } from '../products-repository'
 
@@ -18,7 +18,6 @@ export class InMemoryProductsRepository implements ProductsRepository {
       name: data.name,
       description: data.description as string,
       price: new Prisma.Decimal(data.price as number),
-      type: data.type as ProductTypes,
       categorySlug: data.categorySlug as string,
       discount: data.discount as number,
       photoUrl: data.photoUrl as string,

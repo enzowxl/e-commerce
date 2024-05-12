@@ -20,7 +20,6 @@ describe('Update product Use Case', () => {
       price: 30,
       description: 'This is a dress',
       slug: createSlug('Black shirt'),
-      type: 'T_SHIRT',
       categorySlug: 'slug',
     })
 

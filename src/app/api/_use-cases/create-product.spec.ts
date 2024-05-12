@@ -28,7 +28,6 @@ describe('Create product Use Case', () => {
       price: 30,
       description: 'This is a shirt',
       slug: createSlug('Black shirt'),
-      type: 'T_SHIRT',
       categorySlug: category.slug,
     })
 
@@ -48,7 +47,6 @@ describe('Create product Use Case', () => {
       price: 30,
       description: 'This is a shirt',
       slug: createSlug(name),
-      type: 'T_SHIRT',
       categorySlug: category.slug,
     })
 
@@ -58,7 +56,6 @@ describe('Create product Use Case', () => {
         price: 30,
         description: 'This is a shirt',
         slug: createSlug(name),
-        type: 'T_SHIRT',
         categorySlug: category.slug,
       }),
     ).rejects.toBeInstanceOf(ProductAlreadyExistsError)
@@ -75,7 +72,6 @@ describe('Create product Use Case', () => {
       price: 30,
       description: 'This is a shirt',
       slug: createSlug('Black shirt'),
-      type: 'T_SHIRT',
       categorySlug: category.slug,
     })
 
@@ -89,7 +85,6 @@ describe('Create product Use Case', () => {
         price: 30,
         description: 'This is a shirt',
         slug: createSlug('Black shirt'),
-        type: 'T_SHIRT',
         categorySlug: 'slug',
       }),
     ).rejects.toBeInstanceOf(CategoryNotExistsError)
