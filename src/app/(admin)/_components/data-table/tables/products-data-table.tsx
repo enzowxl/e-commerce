@@ -68,7 +68,11 @@ export function DataTableProducts({
       cell: ({ row }) => (
         <>
           {row.getValue('photoUrl') ? (
-            <Link target="_blank" href={row.getValue('photoUrl')}>
+            <Link
+              className="underline"
+              target="_blank"
+              href={row.getValue('photoUrl')}
+            >
               Visit
             </Link>
           ) : (

@@ -55,7 +55,7 @@ export const authOptions = {
     },
     async session({ session, token }) {
       const findUserById = await prisma.user
-        .findUnique({
+        .findFirst({
           where: { id: token.sub },
         })
         .finally(async () => {
