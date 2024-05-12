@@ -1,8 +1,8 @@
 import { Category } from '@prisma/client'
-import { CircleX } from 'lucide-react'
+import { CircleX, Plus } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { FormEvent, ReactNode } from 'react'
+import React, { FormEvent, ReactNode } from 'react'
 import toast from 'react-hot-toast'
 
 import { Button } from '@/components/ui/button'
@@ -37,10 +37,23 @@ export function NewProductSheet({
 }) {
   const router = useRouter()
 
+  const [sizes, updateSizes] = React.useState<string[]>([])
+  const [colors, updateColors] = React.useState<string[]>([])
+
   async function handleCreate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
     const formData = new FormData(event.currentTarget)
+
+    if (sizes.length > 0) {
+      formData.delete('sizes')
+      formData.append('sizes', sizes.join(','))
+    }
+
+    if (colors.length > 0) {
+      formData.delete('colors')
+      formData.append('colors', colors.join(','))
+    }
 
     Array.from(formData.keys()).forEach((key) => {
       const value = formData.get(key)
@@ -74,9 +87,44 @@ export function NewProductSheet({
         return console.log(err)
       })
 
+    updateSizes([])
+    updateColors([])
+
     onOpenChange(!open)
 
     return router.refresh()
+  }
+
+  function handleAddSize() {
+    const inputElement = document.getElementsByName(
+      'sizes',
+    )[0] as HTMLInputElement | null
+    const newSize = inputElement?.value as string
+
+    updateSizes((oldArray) => [...oldArray, newSize])
+  }
+
+  function handleRemoveSize(index: number) {
+    updateSizes((oldArray) => [
+      ...oldArray.slice(0, index),
+      ...oldArray.slice(index + 1),
+    ])
+  }
+
+  function handleAddColor() {
+    const inputElement = document.getElementsByName(
+      'colors',
+    )[0] as HTMLInputElement | null
+    const newColor = inputElement?.value as string
+
+    updateColors((oldArray) => [...oldArray, newColor])
+  }
+
+  function handleRemoveColor(index: number) {
+    updateColors((oldArray) => [
+      ...oldArray.slice(0, index),
+      ...oldArray.slice(index + 1),
+    ])
   }
 
   return (
@@ -97,7 +145,9 @@ export function NewProductSheet({
           </Label>
           <form onSubmit={handleCreate} className="w-full flex flex-col gap-8">
             <div className="flex flex-col gap-3">
-              <Label>Name</Label>
+              <Label>
+                Name <span className="text-red-500">*</span>
+              </Label>
               <Input
                 name="name"
                 className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-12 px-4 outline-none"
@@ -107,7 +157,9 @@ export function NewProductSheet({
               />
             </div>
             <div className="flex flex-col gap-3">
-              <Label>Price</Label>
+              <Label>
+                Price <span className="text-red-500">*</span>
+              </Label>
               <Input
                 name="price"
                 className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-12 px-4 outline-none"
@@ -156,6 +208,76 @@ export function NewProductSheet({
                   </SelectGroup>
                 </SelectContent>
               </Select>
+            </div>
+            <div className="flex flex-col gap-3">
+              <Label>Sizes</Label>
+              <div className="flex items-center gap-3">
+                <Input
+                  name="sizes"
+                  className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-12 px-4 outline-none"
+                  placeholder="Large or G"
+                  type="text"
+                />
+                <Button
+                  onClick={handleAddSize}
+                  type="button"
+                  className="bg-color-primary h-full text-color-white p-3 rounded-xl"
+                >
+                  <Plus className="w-5 h-5" />
+                </Button>
+              </div>
+              {sizes.map((size, index) => {
+                return (
+                  <div
+                    className="flex items-center justify-between"
+                    key={index}
+                  >
+                    <Label>{size}</Label>
+                    <Button
+                      onClick={() => handleRemoveSize(index)}
+                      type="button"
+                      className="bg-color-primary h-full text-color-white p-3 rounded-xl"
+                    >
+                      <CircleX className="w-5 h-5" />
+                    </Button>
+                  </div>
+                )
+              })}
+            </div>
+            <div className="flex flex-col gap-3">
+              <Label>Colors</Label>
+              <div className="flex items-center gap-3">
+                <Input
+                  name="colors"
+                  className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-12 px-4 outline-none"
+                  placeholder="Red"
+                  type="text"
+                />
+                <Button
+                  onClick={handleAddColor}
+                  type="button"
+                  className="bg-color-primary h-full text-color-white p-3 rounded-xl"
+                >
+                  <Plus className="w-5 h-5" />
+                </Button>
+              </div>
+              {colors.map((color, index) => {
+                return (
+                  <div
+                    className="flex items-center justify-between"
+                    key={index}
+                  >
+                    <Label>{color}</Label>
+                    <Button
+                      onClick={() => handleRemoveColor(index)}
+                      type="button"
+                      className="bg-color-primary h-full text-color-white p-3 rounded-xl"
+                    >
+                      <CircleX className="w-5 h-5" />
+                    </Button>
+                  </div>
+                )
+              })}
             </div>
             <div className="flex flex-col gap-3">
               <Label>Photo</Label>

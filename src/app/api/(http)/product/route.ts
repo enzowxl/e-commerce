@@ -52,8 +52,14 @@ export async function POST(req: NextRequest) {
         discount: z.string().optional(),
         photo: z.instanceof(File).optional(),
         description: z.string().optional(),
-        sizes: z.string().array().optional(),
-        colors: z.string().array().optional(),
+        sizes: z
+          .string()
+          .transform((array) => array.split(','))
+          .optional(),
+        colors: z
+          .string()
+          .transform((array) => array.split(','))
+          .optional(),
         categorySlug: z.string().optional(),
       })
       .parseAsync(await req.formData())
@@ -120,9 +126,23 @@ export async function PATCH(req: NextRequest) {
         discount: z.string().optional(),
         description: z.string().optional(),
         photo: z.instanceof(File).optional(),
-        sizes: z.string().array().optional(),
-        colors: z.string().array().optional(),
+        sizes: z
+          .string()
+          .transform((array) => array.split(','))
+          .optional(),
+        colors: z
+          .string()
+          .transform((array) => array.split(','))
+          .optional(),
         categorySlug: z.string().optional(),
+        removeAllSizes: z
+          .string()
+          .transform((string) => Boolean(string))
+          .optional(),
+        removeAllColors: z
+          .string()
+          .transform((string) => Boolean(string))
+          .optional(),
       })
       .parseAsync(await req.formData())
 
@@ -136,6 +156,8 @@ export async function PATCH(req: NextRequest) {
       colors,
       sizes,
       categorySlug,
+      removeAllColors,
+      removeAllSizes,
     } = await productRequestSchema
 
     const updateProductUseCase = makeUpdateProductUseCase()
@@ -146,9 +168,9 @@ export async function PATCH(req: NextRequest) {
       data: {
         name,
         description,
-        colors,
-        sizes,
         categorySlug,
+        colors: removeAllColors ? [] : colors,
+        sizes: removeAllSizes ? [] : sizes,
         price: price === undefined ? undefined : Number(price),
         discount: discount === undefined ? undefined : Number(discount),
       },

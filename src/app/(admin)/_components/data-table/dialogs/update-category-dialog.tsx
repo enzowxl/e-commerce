@@ -100,7 +100,7 @@ export function UpdateCategoryDialog({
             type="submit"
             className="text-white w-full bg-color-primary h-12 rounded-xl"
           >
-            Create
+            Update
           </Button>
         </form>
       </DialogContent>
