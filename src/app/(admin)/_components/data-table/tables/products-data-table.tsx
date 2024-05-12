@@ -140,7 +140,7 @@ export function DataTableProducts({
             )}
             {updateDialog && (
               <UpdateProductDialog
-                // complementCategoryData={complementCategoryData}
+                complementCategoryData={complementCategoryData}
                 slug={slugDialog}
                 open={updateDialog}
                 onOpenChange={updateUpdateDialog}

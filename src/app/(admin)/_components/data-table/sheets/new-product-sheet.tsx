@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import { FormEvent, ReactNode } from 'react'
 import toast from 'react-hot-toast'
 
-import { ProductTypes } from '@/app/api/(http)/product/route'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -42,6 +41,18 @@ export function NewProductSheet({
     event.preventDefault()
 
     const formData = new FormData(event.currentTarget)
+
+    Array.from(formData.keys()).forEach((key) => {
+      const value = formData.get(key)
+
+      if (typeof value === 'string' && value === '') {
+        formData.delete(key)
+      }
+
+      if (value instanceof File && value.size <= 0) {
+        formData.delete(key)
+      }
+    })
 
     await api('/product', {
       method: 'POST',
@@ -115,26 +126,6 @@ export function NewProductSheet({
               />
             </div>
             <div className="flex flex-col gap-3">
-              <Label>Type</Label>
-              <Select name="type">
-                <SelectTrigger className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-12 px-4 outline-none">
-                  <SelectValue placeholder="Select type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Types</SelectLabel>
-                    {ProductTypes.map((type) => {
-                      return (
-                        <SelectItem key={type} value={type}>
-                          {type}
-                        </SelectItem>
-                      )
-                    })}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex flex-col gap-3">
               <Label>Description</Label>
               <Input
                 name="description"
@@ -145,7 +136,10 @@ export function NewProductSheet({
             </div>
             <div className="flex flex-col gap-3">
               <Label>Category</Label>
-              <Select name="categorySlug">
+              <Select
+                disabled={complementCategoryData?.length === 0}
+                name="categorySlug"
+              >
                 <SelectTrigger className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-12 px-4 outline-none">
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>

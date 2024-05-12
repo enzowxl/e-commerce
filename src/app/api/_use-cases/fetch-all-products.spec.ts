@@ -1,20 +1,11 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 
+import { createSlug } from '../../../utils/create-slug'
 import { InMemoryProductsRepository } from '../_repository/in-memory/in-memory-products-repository'
 import { FetchAllProductsUseCase } from './fetch-all-products'
 
 let productsRepository: InMemoryProductsRepository
 let sut: FetchAllProductsUseCase
-
-function createSlug(text: string): string {
-  return text
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^\w\s]/gi, '')
-    .trim()
-    .replace(/\s+/g, '-')
-    .toLowerCase()
-}
 describe('Fetching all products Use Case', () => {
   beforeEach(() => {
     productsRepository = new InMemoryProductsRepository()

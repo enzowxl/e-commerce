@@ -45,27 +45,23 @@ export async function POST(req: NextRequest) {
 
     if (cannot('create', 'Product')) throw new UnauthorizedError()
 
-    const stringToNull = (value: string): string | null => {
-      return value.trim() === '' ? null : value
-    }
-
     const productRequestSchema = zfd
       .formData({
         name: z.string(),
         price: z.string(),
-        description: z.string().transform(stringToNull).optional(),
-        categorySlug: z.string().transform(stringToNull).optional(),
-        photo: z.instanceof(File).optional(),
         discount: z.string().optional(),
+        photo: z.instanceof(File).optional(),
+        description: z.string().optional(),
         sizes: z.string().array().optional(),
         colors: z.string().array().optional(),
+        categorySlug: z.string().optional(),
       })
       .parseAsync(await req.formData())
 
     const {
       name,
-      price: priceRequest,
-      discount: discountRequest,
+      price,
+      discount,
       description,
       photo,
       categorySlug,
@@ -73,28 +69,16 @@ export async function POST(req: NextRequest) {
       colors,
     } = await productRequestSchema
 
-    const itemsNumberSchema = z
-      .object({
-        price: z.number(),
-        discount: z.number().int(),
-      })
-      .parse({
-        price: Number(priceRequest),
-        discount: Number(discountRequest),
-      })
-
-    const { price, discount } = itemsNumberSchema
-
     const createProductUseCase = makeCreateProductUseCase()
 
     await createProductUseCase.execute({
       name,
-      discount,
       description,
       sizes,
       colors,
       photo,
       categorySlug,
+      discount: discount === undefined ? undefined : Number(discount),
       price: Number(price),
       slug: createSlug(name),
     })
@@ -128,48 +112,40 @@ export async function PATCH(req: NextRequest) {
 
     if (cannot('update', 'Product')) throw new UnauthorizedError()
 
-    const productRequestSchema = z
-      .object({
+    const productRequestSchema = zfd
+      .formData({
         slug: z.string(),
         name: z.string().optional(),
-        price: z.number().int().optional(),
+        price: z.string().optional(),
+        discount: z.string().optional(),
         description: z.string().optional(),
-        type: z.enum(ProductTypes).optional(),
-        photoUrl: z.string().optional(),
-        discount: z.number().int().optional(),
+        categorySlug: z.string().optional(),
+        photo: z.instanceof(File).optional(),
         sizes: z.string().array().optional(),
         colors: z.string().array().optional(),
       })
-      .parseAsync(await req.json())
-    const {
-      slug,
-      name,
-      price,
-      type,
-      discount,
-      description,
-      photoUrl,
-      colors,
-      sizes,
-    } = await productRequestSchema
+      .parseAsync(await req.formData())
+
+    const { slug, name, price, discount, description, photo, colors, sizes } =
+      await productRequestSchema
 
     const updateProductUseCase = makeUpdateProductUseCase()
 
     await updateProductUseCase.execute({
       slug,
+      photo,
       data: {
         name,
-        price,
-        type,
-        discount,
         description,
-        photoUrl,
         colors,
         sizes,
+        price: price === undefined ? undefined : Number(price),
+        discount: discount === undefined ? undefined : Number(discount),
       },
     })
     return NextResponse.json({}, { status: 201 })
   } catch (err) {
+    console.log(err)
     if (err instanceof ZodError) {
       return new ValidationError().error()
     }

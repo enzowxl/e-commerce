@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getServerSession } from 'next-auth'
 
-import { getUserPermissions } from '@/actions/get-user-permissions'
 import { SideBar } from '@/app/(admin)/_components/sidebar'
 import { Header } from '@/components/header/header'
 import { authOptions } from '@/utils/auth-options'
@@ -21,9 +20,7 @@ export default async function AdminLayout({
 }>) {
   const data = await getServerSession(authOptions)
 
-  const { cannot } = await getUserPermissions(data?.user?.sub as string)
-
-  if (cannot('manage', 'all')) {
+  if (data?.user.role !== 'ADMIN') {
     return notFound()
   }
   return (

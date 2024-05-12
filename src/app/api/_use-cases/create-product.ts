@@ -8,7 +8,7 @@ import { ProductsRepository } from '../_repository/products-repository'
 
 interface CreateProductUseCaseRequest
   extends Prisma.ProductUncheckedCreateInput {
-  photo: File | undefined
+  photo?: File | undefined
 }
 
 export class CreateProductUseCase {

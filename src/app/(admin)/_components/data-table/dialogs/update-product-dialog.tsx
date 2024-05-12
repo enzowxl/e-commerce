@@ -1,9 +1,9 @@
 // import { Category } from '@prisma/client'
+import { Category } from '@prisma/client'
 import { useRouter } from 'next/navigation'
 import { FormEvent } from 'react'
 import toast from 'react-hot-toast'
 
-import { ProductTypes } from '@/app/api/(http)/product/route'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -28,12 +28,12 @@ export function UpdateProductDialog({
   open,
   slug,
   onOpenChange,
-  // complementCategoryData,
+  complementCategoryData,
 }: {
   open: boolean
   slug: string
   onOpenChange: (open: boolean) => void
-  // complementCategoryData?: Category[]
+  complementCategoryData?: Category[]
 }) {
   const router = useRouter()
 
@@ -41,26 +41,24 @@ export function UpdateProductDialog({
     event.preventDefault()
 
     const formData = new FormData(event.currentTarget)
-    const data = Object.fromEntries(formData)
 
-    const productData = {
-      name: data.name,
-      price: Number(data.price),
-      type: data.type,
-      description: data.description,
-      categorySlug: data.category,
-    }
+    formData.append('slug', slug)
 
-    const filteredProductData = Object.fromEntries(
-      Object.entries(productData).filter(([_, value]) => value),
-    )
+    Array.from(formData.keys()).forEach((key) => {
+      const value = formData.get(key)
+
+      if (typeof value === 'string' && value === '') {
+        formData.delete(key)
+      }
+
+      if (value instanceof File && value.size <= 0) {
+        formData.delete(key)
+      }
+    })
 
     await api('/product', {
       method: 'PATCH',
-      body: JSON.stringify({
-        slug,
-        ...filteredProductData,
-      }),
+      body: formData,
     })
       .then(async (res) => {
         if (!res.ok) {
@@ -108,24 +106,13 @@ export function UpdateProductDialog({
             />
           </div>
           <div className="flex flex-col gap-3">
-            <Label>Type</Label>
-            <Select name="type">
-              <SelectTrigger className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-12 px-4 outline-none">
-                <SelectValue placeholder="Select type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Types</SelectLabel>
-                  {ProductTypes.map((type) => {
-                    return (
-                      <SelectItem key={type} value={type}>
-                        {type}
-                      </SelectItem>
-                    )
-                  })}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            <Label>Discount percent</Label>
+            <Input
+              name="discount"
+              className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-12 px-4 outline-none"
+              placeholder="10"
+              type="number"
+            />
           </div>
           <div className="flex flex-col gap-3">
             <Label>Description</Label>
@@ -136,9 +123,12 @@ export function UpdateProductDialog({
               type="text"
             />
           </div>
-          {/* <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3">
             <Label>Category</Label>
-            <Select  name="category">
+            <Select
+              disabled={complementCategoryData?.length === 0}
+              name="categorySlug"
+            >
               <SelectTrigger className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-12 px-4 outline-none">
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
@@ -155,7 +145,20 @@ export function UpdateProductDialog({
                 </SelectGroup>
               </SelectContent>
             </Select>
-          </div> */}
+          </div>
+          <div className="flex flex-col gap-3">
+            <Label>Photo</Label>
+            <div className="flex items-center w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-12 outline-none">
+              <Input
+                name="photo"
+                className="flex-1 h-full z-50 opacity-0"
+                placeholder="This is a black shirt"
+                type="file"
+                accept="image/*"
+              />
+              <Label className="px-4 absolute">Select photo</Label>
+            </div>
+          </div>
           <Button
             type="submit"
             className="text-white w-full bg-color-primary h-12 rounded-xl"

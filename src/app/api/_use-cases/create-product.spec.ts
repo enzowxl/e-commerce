@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 
+import { createSlug } from '../../../utils/create-slug'
 import { CategoryNotExistsError } from '../_errors/category-not-exists-error'
 import { ProductAlreadyExistsError } from '../_errors/product-already-exists-error'
 import { InMemoryCategoriesRepository } from '../_repository/in-memory/in-memory-categories-repository'
@@ -9,16 +10,6 @@ import { CreateProductUseCase } from './create-product'
 let productsRepository: InMemoryProductsRepository
 let categoriesRepository: InMemoryCategoriesRepository
 let sut: CreateProductUseCase
-
-function createSlug(text: string): string {
-  return text
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^\w\s]/gi, '')
-    .trim()
-    .replace(/\s+/g, '-')
-    .toLowerCase()
-}
 describe('Create product Use Case', () => {
   beforeEach(() => {
     productsRepository = new InMemoryProductsRepository()
