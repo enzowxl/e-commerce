@@ -119,15 +119,24 @@ export async function PATCH(req: NextRequest) {
         price: z.string().optional(),
         discount: z.string().optional(),
         description: z.string().optional(),
-        categorySlug: z.string().optional(),
         photo: z.instanceof(File).optional(),
         sizes: z.string().array().optional(),
         colors: z.string().array().optional(),
+        categorySlug: z.string().optional(),
       })
       .parseAsync(await req.formData())
 
-    const { slug, name, price, discount, description, photo, colors, sizes } =
-      await productRequestSchema
+    const {
+      slug,
+      name,
+      price,
+      discount,
+      description,
+      photo,
+      colors,
+      sizes,
+      categorySlug,
+    } = await productRequestSchema
 
     const updateProductUseCase = makeUpdateProductUseCase()
 
@@ -139,6 +148,7 @@ export async function PATCH(req: NextRequest) {
         description,
         colors,
         sizes,
+        categorySlug,
         price: price === undefined ? undefined : Number(price),
         discount: discount === undefined ? undefined : Number(discount),
       },

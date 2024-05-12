@@ -7,14 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum ProductTypes {
-  T_SHIRT
-  SHORTS
-  SHIRTS
-  HOODIE
-  JEANS
-}
-
 enum UserRoles {
   ADMIN
   MEMBER
@@ -37,27 +29,22 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  // cart  Cart[]
   order Order[]
 
   @@map("users")
 }
 
 model Product {
-  id          String        @id @default(uuid())
-  slug        String        @unique
+  id          String   @id @default(uuid())
+  slug        String   @unique
   name        String
-  price       Decimal       @db.Decimal(10, 2)
-  discount    Int           @default(0)
+  price       Decimal  @db.Decimal(10, 2)
+  discount    Int      @default(0)
   description String?
-  photoUrl    String?       @map("photo_url")
-  photoId     String?       @map("photo_id")
-  type        ProductTypes?
+  photoUrl    String?  @map("photo_url")
+  photoId     String?  @map("photo_id")
   sizes       String[]
   colors      String[]
-
-  // comments    String[]
-  // ratings     String[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -65,42 +52,10 @@ model Product {
   category     Category? @relation(fields: [categorySlug], references: [slug])
   categorySlug String?   @map("category_id")
 
-  // cartItems  CartItem[]
   orderItems OrderItem[]
 
   @@map("products")
 }
-
-// model Cart {
-//   id        String @id @default(uuid())
-//   sessionId String @unique
-
-//   createdAt DateTime @default(now()) @map("created_at")
-//   updatedAt DateTime @updatedAt @map("updated_at")
-
-//   user   User?   @relation(fields: [userId], references: [id])
-//   userId String? @map("user_id")
-
-//   cartItems CartItem[]
-
-//   @@map("carts")
-// }
-
-// model CartItem {
-//   id       String @id @default(uuid())
-//   quantity Int
-
-//   createdAt DateTime @default(now()) @map("created_at")
-//   updatedAt DateTime @updatedAt @map("updated_at")
-
-//   cart   Cart   @relation(fields: [cartId], references: [id])
-//   cartId String @map("cart_id")
-
-//   product     Product @relation(fields: [productSlug], references: [slug])
-//   productSlug String  @map("product_id")
-
-//   @@map("cart_items")
-// }
 
 model Category {
   id       String  @id @default(uuid())
