@@ -115,6 +115,8 @@ export function UpdateProductDialog({
     )[1] as HTMLInputElement | null
     const newSize = inputElement?.value as string
 
+    if (newSize === '') return
+
     updateSizes((oldArray) => [...oldArray, newSize])
   }
 
@@ -130,6 +132,8 @@ export function UpdateProductDialog({
       'colors',
     )[1] as HTMLInputElement | null
     const newColor = inputElement?.value as string
+
+    if (newColor === '') return
 
     updateColors((oldArray) => [...oldArray, newColor])
   }
