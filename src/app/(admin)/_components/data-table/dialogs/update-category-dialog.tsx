@@ -28,16 +28,24 @@ export function UpdateCategoryDialog({
     event.preventDefault()
 
     const formData = new FormData(event.currentTarget)
-    const data = Object.fromEntries(formData)
 
-    const name = data.name
+    formData.append('slug', slug)
+
+    Array.from(formData.keys()).forEach((key) => {
+      const value = formData.get(key)
+
+      if (typeof value === 'string' && value === '') {
+        formData.delete(key)
+      }
+
+      if (value instanceof File && value.size <= 0) {
+        formData.delete(key)
+      }
+    })
 
     await api('/category', {
       method: 'PATCH',
-      body: JSON.stringify({
-        slug,
-        name,
-      }),
+      body: formData,
     })
       .then(async (res) => {
         if (!res.ok) {
@@ -73,14 +81,26 @@ export function UpdateCategoryDialog({
               className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-12 px-4 outline-none"
               placeholder="Gym"
               type="text"
-              required
             />
+          </div>
+          <div className="flex flex-col gap-3">
+            <Label>Photo</Label>
+            <div className="flex items-center w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-12 outline-none">
+              <Input
+                name="photo"
+                className="flex-1 h-full z-50 opacity-0"
+                placeholder="This is a black shirt"
+                type="file"
+                accept="image/*"
+              />
+              <Label className="px-4 absolute">Select photo</Label>
+            </div>
           </div>
           <Button
             type="submit"
             className="text-white w-full bg-color-primary h-12 rounded-xl"
           >
-            Update
+            Create
           </Button>
         </form>
       </DialogContent>

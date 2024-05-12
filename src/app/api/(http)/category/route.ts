@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getToken } from 'next-auth/jwt'
 import { z, ZodError } from 'zod'
+import { zfd } from 'zod-form-data'
 
 import { getUserPermissions } from '@/actions/get-user-permissions'
 import { BadRequestError } from '@/app/api/_errors/bad-request-error'
@@ -35,20 +36,20 @@ export async function POST(req: NextRequest) {
 
     if (cannot('create', 'Category')) throw new UnauthorizedError()
 
-    const categoryRequestSchema = z
-      .object({
+    const categoryRequestSchema = zfd
+      .formData({
         name: z.string(),
-        photoUrl: z.string().optional(),
+        photo: z.instanceof(File).optional(),
       })
-      .parseAsync(await req.json())
+      .parseAsync(await req.formData())
 
-    const { name, photoUrl } = await categoryRequestSchema
+    const { name, photo } = await categoryRequestSchema
 
     const createCategoryUseCase = makeCreateCategoryUseCase()
 
     await createCategoryUseCase.execute({
       name,
-      photoUrl,
+      photo,
       slug: createSlug(name),
     })
 
@@ -77,22 +78,23 @@ export async function PATCH(req: NextRequest) {
 
     if (cannot('update', 'Category')) throw new UnauthorizedError()
 
-    const categoryRequestSchema = z
-      .object({
+    const categoryRequestSchema = zfd
+      .formData({
         slug: z.string(),
         name: z.string().optional(),
-        photoUrl: z.string().optional(),
+        photo: z.instanceof(File).optional(),
       })
-      .parseAsync(await req.json())
-    const { slug, name, photoUrl } = await categoryRequestSchema
+      .parseAsync(await req.formData())
+
+    const { slug, name, photo } = await categoryRequestSchema
 
     const updateCategoryUseCase = makeUpdateCategoryUseCase()
 
     await updateCategoryUseCase.execute({
       slug,
+      photo,
       data: {
         name,
-        photoUrl,
       },
     })
     return NextResponse.json({}, { status: 201 })

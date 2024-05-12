@@ -4,6 +4,7 @@ import { api } from '../../../utils/api'
 import { createSlug } from '../../../utils/create-slug'
 import { ProductNotExistsError } from '../_errors/product-not-exists-error'
 import { ProductsRepository } from '../_repository/products-repository'
+
 interface UpdateProductUseCaseRequest {
   data: Prisma.ProductUncheckedUpdateInput
   slug: string
