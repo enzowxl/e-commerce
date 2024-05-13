@@ -73,7 +73,7 @@ export function NewCategorySheet({
       <SheetContent className="outline-none flex flex-col gap-10" side={'left'}>
         <div className="flex justify-between items-center">
           <Link href="/" className="text-2xl font-extrabold text-white">
-            shop.dev
+            myshop
           </Link>
           <SheetClose className="outline-none">
             <CircleX className="min-w-5 min-h-5 cursor-pointer" />

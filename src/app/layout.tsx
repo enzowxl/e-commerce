@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
 
+import { CartProvider } from '@/context/cart'
 import { SessionProvider } from '@/providers/session'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -24,8 +25,10 @@ export default function AuthLayout({
     <html lang="en">
       <body className={inter.className}>
         <SessionProvider>
-          <Toaster position="top-right" />
-          {children}
+          <CartProvider>
+            <Toaster position="top-right" />
+            {children}
+          </CartProvider>
         </SessionProvider>
       </body>
     </html>
