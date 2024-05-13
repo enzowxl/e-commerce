@@ -1,5 +1,5 @@
 import { Product } from '@prisma/client'
-import { redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 
 import { api } from '@/utils/api'
 
@@ -12,7 +12,7 @@ export async function getProduct(slug: string): Promise<Product | null> {
   const { product } = (await response.json()) as { product: Product }
 
   if (product === undefined) {
-    return redirect('/')
+    return notFound()
   }
 
   return product

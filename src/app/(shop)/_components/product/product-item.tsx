@@ -20,6 +20,7 @@ export function ProductItem({ product }: { product: Product }) {
           </div>
         )}
         <Image
+          priority
           width={1000}
           height={1000}
           src={product.photoUrl ?? ''}
