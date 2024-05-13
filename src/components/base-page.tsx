@@ -8,7 +8,7 @@ export function BasePage({
   classNameTitle,
 }: {
   children: ReactNode
-  title: string
+  title?: string
   className?: string
   classNameTitle?: string
 }) {
