@@ -12,7 +12,7 @@ export default function Error() {
       <div className="flex flex-col gap-10 items-center">
         <div className="flex flex-col gap-3 items-center">
           <h1 className="font-bold text-4xl">Oops!</h1>
-          <span className="text-color-gray">
+          <span className="text-color-gray max-w-96">
             It looks like there was an error. We are resolving this. Thank you
             for understanding.
           </span>

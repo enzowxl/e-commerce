@@ -11,6 +11,7 @@ interface CartContext {
   cart: CartProduct[]
   addProductToCart: ({ product }: { product: Product }) => void
   removeProductFromCart: (slug: string) => void
+  removeOneProductFromCart: (slug: string) => void
   clearCart: () => void
 }
 
@@ -18,6 +19,7 @@ const CartContext = createContext<CartContext>({
   cart: [],
   addProductToCart: () => {},
   removeProductFromCart: () => {},
+  removeOneProductFromCart: () => {},
   clearCart: () => {},
 })
 
@@ -56,6 +58,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
       localStorage.getItem('cart') || '[]',
     )
 
+    const updatedCart = cartInLocalStorage.filter(
+      (cartProduct) => cartProduct.slug !== slug,
+    )
+
+    return localStorage.setItem('cart', JSON.stringify(updatedCart))
+  }
+
+  function removeOneProductFromCart(slug: string) {
+    const cartInLocalStorage: CartProduct[] = JSON.parse(
+      localStorage.getItem('cart') || '[]',
+    )
+
     const productIndex = cartInLocalStorage.findIndex(
       (cartProduct) => cartProduct.slug === slug,
     )
@@ -72,8 +86,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }
 
   function clearCart() {
-    updateCart([])
-    return localStorage.clear()
+    localStorage.clear()
+    return updateCart([])
   }
 
   return (
@@ -82,6 +96,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         cart,
         addProductToCart,
         removeProductFromCart,
+        removeOneProductFromCart,
         clearCart,
       }}
     >
