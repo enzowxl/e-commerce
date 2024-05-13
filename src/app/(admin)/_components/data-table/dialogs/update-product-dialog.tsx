@@ -109,40 +109,33 @@ export function UpdateProductDialog({
     return router.refresh()
   }
 
-  function handleAddSize() {
+  function handleAdd(name: 'sizes' | 'colors', type: 'SIZE' | 'COLOR') {
     const inputElement = document.getElementsByName(
-      'sizes',
+      name,
     )[1] as HTMLInputElement | null
-    const newSize = inputElement?.value as string
+    const newItem = inputElement?.value as string
 
-    if (newSize === '') return
+    if (newItem === '') return
 
-    updateSizes((oldArray) => [...oldArray, newSize])
+    if (type === 'SIZE') {
+      return updateSizes((oldArray) => [...oldArray, newItem])
+    } else {
+      return updateColors((oldArray) => [...oldArray, newItem])
+    }
   }
 
-  function handleRemoveSize(index: number) {
-    updateSizes((oldArray) => [
-      ...oldArray.slice(0, index),
-      ...oldArray.slice(index + 1),
-    ])
-  }
-
-  function handleAddColor() {
-    const inputElement = document.getElementsByName(
-      'colors',
-    )[1] as HTMLInputElement | null
-    const newColor = inputElement?.value as string
-
-    if (newColor === '') return
-
-    updateColors((oldArray) => [...oldArray, newColor])
-  }
-
-  function handleRemoveColor(index: number) {
-    updateColors((oldArray) => [
-      ...oldArray.slice(0, index),
-      ...oldArray.slice(index + 1),
-    ])
+  function handleRemove(index: number, type: 'SIZE' | 'COLOR') {
+    if (type === 'SIZE') {
+      return updateSizes((oldArray) => [
+        ...oldArray.slice(0, index),
+        ...oldArray.slice(index + 1),
+      ])
+    } else {
+      return updateColors((oldArray) => [
+        ...oldArray.slice(0, index),
+        ...oldArray.slice(index + 1),
+      ])
+    }
   }
 
   return (
@@ -221,7 +214,7 @@ export function UpdateProductDialog({
                 type="text"
               />
               <Button
-                onClick={handleAddSize}
+                onClick={() => handleAdd('sizes', 'SIZE')}
                 type="button"
                 className="bg-color-primary h-full text-color-white p-3 rounded-xl"
               >
@@ -233,7 +226,7 @@ export function UpdateProductDialog({
                 <div className="flex items-center justify-between" key={index}>
                   <Label>{size}</Label>
                   <Button
-                    onClick={() => handleRemoveSize(index)}
+                    onClick={() => handleRemove(index, 'SIZE')}
                     type="button"
                     className="bg-color-primary h-full text-color-white p-3 rounded-xl"
                   >
@@ -253,7 +246,7 @@ export function UpdateProductDialog({
                 type="text"
               />
               <Button
-                onClick={handleAddColor}
+                onClick={() => handleAdd('colors', 'COLOR')}
                 type="button"
                 className="bg-color-primary h-full text-color-white p-3 rounded-xl"
               >
@@ -265,7 +258,7 @@ export function UpdateProductDialog({
                 <div className="flex items-center justify-between" key={index}>
                   <Label>{color}</Label>
                   <Button
-                    onClick={() => handleRemoveColor(index)}
+                    onClick={() => handleRemove(index, 'COLOR')}
                     type="button"
                     className="bg-color-primary h-full text-color-white p-3 rounded-xl"
                   >

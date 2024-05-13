@@ -35,8 +35,6 @@ export function NewUserSheet({
     const email = data.email
     const password = data.password
 
-    if (!name && !email && !password) return null
-
     await api('/auth/users', {
       method: 'POST',
       body: JSON.stringify({
