@@ -1,7 +1,7 @@
 export function ErrorSvg() {
   return (
     <svg
-      width={331}
+      width={431}
       height={360}
       viewBox="0 0 431 560"
       fill="none"

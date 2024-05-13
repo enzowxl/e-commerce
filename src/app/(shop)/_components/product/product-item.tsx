@@ -28,7 +28,7 @@ export function ProductItem({ product }: { product: Product }) {
           className="w-full h-full object-contain"
         />
       </div>
-      <div className="flex flex-col gap-1 py-4">
+      <div className="flex flex-col gap-1 pt-4">
         <span className="text-base">{product.name}</span>
         {product.discount > 0 && (
           <span className="text-sm text-color-gray line-through">
