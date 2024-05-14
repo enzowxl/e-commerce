@@ -85,12 +85,6 @@ export async function UserDropDown({ children }: { children: ReactNode }) {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link href={'/cart'} className="flex gap-3 items-center w-full">
-                  <ShoppingCart className="w-5 h-5" />
-                  My cart
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
                 <Link
                   href={'/category'}
                   className="flex gap-3 items-center w-full"

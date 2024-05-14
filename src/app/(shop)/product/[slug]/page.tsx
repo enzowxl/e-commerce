@@ -1,4 +1,4 @@
-import { getProduct } from '@/actions/get-product'
+import { getProduct } from '@/app/(shop)/_actions/get-product'
 import { BasePage } from '@/components/base-page'
 
 export default async function Product({

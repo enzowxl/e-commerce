@@ -3,8 +3,12 @@
 import { Product } from '@prisma/client'
 import React, { createContext, ReactNode, useContext, useEffect } from 'react'
 
+import { formatPriceDiscount } from '@/utils/format-price-discount'
+
 export interface CartProduct extends Product {
   quantity: number
+  size?: string
+  color?: string
 }
 
 interface CartContext {
@@ -12,6 +16,9 @@ interface CartContext {
   addProductToCart: ({ product }: { product: Product }) => void
   removeProductFromCart: (slug: string) => void
   clearCart: () => void
+  totalPrice: number
+  subtotalPrice: number
+  totalDiscounts: number
 }
 
 const CartContext = createContext<CartContext>({
@@ -19,6 +26,9 @@ const CartContext = createContext<CartContext>({
   addProductToCart: () => {},
   removeProductFromCart: () => {},
   clearCart: () => {},
+  totalPrice: 0,
+  subtotalPrice: 0,
+  totalDiscounts: 0,
 })
 
 export function CartProvider({ children }: { children: ReactNode }) {
@@ -32,6 +42,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
       localStorage.setItem('cart', JSON.stringify([]))
     }
   }, [])
+
+  const subtotalPrice = cart.reduce((acc, product) => {
+    return acc + Number(product.price) * product.quantity
+  }, 0)
+
+  const totalPrice = cart.reduce((acc, product) => {
+    return acc + formatPriceDiscount(product) * product.quantity
+  }, 0)
+
+  const totalDiscounts = subtotalPrice - totalPrice
 
   function addProductToCart({ product }: { product: Product }) {
     const cartInLocalStorage: CartProduct[] = JSON.parse(
@@ -85,6 +105,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
         addProductToCart,
         removeProductFromCart,
         clearCart,
+        totalPrice,
+        subtotalPrice,
+        totalDiscounts,
       }}
     >
       {children}

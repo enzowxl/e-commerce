@@ -1,4 +1,4 @@
-import { getProducts } from '@/actions/get-products'
+import { getProducts } from '@/app/(shop)/_actions/get-products'
 import { BasePage } from '@/components/base-page'
 
 import { ProductList } from './_components/product/product-list'

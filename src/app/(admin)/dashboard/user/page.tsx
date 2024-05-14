@@ -1,4 +1,4 @@
-import { getUsers } from '@/actions/get-users'
+import { getUsers } from '@/app/(shop)/_actions/get-users'
 import { BasePage } from '@/components/base-page'
 
 import { DataTableUsers } from '../../_components/data-table/tables/users-data-table'

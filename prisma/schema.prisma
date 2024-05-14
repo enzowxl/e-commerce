@@ -73,8 +73,11 @@ model Category {
 }
 
 model Order {
-  id     String @id @default(uuid())
-  status String @default("WAITING_FOR_PAYMENT")
+  id             String  @id @default(uuid())
+  status         String  @default("WAITING_FOR_PAYMENT")
+  subtotalPrice  Decimal @db.Decimal(10, 2)
+  totalPrice     Decimal @db.Decimal(10, 2)
+  totalDiscounts Decimal @db.Decimal(10, 2)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -92,6 +95,8 @@ model OrderItem {
   quantity Int
   price    Decimal @db.Decimal(10, 2)
   discount Int     @default(0)
+  size     String?
+  color    String?
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

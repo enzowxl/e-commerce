@@ -1,5 +1,5 @@
 import { Product } from '@prisma/client'
-import { Percent } from 'lucide-react'
+import { ArrowDown } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -12,11 +12,11 @@ export function ProductItem({ product }: { product: Product }) {
       href={`/product/${product.slug}`}
       className="w-full rounded-xl overflow-hidden"
     >
-      <div className="relative flex items-center justify-center bg-color-secondary rounded-xl h-72">
+      <div className="relative flex items-center justify-center bg-color-secondary rounded-xl h-60">
         {product.discount > 0 && (
           <div className="flex items-center gap-1 absolute top-4 left-4 px-3 bg-red-600 rounded-xl">
-            <Percent className="w-3 h-3" />
-            <span className="text-sm">{product.discount}</span>
+            <ArrowDown className="w-4 h-4" />
+            <span className="text-sm">{product.discount}%</span>
           </div>
         )}
         <Image
