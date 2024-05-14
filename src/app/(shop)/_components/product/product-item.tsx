@@ -14,7 +14,7 @@ export function ProductItem({ product }: { product: Product }) {
     >
       <div className="relative flex items-center justify-center bg-color-secondary rounded-xl h-60">
         {product.discount > 0 && (
-          <div className="flex items-center gap-1 absolute top-4 left-4 px-3 bg-red-600 rounded-xl">
+          <div className="flex items-center gap-1 absolute top-4 left-4 px-1.5 bg-red-600 rounded-xl">
             <ArrowDown className="w-4 h-4" />
             <span className="text-sm">{product.discount}%</span>
           </div>

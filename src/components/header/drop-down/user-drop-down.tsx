@@ -1,11 +1,9 @@
 import {
   LayoutDashboard,
-  LayoutList,
   LogIn,
   LogOut,
   Package,
   Settings,
-  ShoppingCart,
   Store,
   UserRoundPlus,
 } from 'lucide-react'
@@ -86,15 +84,6 @@ export async function UserDropDown({ children }: { children: ReactNode }) {
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Link
-                  href={'/category'}
-                  className="flex gap-3 items-center w-full"
-                >
-                  <LayoutList className="w-5 h-5" />
-                  Categories
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link
                   href={'/settings'}
                   className="flex gap-3 items-center w-full"
                 >
@@ -118,21 +107,6 @@ export async function UserDropDown({ children }: { children: ReactNode }) {
                 <Link href={'/'} className="flex gap-3 items-center w-full">
                   <Store className="w-5 h-5" />
                   Home
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link href={'/cart'} className="flex gap-3 items-center w-full">
-                  <ShoppingCart className="w-5 h-5" />
-                  My cart
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link
-                  href={'/category'}
-                  className="flex gap-3 items-center w-full"
-                >
-                  <LayoutList className="w-5 h-5" />
-                  Categories
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
