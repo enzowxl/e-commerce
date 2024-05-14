@@ -3,7 +3,7 @@
 import { Product } from '@prisma/client'
 import React, { createContext, ReactNode, useContext, useEffect } from 'react'
 
-interface CartProduct extends Product {
+export interface CartProduct extends Product {
   quantity: number
 }
 
@@ -11,7 +11,6 @@ interface CartContext {
   cart: CartProduct[]
   addProductToCart: ({ product }: { product: Product }) => void
   removeProductFromCart: (slug: string) => void
-  removeOneProductFromCart: (slug: string) => void
   clearCart: () => void
 }
 
@@ -19,7 +18,6 @@ const CartContext = createContext<CartContext>({
   cart: [],
   addProductToCart: () => {},
   removeProductFromCart: () => {},
-  removeOneProductFromCart: () => {},
   clearCart: () => {},
 })
 
@@ -50,22 +48,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
       cartInLocalStorage.push({ ...product, quantity: 1 })
     }
 
-    return localStorage.setItem('cart', JSON.stringify(cartInLocalStorage))
+    localStorage.setItem('cart', JSON.stringify(cartInLocalStorage))
+    return updateCart(cartInLocalStorage)
   }
 
   function removeProductFromCart(slug: string) {
-    const cartInLocalStorage: CartProduct[] = JSON.parse(
-      localStorage.getItem('cart') || '[]',
-    )
-
-    const updatedCart = cartInLocalStorage.filter(
-      (cartProduct) => cartProduct.slug !== slug,
-    )
-
-    return localStorage.setItem('cart', JSON.stringify(updatedCart))
-  }
-
-  function removeOneProductFromCart(slug: string) {
     const cartInLocalStorage: CartProduct[] = JSON.parse(
       localStorage.getItem('cart') || '[]',
     )
@@ -82,7 +69,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }
     }
 
-    return localStorage.setItem('cart', JSON.stringify(cartInLocalStorage))
+    localStorage.setItem('cart', JSON.stringify(cartInLocalStorage))
+    return updateCart(cartInLocalStorage)
   }
 
   function clearCart() {
@@ -96,7 +84,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
         cart,
         addProductToCart,
         removeProductFromCart,
-        removeOneProductFromCart,
         clearCart,
       }}
     >

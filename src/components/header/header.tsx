@@ -1,6 +1,8 @@
 import { CircleUserRound, Menu, Search, ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
 
+import { CartSheet } from '@/app/(shop)/_components/cart/cart-sheet'
+
 import { Input } from '../ui/input'
 import { UserDropDown } from './drop-down/user-drop-down'
 import { MenuSheet } from './menu-sheet'
@@ -28,9 +30,11 @@ export function Header({ isDashboard }: { isDashboard?: boolean }) {
         )}
       </div>
       <div className="max-sm:hidden flex gap-7">
-        <Link href={'/cart'}>
-          <ShoppingCart className="min-w-5 min-h-5 cursor-pointer" />
-        </Link>
+        {!isDashboard && (
+          <CartSheet>
+            <ShoppingCart className="min-w-5 min-h-5 cursor-pointer" />
+          </CartSheet>
+        )}
         <UserDropDown>
           <CircleUserRound className="min-w-5 min-h-5 cursor-pointer" />
         </UserDropDown>
