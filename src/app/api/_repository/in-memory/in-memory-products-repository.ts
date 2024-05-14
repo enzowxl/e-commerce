@@ -11,6 +11,22 @@ export class InMemoryProductsRepository implements ProductsRepository {
     return this.products
   }
 
+  async findByOffer() {
+    return this.products.filter((product) => product.discount > 0)
+  }
+
+  async findByCategorySlug(slug: string) {
+    return this.products.filter((product) => product.categorySlug === slug)
+  }
+
+  async findByQuery(query: string) {
+    return this.products.filter(
+      (product) =>
+        product.name?.toLowerCase().includes(query.toLowerCase()) ||
+        product.description?.toLowerCase().includes(query.toLowerCase()),
+    )
+  }
+
   async create(data: Prisma.ProductUncheckedCreateInput) {
     const createProduct: Product = {
       id: randomUUID(),

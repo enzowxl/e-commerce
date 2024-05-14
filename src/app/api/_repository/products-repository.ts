@@ -9,4 +9,7 @@ export interface ProductsRepository {
   findBySlug(slug: string): Promise<Product | null>
   delete(slug: string): Promise<Product | null>
   findMany(): Promise<Product[]>
+  findByQuery(query: string): Promise<Product[]>
+  findByCategorySlug(slug: string): Promise<Product[]>
+  findByOffer(): Promise<Product[]>
 }

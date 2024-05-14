@@ -5,7 +5,9 @@ import { BasePage } from '@/components/base-page'
 import { DataTableProducts } from '../../_components/data-table/tables/products-data-table'
 
 export default async function DashboardProducts() {
-  const products = await getProducts()
+  const products = await getProducts({
+    type: 'ALL',
+  })
   const categories = await getCategories()
 
   return (

@@ -15,11 +15,24 @@ import { makeFetchAllProductsUseCase } from '@/app/api/_use-cases/factories/make
 import { makeUpdateProductUseCase } from '@/app/api/_use-cases/factories/make-update-product-use-case'
 import { createSlug } from '@/utils/create-slug'
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
+    const { searchParams } = new URL(req.url)
+    const type = searchParams.get('type')?.toUpperCase() as
+      | 'ALL'
+      | 'QUERY'
+      | 'OFFER'
+      | 'CATEGORY'
+    const query = searchParams.get('q') as string
+    const categorySlug = searchParams.get('category') as string
+
     const fetchAllProducts = makeFetchAllProductsUseCase()
 
-    const products = await fetchAllProducts.execute()
+    const products = await fetchAllProducts.execute({
+      type,
+      query,
+      categorySlug,
+    })
 
     return NextResponse.json(products, { status: 200 })
   } catch (err) {

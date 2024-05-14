@@ -9,6 +9,47 @@ export class PrismaProductsRepository implements ProductsRepository {
     return await prisma.product.findMany()
   }
 
+  async findByOffer() {
+    return await prisma.product.findMany({
+      where: {
+        discount: {
+          gt: 0,
+        },
+      },
+    })
+  }
+
+  async findByCategorySlug(slug: string) {
+    return await prisma.product.findMany({
+      where: {
+        category: {
+          slug,
+        },
+      },
+    })
+  }
+
+  async findByQuery(query: string) {
+    return await prisma.product.findMany({
+      where: {
+        OR: [
+          {
+            name: {
+              contains: query,
+              mode: 'insensitive',
+            },
+          },
+          {
+            description: {
+              contains: query,
+              mode: 'insensitive',
+            },
+          },
+        ],
+      },
+    })
+  }
+
   async delete(slug: string) {
     return await prisma.product.delete({
       where: {
