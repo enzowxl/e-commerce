@@ -17,6 +17,7 @@ export const env = createEnv({
     CLOUDINARY_SECRET: z.string(),
     CLOUDINARY_KEY: z.string(),
     CLOUDINARY_NAME: z.string(),
+    NODE_ENV: z.string(),
   },
 
   client: { NEXT_PUBLIC_URL: z.string().url() },
@@ -37,5 +38,6 @@ export const env = createEnv({
     CLOUDINARY_SECRET: process.env.CLOUDINARY_SECRET,
     CLOUDINARY_KEY: process.env.CLOUDINARY_KEY,
     CLOUDINARY_NAME: process.env.CLOUDINARY_NAME,
+    NODE_ENV: process.env.NODE_ENV,
   },
 })

@@ -6,7 +6,6 @@ import { AuthenticateUserError } from '@/app/api/_errors/authenticate-user-error
 import { BadRequestError } from '@/app/api/_errors/bad-request-error'
 import { ValidationError } from '@/app/api/_errors/validation-error'
 import { makeAuthenticateUseCase } from '@/app/api/_use-cases/factories/make-authenticate'
-import { prisma } from '@/lib/prisma'
 
 export const authOptions = {
   providers: [
@@ -54,16 +53,6 @@ export const authOptions = {
       }
     },
     async session({ session, token }) {
-      const findUserById = await prisma.user
-        .findFirst({
-          where: { id: token.sub },
-        })
-        .finally(async () => {
-          await prisma.$disconnect()
-        })
-      if (findUserById) {
-        session.user.role = findUserById?.role
-      }
       session.user.sub = token.sub as string
       return {
         ...session,

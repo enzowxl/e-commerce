@@ -76,13 +76,11 @@ export function CartSheet({ children }: { children: ReactNode }) {
 
     const checkout = await responseCheckout.json()
 
-    console.log(checkout)
-
     updateOnOpenChange(!open)
 
     clearCart()
 
-    return router.push('/order')
+    return router.push(checkout.url)
   }
 
   return (
