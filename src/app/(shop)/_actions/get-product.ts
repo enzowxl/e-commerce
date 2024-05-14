@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 
 import { api } from '@/utils/api'
 
-export async function getProduct(slug: string): Promise<Product | null> {
+export async function getProduct(slug: string): Promise<Product> {
   const response = await api(`/product/${slug}`, {
     method: 'GET',
     cache: 'no-cache',
@@ -11,7 +11,7 @@ export async function getProduct(slug: string): Promise<Product | null> {
 
   const { product } = (await response.json()) as { product: Product }
 
-  if (product === undefined) {
+  if (!response.ok) {
     return notFound()
   }
 

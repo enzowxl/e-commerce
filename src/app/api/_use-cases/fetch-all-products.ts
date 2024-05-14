@@ -1,5 +1,7 @@
-import { Product } from '@prisma/client'
+import { Category, Product } from '@prisma/client'
 
+import { CategoryNotExistsError } from '../_errors/category-not-exists-error'
+import { CategoriesRepository } from '../_repository/categories-repository'
 import { ProductsRepository } from '../_repository/products-repository'
 
 type GetProductTypes = { type: 'ALL' | 'OFFER' }
@@ -9,9 +11,14 @@ type GetProductTypeCategory = { type: 'CATEGORY'; categorySlug: string }
 type AllTypes = GetProductTypes | GetProductTypeQuery | GetProductTypeCategory
 
 export class FetchAllProductsUseCase {
-  constructor(private productsRepository: ProductsRepository) {}
+  constructor(
+    private productsRepository: ProductsRepository,
+    private categoriesRepository: CategoriesRepository,
+  ) {}
+
   async execute(options: AllTypes) {
     let products: Product[] = []
+    let categoryWithSlug: Category | null = null
 
     switch (options.type) {
       case 'ALL':
@@ -21,6 +28,10 @@ export class FetchAllProductsUseCase {
         products = await this.productsRepository.findByOffer()
         break
       case 'CATEGORY':
+        categoryWithSlug = await this.categoriesRepository.findBySlug(
+          options.categorySlug,
+        )
+        if (!categoryWithSlug) throw new CategoryNotExistsError()
         products = await this.productsRepository.findByCategorySlug(
           options.categorySlug,
         )
