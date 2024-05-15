@@ -18,10 +18,10 @@ export async function POST(req: Request) {
     )
 
     switch (event.type) {
-      case 'payment_intent.succeeded':
+      case 'checkout.session.completed':
         await prisma.order.update({
           where: {
-            id: event.data.object?.metadata.orderId,
+            id: event.data.object?.metadata?.orderId,
           },
           data: {
             status: 'PAYMENT_CONFIRMED',

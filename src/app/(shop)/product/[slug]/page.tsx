@@ -6,6 +6,6 @@ export default async function Product({
 }: {
   params: { slug: string }
 }) {
-  const product = await getProduct(slug)
-  return <BasePage title={`Product ${product?.name}`}></BasePage>
+  const productBySlug = await getProduct(slug)
+  return <BasePage title={`${productBySlug?.name}`}></BasePage>
 }

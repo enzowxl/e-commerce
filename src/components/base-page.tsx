@@ -14,7 +14,7 @@ export function BasePage({
 }) {
   return (
     <div
-      className={clsx(`flex flex-col flex-1 gap-8 rounded-xl p-8`, className)}
+      className={clsx(`flex flex-col flex-1 gap-10 rounded-xl p-8`, className)}
     >
       {title && (
         <h1 className={clsx('text-3xl font-bold text-white', classNameTitle)}>

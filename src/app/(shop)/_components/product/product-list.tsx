@@ -13,7 +13,7 @@ export function ProductList({
   classNameTitle?: string
 }) {
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-4">
       {title && (
         <h1 className={clsx('text-3xl font-bold text-white', classNameTitle)}>
           {title}

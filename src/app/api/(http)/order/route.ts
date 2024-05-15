@@ -15,6 +15,13 @@ export async function GET(req: NextRequest) {
 
     const orders = await prisma.order.findMany({
       where: { userId: token.sub as string },
+      include: {
+        orderItems: {
+          include: {
+            product: true,
+          },
+        },
+      },
     })
 
     return NextResponse.json(orders, { status: 200 })

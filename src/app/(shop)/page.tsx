@@ -26,7 +26,7 @@ export default async function Shop() {
 
   return (
     <BasePage>
-      <div className="flex flex-col gap-14">
+      <div className="flex flex-col gap-10">
         <CategoryList categories={categories} />
         <ProductList title="Offers" products={offerProducts} />
         <ProductList title="All" products={products} />
