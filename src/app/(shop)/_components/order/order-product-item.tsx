@@ -15,16 +15,14 @@ export function OrderProductItem({
   }>
 }) {
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between gap-3">
       <div className="flex items-center gap-3">
-        <div className="rounded-xl flex h-[77px] w-[100px] items-center justify-center bg-color-secondary lg:h-[130px] lg:w-[150px]">
+        <div className="relative h-20 w-20">
           <Image
-            width={0}
-            height={0}
-            sizes="100vw"
-            className="h-auto max-h-[80%] w-auto max-w-[80%] object-contain"
             src={orderItem.product.photoUrl ?? ''}
             alt={orderItem.product.name}
+            fill
+            className="rounded-lg object-cover"
           />
         </div>
         <div className="flex flex-col sm:gap-2">
@@ -73,7 +71,7 @@ export function OrderProductItem({
         )}
       </div>
       <span className="sm:hidden text-sm text-color-gray">
-        Quantity - {orderItem.quantity}
+        Qtd - {orderItem.quantity}
       </span>
     </div>
   )

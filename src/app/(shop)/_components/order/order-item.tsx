@@ -103,7 +103,6 @@ export function OrderItem({
               <div className="flex flex-col gap-2">
                 <Label className="text-lg font-semibold">Date</Label>
                 <span className="text-sm text-color-gray">
-                  {' '}
                   {formatDate(order.createdAt)}
                 </span>
               </div>
