@@ -21,8 +21,10 @@ export function OrderProductItem({
           <Image
             src={orderItem.product.photoUrl ?? ''}
             alt={orderItem.product.name}
-            fill
-            className="rounded-lg object-cover"
+            width={0}
+            height={0}
+            sizes="100vh"
+            className="rounded-lg object-cover h-full w-full"
           />
         </div>
         <div className="flex flex-col sm:gap-2">

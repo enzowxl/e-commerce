@@ -15,8 +15,10 @@ export function CartItem({ product }: { product: CartProduct }) {
           <Image
             src={product.photoUrl!}
             alt={product.name}
-            fill
-            className="rounded-lg object-cover"
+            width={0}
+            height={0}
+            sizes="100vh"
+            className="rounded-lg object-cover h-full w-full"
           />
         </div>
         <div className="flex flex-col gap-1 sm:pt-4">
