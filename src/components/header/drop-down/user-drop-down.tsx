@@ -40,8 +40,8 @@ export async function UserDropDown({ children }: { children: ReactNode }) {
       <DropdownMenuContent className="min-w-56">
         {data?.user ? (
           <React.Fragment>
-            <DropdownMenuItem>
-              <Link href={'/'} className="flex gap-3 items-center">
+            <Link href={'/'}>
+              <DropdownMenuItem className="flex gap-3 items-center">
                 <Avatar>
                   <AvatarImage src={data.user.image!} alt={data.user.name!} />
                   <AvatarFallback>{data.user.name![0][0]}</AvatarFallback>
@@ -52,53 +52,47 @@ export async function UserDropDown({ children }: { children: ReactNode }) {
                     {data.user.email}
                   </span>
                 </div>
-              </Link>
-            </DropdownMenuItem>
+              </DropdownMenuItem>
+            </Link>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Link href={'/'} className="flex gap-3 items-center w-full">
+              <Link href={'/'}>
+                <DropdownMenuItem className="flex gap-3 items-center w-full">
                   <Store className="w-5 h-5" />
                   Home
-                </Link>
-              </DropdownMenuItem>
+                </DropdownMenuItem>
+              </Link>
               {permission && (
-                <DropdownMenuItem>
-                  <Link
-                    href={'/dashboard'}
-                    className="flex gap-3 items-center w-full"
-                  >
+                <Link href={'/dashboard'}>
+                  <DropdownMenuItem className="flex gap-3 items-center w-full">
                     <LayoutDashboard className="w-5 h-5" />
                     Dashboard
-                  </Link>
-                </DropdownMenuItem>
+                  </DropdownMenuItem>
+                </Link>
               )}
-              <DropdownMenuItem>
-                <Link
-                  href={'/order'}
-                  className="flex gap-3 items-center w-full"
-                >
+              <Link href={'/order'}>
+                <DropdownMenuItem className="flex gap-3 items-center w-full">
                   <Package className="w-5 h-5" />
                   My orders
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link
-                  href={'/settings'}
-                  className="flex gap-3 items-center w-full"
-                >
+                </DropdownMenuItem>
+              </Link>
+              <Link
+                href={'/settings'}
+                className="flex gap-3 items-center w-full"
+              >
+                <DropdownMenuItem className="flex gap-3 items-center w-full">
                   <Settings className="w-5 h-5" />
                   Settings
-                </Link>
-              </DropdownMenuItem>
+                </DropdownMenuItem>
+              </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <DropDownLogOut className="flex gap-3 items-center w-full">
+            <DropDownLogOut className="w-full">
+              <DropdownMenuItem className="flex gap-3 items-center w-full">
                 <LogOut className="w-5 h-5" />
                 Log out
-              </DropDownLogOut>
-            </DropdownMenuItem>
+              </DropdownMenuItem>
+            </DropDownLogOut>
           </React.Fragment>
         ) : (
           <React.Fragment>
