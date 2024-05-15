@@ -50,10 +50,14 @@ export function OrderItem({
   }
 
   return (
-    <Accordion type="single" className="w-full" collapsible>
+    <Accordion
+      type="single"
+      className="w-full bg-color-secondary rounded-xl"
+      collapsible
+    >
       <AccordionItem value={order.id}>
-        <div className="gap-8 p-6 flex flex-col border-2 border-color-secondary rounded-xl">
-          <AccordionTrigger className="outline-none">
+        <div className="gap-8 p-6 flex flex-col">
+          <AccordionTrigger className="outline-none cursor-pointer">
             <div className="text-left flex-1 flex items-center justify-between">
               <div className="flex flex-col gap-2">
                 <Label className="text-lg font-semibold">Order number</Label>

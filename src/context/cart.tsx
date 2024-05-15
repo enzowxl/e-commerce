@@ -13,7 +13,7 @@ export interface CartProduct extends Product {
 
 interface CartContext {
   cart: CartProduct[]
-  addProductToCart: ({ product }: { product: Product }) => void
+  addProductToCart: ({ product }: { product: CartProduct }) => void
   removeProductFromCart: (slug: string) => void
   clearCart: () => void
   totalPrice: number
@@ -53,7 +53,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const totalDiscounts = subtotalPrice - totalPrice
 
-  function addProductToCart({ product }: { product: Product }) {
+  function addProductToCart({ product }: { product: CartProduct }) {
     const cartInLocalStorage: CartProduct[] = JSON.parse(
       localStorage.getItem('cart') || '[]',
     )
@@ -63,9 +63,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
     )
 
     if (productIndex !== -1) {
-      cartInLocalStorage[productIndex].quantity += 1
+      cartInLocalStorage[productIndex].quantity += product.quantity
     } else {
-      cartInLocalStorage.push({ ...product, quantity: 1 })
+      cartInLocalStorage.push(product)
     }
 
     localStorage.setItem('cart', JSON.stringify(cartInLocalStorage))
