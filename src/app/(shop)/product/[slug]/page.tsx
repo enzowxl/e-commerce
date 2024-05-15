@@ -31,7 +31,7 @@ export default async function Product({
               width={0}
               height={0}
               sizes="100vh"
-              className="rounded-lg object-cover h-full w-full"
+              className="rounded-lg object-contain h-auto max-h-96 w-full"
             />
           </div>
           <div className="w-full bg-color-secondary rounded-xl p-8">
