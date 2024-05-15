@@ -44,13 +44,13 @@ export default async function Product({
           ).length > 0 ? (
             <ProductList
               title="Recommended products"
-              products={productsByCategorySlug}
+              products={productsByCategorySlug.slice(0, 4)}
               filter={(productList) => productList.slug !== product.slug}
             />
           ) : (
             <ProductList
               title="Recommended products"
-              products={productsInOffer}
+              products={productsInOffer.slice(0, 4)}
               filter={(productList) => productList.slug !== product.slug}
             />
           )}
