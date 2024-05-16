@@ -15,7 +15,7 @@ export async function middleware(req: NextRequest) {
   }
 
   if (!token) {
-    if (req.nextUrl.pathname === '/dashboard') {
+    if (req.nextUrl.pathname.includes('dashboard')) {
       return NextResponse.redirect(homeUrl)
     }
   }

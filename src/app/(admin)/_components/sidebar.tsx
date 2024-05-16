@@ -1,33 +1,22 @@
-import {
-  LayoutDashboard,
-  LayoutList,
-  ShoppingBasket,
-  UsersRound,
-} from 'lucide-react'
+import { LayoutList, ShoppingBasket, UsersRound } from 'lucide-react'
 import Link from 'next/link'
 
 export function SideBar() {
   const pages = [
     {
       id: 1,
-      name: 'Dashboard',
-      href: '/dashboard',
-      icon: LayoutDashboard,
-    },
-    {
-      id: 2,
       name: 'Products',
       href: '/dashboard/product',
       icon: ShoppingBasket,
     },
     {
-      id: 3,
+      id: 2,
       name: 'Categories',
       href: '/dashboard/category',
       icon: LayoutList,
     },
     {
-      id: 4,
+      id: 3,
       name: 'Users',
       href: '/dashboard/user',
       icon: UsersRound,

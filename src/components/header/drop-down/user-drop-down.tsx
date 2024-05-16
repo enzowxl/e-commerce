@@ -63,7 +63,7 @@ export async function UserDropDown({ children }: { children: ReactNode }) {
                 </DropdownMenuItem>
               </Link>
               {permission && (
-                <Link href={'/dashboard'}>
+                <Link href={'/dashboard/product'}>
                   <DropdownMenuItem className="flex gap-3 items-center w-full">
                     <LayoutDashboard className="w-5 h-5" />
                     Dashboard
