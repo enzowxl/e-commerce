@@ -23,8 +23,8 @@ export class PrismaCategoriesRepository implements CategoriesRepository {
     })
   }
 
-  update(slug: string, data: Prisma.CategoryUpdateInput) {
-    return prisma.category.update({
+  async update(slug: string, data: Prisma.CategoryUpdateInput) {
+    return await prisma.category.update({
       where: {
         slug,
       },

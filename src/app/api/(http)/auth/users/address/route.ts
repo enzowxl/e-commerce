@@ -8,9 +8,9 @@ import { BadRequestError } from '@/app/api/_errors/bad-request-error'
 import { UnauthorizedError } from '@/app/api/_errors/unauthorized-error'
 import { UserNotExistsError } from '@/app/api/_errors/user-not-exists-error'
 import { ValidationError } from '@/app/api/_errors/validation-error'
+import { makeCreateAddressUseCase } from '@/app/api/_use-cases/factories/make-create-address-use-case'
 import { makeFetchUserUseCase } from '@/app/api/_use-cases/factories/make-fetch-user-use-case'
 import { userSchema } from '@/auth/models/user'
-import { prisma } from '@/lib/prisma'
 
 export async function POST(req: NextRequest) {
   try {
@@ -52,51 +52,20 @@ export async function POST(req: NextRequest) {
 
     if (cannot('update', authUser)) throw new UnauthorizedError()
 
-    const addressByUserEmail = await prisma.address.findFirst({
-      where: {
-        user: {
-          some: {
-            email,
-          },
-        },
-      },
+    const createAddressUseCase = makeCreateAddressUseCase()
+
+    await createAddressUseCase.execute({
+      email,
+      address,
+      number,
+      city,
+      state,
+      zip: zipcode,
+      complement,
+      district,
     })
 
-    if (!addressByUserEmail) {
-      await prisma.address.create({
-        data: {
-          address,
-          number,
-          city,
-          state,
-          zip: zipcode,
-          complement,
-          district,
-          user: {
-            connect: {
-              email,
-            },
-          },
-        },
-      })
-    } else {
-      await prisma.address.update({
-        where: {
-          id: addressByUserEmail.id,
-        },
-        data: {
-          address,
-          number,
-          city,
-          state,
-          zip: zipcode,
-          complement,
-          district,
-        },
-      })
-    }
-
-    return NextResponse.json({}, { status: 200 })
+    return NextResponse.json({}, { status: 201 })
   } catch (err) {
     if (err instanceof ZodError) {
       return new ValidationError().error()
