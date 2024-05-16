@@ -1,4 +1,3 @@
-import { Pencil } from 'lucide-react'
 import { notFound } from 'next/navigation'
 import { getServerSession } from 'next-auth'
 
@@ -33,9 +32,6 @@ export default async function Settings() {
                 {data.user.email}
               </span>
             </div>
-          </div>
-          <div>
-            <Pencil className="w-5 h-5" />
           </div>
         </div>
         <div className="w-full flex flex-col gap-10 p-8 bg-color-secondary rounded-xl">

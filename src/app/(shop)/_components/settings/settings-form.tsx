@@ -2,10 +2,12 @@
 
 import { Prisma } from '@prisma/client'
 import React, { ChangeEvent, FocusEvent, FormEvent } from 'react'
+import toast from 'react-hot-toast'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { api } from '@/utils/api'
 
 interface UserPayload
   extends Prisma.UserGetPayload<{
@@ -24,17 +26,25 @@ export function SettingsForm({ me }: { me: UserPayload }) {
     city: me?.address?.city ?? '',
     state: me?.address?.state ?? '',
   })
-  const [foundData, updateFoundData] = React.useState(false)
+  const [foundData, updateFoundData] = React.useState(!!me?.address?.zip)
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
+  }
+
+  const handleZipcodeChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    const formattedValue = value
+      .replace(/\D/g, '')
+      .replace(/(\d{5})(\d)/, '$1-$2')
+    setFormData({ ...formData, [name]: formattedValue })
     updateFoundData(false)
   }
 
   const handleZipcodeBlur = async (e: FocusEvent<HTMLInputElement>) => {
-    const cep = e.target.value
-    if (cep.length === 8 || cep.length === 9) {
+    const cep = e.target.value.replace(/\D/g, '')
+    if (cep.length === 8) {
       try {
         const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`)
         const data = await response.json()
@@ -57,23 +67,57 @@ export function SettingsForm({ me }: { me: UserPayload }) {
     }
   }
 
-  function handleSave(event: FormEvent<HTMLFormElement>) {
+  async function handleSave(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    const formData = new FormData(event.currentTarget)
+    const formDataSend = new FormData(event.currentTarget)
 
-    Array.from(formData.keys()).forEach((key) => {
-      const value = formData.get(key)
+    Array.from(formDataSend.keys()).forEach((key) => {
+      formDataSend.delete(key)
+    })
+
+    formDataSend.append('email', me.email)
+    formDataSend.append('address', formData.address)
+    formDataSend.append('number', formData.number.toString())
+    formDataSend.append('complement', formData.complement)
+    formDataSend.append('zipcode', formData.zipcode)
+    formDataSend.append('district', formData.district)
+    formDataSend.append('city', formData.city)
+    formDataSend.append('state', formData.state)
+
+    Array.from(formDataSend.keys()).forEach((key) => {
+      const value = formDataSend.get(key)
 
       if (typeof value === 'string' && value === '') {
-        formData.delete(key)
+        formDataSend.delete(key)
       }
 
       if (value instanceof File && value.size <= 0) {
-        formData.delete(key)
+        formDataSend.delete(key)
       }
     })
+
+    await api(`/auth/users/address`, {
+      method: 'POST',
+      body: formDataSend,
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          const { error } = await res.json()
+          return toast.error(error, {
+            duration: 3000,
+          })
+        }
+
+        toast.success('Successful saving settings', {
+          duration: 3000,
+        })
+      })
+      .catch((err) => {
+        return console.log(err)
+      })
   }
+
   return (
     <form onSubmit={handleSave} className="w-full flex flex-col gap-8">
       <div className="flex items-center gap-3">
@@ -121,7 +165,7 @@ export function SettingsForm({ me }: { me: UserPayload }) {
           <Input
             name="zipcode"
             value={formData.zipcode}
-            onChange={handleInputChange}
+            onChange={handleZipcodeChange}
             onBlur={handleZipcodeBlur}
             className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-12 px-4 outline-none"
             placeholder="06472-001"
