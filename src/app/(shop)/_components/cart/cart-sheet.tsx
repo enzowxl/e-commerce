@@ -21,6 +21,7 @@ import { api } from '@/utils/api'
 import { formatPrice } from '@/utils/format-price'
 import { formatPriceDiscount } from '@/utils/format-price-discount'
 
+import { getMe } from '../../_actions/get-me'
 import { CartList } from './cart-list'
 
 export function CartSheet({ children }: { children: ReactNode }) {
@@ -34,7 +35,17 @@ export function CartSheet({ children }: { children: ReactNode }) {
   const { data } = useSession()
 
   async function finishOrder() {
-    if (!data?.user) return router.push('/signin')
+    if (!data?.user) {
+      router.push('/signin')
+      return updateOnOpenChange(!open)
+    }
+
+    const user = await getMe(data?.user.email as string)
+
+    if (!user.address) {
+      router.push('/settings')
+      return updateOnOpenChange(!open)
+    }
 
     const responseOrder = await api('/order', {
       method: 'POST',
