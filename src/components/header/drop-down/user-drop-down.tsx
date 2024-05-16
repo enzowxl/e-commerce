@@ -97,26 +97,26 @@ export async function UserDropDown({ children }: { children: ReactNode }) {
         ) : (
           <React.Fragment>
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Link href={'/'} className="flex gap-3 items-center w-full">
+              <Link href={'/'}>
+                <DropdownMenuItem className="flex gap-3 items-center w-full">
                   <Store className="w-5 h-5" />
                   Home
-                </Link>
-              </DropdownMenuItem>
+                </DropdownMenuItem>
+              </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link href={'/signin'} className="flex gap-3 items-center w-full">
+            <Link href={'/signin'}>
+              <DropdownMenuItem className="flex gap-3 items-center w-full">
                 <LogIn className="w-5 h-5" />
                 Sign In
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link href={'/signup'} className="flex gap-3 items-center w-full">
+              </DropdownMenuItem>
+            </Link>
+            <Link href={'/signup'}>
+              <DropdownMenuItem className="flex gap-3 items-center w-full">
                 <UserRoundPlus className="w-5 h-5" />
                 Sign Up
-              </Link>
-            </DropdownMenuItem>
+              </DropdownMenuItem>
+            </Link>
           </React.Fragment>
         )}
       </DropdownMenuContent>
