@@ -1,5 +1,4 @@
 import { Product } from '@prisma/client'
-import { notFound } from 'next/navigation'
 
 import { api } from '@/utils/api'
 
@@ -37,10 +36,6 @@ export async function getProducts(options: AllTypes): Promise<Product[]> {
   })
 
   const { products } = (await response.json()) as { products: Product[] }
-
-  if (!response.ok) {
-    return notFound()
-  }
 
   return products
 }

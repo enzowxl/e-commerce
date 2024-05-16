@@ -37,6 +37,9 @@ export class PrismaUsersRepository implements UsersRepository {
       where: {
         email,
       },
+      include: {
+        address: true,
+      },
     })
   }
 

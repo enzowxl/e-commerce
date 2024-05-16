@@ -79,7 +79,14 @@ export function CartItem({ product }: { product: CartProduct }) {
         </Button>
         <span>{product.quantity}</span>
         <Button
-          onClick={() => addProductToCart({ product })}
+          onClick={() =>
+            addProductToCart({
+              product: {
+                ...product,
+                quantity: 1,
+              },
+            })
+          }
           className="rounded-xl px-1.5 bg-color-primary text-white"
         >
           <Plus className="w-5 h-5" />

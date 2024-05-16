@@ -27,12 +27,22 @@ export default async function Shop() {
   return (
     <BasePage>
       <div className="flex flex-col gap-10">
-        <CategoryList categories={categories} />
-        <ProductList title="Offers" products={offerProducts} />
-        <ProductList title="All" products={products} />
-        <ProductList title="Gym" products={gymProducts} />
-        <ProductList title="Casual" products={casualProducts} />
-        <ProductList title="Electronics" products={electronicsProducts} />
+        {categories?.length > 0 && <CategoryList categories={categories} />}
+        {offerProducts?.length > 0 && (
+          <ProductList title="Offers" products={offerProducts} />
+        )}
+        {products?.length > 0 && (
+          <ProductList title="All" products={products} />
+        )}
+        {gymProducts?.length > 0 && (
+          <ProductList title="Gym" products={gymProducts} />
+        )}
+        {casualProducts?.length > 0 && (
+          <ProductList title="Casual" products={casualProducts} />
+        )}
+        {electronicsProducts?.length > 0 && (
+          <ProductList title="Electronics" products={electronicsProducts} />
+        )}
       </div>
     </BasePage>
   )

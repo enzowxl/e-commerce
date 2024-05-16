@@ -24,7 +24,7 @@ export default async function Product({
     <BasePage>
       <div className="flex flex-col gap-10">
         <div className="w-full flex max-lg:flex-col gap-5">
-          <div className="w-full bg-color-secondary rounded-xl max-lg:p-8">
+          <div className="flex w-full items-center justify-center bg-color-secondary rounded-xl max-lg:p-8">
             <Image
               src={product.photoUrl ?? ''}
               alt={product.name}

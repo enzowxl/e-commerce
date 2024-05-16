@@ -31,7 +31,25 @@ model User {
 
   order Order[]
 
+  address   Address? @relation(fields: [addressId], references: [id])
+  addressId String?
+
   @@map("users")
+}
+
+model Address {
+  id         String  @id @default(uuid())
+  address    String
+  number     Int
+  complement String?
+  city       String
+  district   String
+  state      String
+  zip        String
+
+  user User[]
+
+  @@map("address")
 }
 
 model Product {

@@ -15,8 +15,22 @@ CREATE TABLE "users" (
     "photo_id" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
+    "addressId" TEXT,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "address" (
+    "id" TEXT NOT NULL,
+    "address" TEXT NOT NULL,
+    "number" INTEGER NOT NULL,
+    "complement" TEXT,
+    "city" TEXT NOT NULL,
+    "state" TEXT NOT NULL,
+    "zip" TEXT NOT NULL,
+
+    CONSTRAINT "address_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -54,7 +68,7 @@ CREATE TABLE "categories" (
 -- CreateTable
 CREATE TABLE "oders" (
     "id" TEXT NOT NULL,
-    "status" TEXT NOT NULL DEFAULT 'WAITING_FOR_PAYMENT',
+    "status" "OrderStatus" NOT NULL DEFAULT 'WAITING_FOR_PAYMENT',
     "subtotalPrice" DECIMAL(10,2) NOT NULL,
     "totalPrice" DECIMAL(10,2) NOT NULL,
     "totalDiscounts" DECIMAL(10,2) NOT NULL,
@@ -71,6 +85,8 @@ CREATE TABLE "order_items" (
     "quantity" INTEGER NOT NULL,
     "price" DECIMAL(10,2) NOT NULL,
     "discount" INTEGER NOT NULL DEFAULT 0,
+    "size" TEXT,
+    "color" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "order_id" TEXT NOT NULL,
@@ -87,6 +103,9 @@ CREATE UNIQUE INDEX "products_slug_key" ON "products"("slug");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "categories_slug_key" ON "categories"("slug");
+
+-- AddForeignKey
+ALTER TABLE "users" ADD CONSTRAINT "users_addressId_fkey" FOREIGN KEY ("addressId") REFERENCES "address"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "products" ADD CONSTRAINT "products_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "categories"("slug") ON DELETE SET NULL ON UPDATE CASCADE;

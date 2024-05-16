@@ -163,6 +163,7 @@ export function NewProductSheet({
                 placeholder="12,00"
                 type="number"
                 required
+                min={1}
               />
             </div>
             <div className="flex flex-col gap-3">
@@ -172,6 +173,7 @@ export function NewProductSheet({
                 className="w-full bg-color-secondary placeholder:text-color-gray rounded-xl h-12 px-4 outline-none"
                 placeholder="10"
                 type="number"
+                min={1}
               />
             </div>
             <div className="flex flex-col gap-3">

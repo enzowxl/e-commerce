@@ -20,7 +20,6 @@ export class CreateProductUseCase {
   async execute({
     name,
     price,
-    type,
     discount,
     description,
     slug,
@@ -61,7 +60,6 @@ export class CreateProductUseCase {
     const createProduct = await this.productsRepository.create({
       name,
       price,
-      type,
       discount,
       description,
       photoUrl,
