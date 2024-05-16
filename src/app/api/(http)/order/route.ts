@@ -7,6 +7,8 @@ import { UnauthorizedError } from '@/app/api/_errors/unauthorized-error'
 import { ValidationError } from '@/app/api/_errors/validation-error'
 import { prisma } from '@/lib/prisma'
 
+import { makeCreateOrderUseCase } from '../../_use-cases/factories/make-create-order-use-case'
+
 export async function GET(req: NextRequest) {
   try {
     const token = await getToken({ req })
@@ -60,39 +62,33 @@ export async function POST(req: NextRequest) {
     const { products, subtotalPrice, totalDiscounts, totalPrice } =
       await orderRequestSchema
 
-    const order = await prisma.order.create({
-      data: {
-        userId: token?.sub as string,
-        status: 'WAITING_FOR_PAYMENT',
-        subtotalPrice,
-        totalPrice,
-        totalDiscounts,
-        orderItems: {
-          createMany: {
-            data: products.map((product) => {
-              return {
-                price: product.price,
-                discount: product.discount,
-                quantity: product.quantity,
-                productId: product.id,
-                size: product.size,
-                color: product.color,
-              }
-            }),
-          },
-        },
-      },
-      include: {
-        orderItems: {
-          include: {
-            product: true,
-          },
+    const createOrderUseCase = makeCreateOrderUseCase()
+
+    const order = await createOrderUseCase.execute({
+      userId: token?.sub as string,
+      status: 'WAITING_FOR_PAYMENT',
+      subtotalPrice,
+      totalPrice,
+      totalDiscounts,
+      orderItems: {
+        createMany: {
+          data: products.map((product) => {
+            return {
+              price: product.price,
+              discount: product.discount,
+              quantity: product.quantity,
+              productId: product.id,
+              size: product.size,
+              color: product.color,
+            }
+          }),
         },
       },
     })
 
     return NextResponse.json(order, { status: 201 })
   } catch (err) {
+    console.log(err)
     if (err instanceof ZodError) {
       return new ValidationError().error()
     }

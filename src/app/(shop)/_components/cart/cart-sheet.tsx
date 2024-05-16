@@ -66,7 +66,7 @@ export function CartSheet({ children }: { children: ReactNode }) {
       }),
     })
 
-    const order = (await responseOrder.json()) as Order
+    const { order } = (await responseOrder.json()) as { order: Order }
 
     const responseCheckout = await api('/order/checkout', {
       method: 'POST',
