@@ -21,7 +21,7 @@ export async function getOrders(): Promise<OrderPayload[]> {
     headers: headers(),
   })
 
-  const order = (await response.json()) as OrderPayload[]
+  const { orders } = (await response.json()) as { orders: OrderPayload[] }
 
-  return order
+  return orders
 }

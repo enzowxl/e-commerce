@@ -5,9 +5,9 @@ import { z, ZodError } from 'zod'
 import { BadRequestError } from '@/app/api/_errors/bad-request-error'
 import { UnauthorizedError } from '@/app/api/_errors/unauthorized-error'
 import { ValidationError } from '@/app/api/_errors/validation-error'
-import { prisma } from '@/lib/prisma'
 
 import { makeCreateOrderUseCase } from '../../_use-cases/factories/make-create-order-use-case'
+import { makeFetchAllUserOrdersUseCase } from '../../_use-cases/factories/make-fetch-all-user-orders-use-case'
 
 export async function GET(req: NextRequest) {
   try {
@@ -15,15 +15,10 @@ export async function GET(req: NextRequest) {
 
     if (!token) throw new UnauthorizedError()
 
-    const orders = await prisma.order.findMany({
-      where: { userId: token.sub as string },
-      include: {
-        orderItems: {
-          include: {
-            product: true,
-          },
-        },
-      },
+    const fetchAllUserOrdersUseCase = makeFetchAllUserOrdersUseCase()
+
+    const orders = await fetchAllUserOrdersUseCase.execute({
+      email: token.email as string,
     })
 
     return NextResponse.json(orders, { status: 200 })
