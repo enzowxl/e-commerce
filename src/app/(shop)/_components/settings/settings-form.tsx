@@ -28,13 +28,13 @@ export function SettingsForm({ me }: { me: UserPayload }) {
   })
   const [foundData, updateFoundData] = React.useState(!!me?.address?.zip)
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target
     setFormData({ ...formData, [name]: value })
   }
 
-  const handleZipcodeChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
+  const handleZipcodeChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target
     const formattedValue = value
       .replace(/\D/g, '')
       .replace(/(\d{5})(\d)/, '$1-$2')
@@ -42,8 +42,8 @@ export function SettingsForm({ me }: { me: UserPayload }) {
     updateFoundData(false)
   }
 
-  const handleZipcodeBlur = async (e: FocusEvent<HTMLInputElement>) => {
-    const cep = e.target.value.replace(/\D/g, '')
+  const handleZipcodeBlur = async (event: FocusEvent<HTMLInputElement>) => {
+    const cep = event.target.value.replace(/\D/g, '')
     if (cep.length === 8) {
       try {
         const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`)
