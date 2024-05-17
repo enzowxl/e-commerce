@@ -58,12 +58,9 @@ export function SettingsForm({ me }: { me: UserPayload }) {
           })
           updateFoundData(true)
         } else {
-          console.log('CEP não encontrado')
           updateFoundData(false)
         }
-      } catch (error) {
-        console.error('Erro ao buscar CEP:', error)
-      }
+      } catch (error) {}
     }
   }
 

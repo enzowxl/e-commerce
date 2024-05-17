@@ -15,12 +15,12 @@ export default async function Order() {
     return notFound()
   }
 
-  const orders = await getOrders()
+  const allOrders = await getOrders()
 
   return (
     <BasePage title="My orders">
       <div className="flex flex-col gap-10">
-        {orders.map((order, index) => {
+        {allOrders.map((order, index) => {
           return <OrderItem key={order.id} order={order} index={index + 1} />
         })}
       </div>

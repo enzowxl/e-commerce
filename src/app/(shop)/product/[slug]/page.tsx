@@ -12,10 +12,10 @@ export default async function Product({
 }: {
   params: { slug: string }
 }) {
-  const product = await getProduct(slug)
+  const productBySlug = await getProduct(slug)
   const productsByCategorySlug = await getProducts({
     type: 'CATEGORY',
-    categorySlug: product?.categorySlug as string,
+    categorySlug: productBySlug?.categorySlug as string,
   })
   const productsInOffer = await getProducts({
     type: 'OFFER',
@@ -26,8 +26,8 @@ export default async function Product({
         <div className="w-full flex max-lg:flex-col gap-5">
           <div className="flex w-full items-center justify-center bg-color-secondary rounded-xl max-lg:p-8">
             <Image
-              src={product.photoUrl ?? ''}
-              alt={product.name}
+              src={productBySlug.photoUrl ?? ''}
+              alt={productBySlug.name}
               width={0}
               height={0}
               sizes="100vh"
@@ -35,23 +35,23 @@ export default async function Product({
             />
           </div>
           <div className="w-full bg-color-secondary rounded-xl p-8">
-            <ProductInfo product={product} />
+            <ProductInfo product={productBySlug} />
           </div>
         </div>
         <div>
           {productsByCategorySlug.filter(
-            (productList) => productList.slug !== product.slug,
+            (productList) => productList.slug !== productBySlug.slug,
           ).length > 0 ? (
             <ProductList
               title="Recommended products"
               products={productsByCategorySlug.slice(0, 4)}
-              filter={(productList) => productList.slug !== product.slug}
+              filter={(productList) => productList.slug !== productBySlug.slug}
             />
           ) : (
             <ProductList
               title="Recommended products"
               products={productsInOffer.slice(0, 4)}
-              filter={(productList) => productList.slug !== product.slug}
+              filter={(productList) => productList.slug !== productBySlug.slug}
             />
           )}
         </div>

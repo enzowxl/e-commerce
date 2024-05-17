@@ -6,43 +6,39 @@ import { CategoryList } from './_components/category/category-list'
 import { ProductList } from './_components/product/product-list'
 
 export default async function Shop() {
-  const categories = await getCategories()
-  const products = await getProducts({
+  const allCategories = await getCategories()
+  const allProducts = await getProducts({
     type: 'ALL',
   })
-  const offerProducts = await getProducts({ type: 'OFFER' })
-  const gymProducts = await getProducts({
-    type: 'CATEGORY',
-    categorySlug: 'gym',
-  })
-  const casualProducts = await getProducts({
-    type: 'CATEGORY',
-    categorySlug: 'casual',
-  })
-  const electronicsProducts = await getProducts({
-    type: 'CATEGORY',
-    categorySlug: 'electronics',
-  })
+  const productsInOffer = await getProducts({ type: 'OFFER' })
 
   return (
     <BasePage>
       <div className="flex flex-col gap-10">
-        {categories?.length > 0 && <CategoryList categories={categories} />}
-        {offerProducts?.length > 0 && (
-          <ProductList title="Offers" products={offerProducts} />
+        {allCategories?.length > 0 && (
+          <CategoryList categories={allCategories} />
         )}
-        {products?.length > 0 && (
-          <ProductList title="All" products={products} />
+        {productsInOffer?.length > 0 && (
+          <ProductList title="Offers" products={productsInOffer} />
         )}
-        {gymProducts?.length > 0 && (
-          <ProductList title="Gym" products={gymProducts} />
+        {allProducts?.length > 0 && (
+          <ProductList title="All" products={allProducts} />
         )}
-        {casualProducts?.length > 0 && (
-          <ProductList title="Casual" products={casualProducts} />
-        )}
-        {electronicsProducts?.length > 0 && (
-          <ProductList title="Electronics" products={electronicsProducts} />
-        )}
+        {allCategories.map(async (category) => {
+          const productsByCategory = await getProducts({
+            type: 'CATEGORY',
+            categorySlug: category.slug,
+          })
+          if (productsByCategory.length > 0) {
+            return (
+              <ProductList
+                key={category.id}
+                title={category.name}
+                products={productsByCategory}
+              />
+            )
+          }
+        })}
       </div>
     </BasePage>
   )

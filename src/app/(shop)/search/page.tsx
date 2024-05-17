@@ -14,12 +14,12 @@ export default async function Search({
     return redirect('/')
   }
 
-  const products = await getProducts({ type: 'QUERY', query: q })
+  const productsByQuery = await getProducts({ type: 'QUERY', query: q })
 
   return (
     <BasePage title={`Results for: ${q}`}>
       <div className="flex flex-col gap-14">
-        <ProductList products={products} />
+        <ProductList products={productsByQuery} />
       </div>
     </BasePage>
   )

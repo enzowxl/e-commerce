@@ -1,27 +1,14 @@
-import { Category } from '@prisma/client'
-
+import { getCategories } from '@/app/(shop)/_actions/get-categories'
 import { BasePage } from '@/components/base-page'
-import { api } from '@/utils/api'
 
 import { DataTableCategories } from '../../_components/data-table/tables/categories-data-table'
 
-async function getCategories(): Promise<Category[]> {
-  const response = await api('/category', {
-    method: 'GET',
-    cache: 'no-cache',
-  })
-
-  const { categories } = (await response.json()) as { categories: Category[] }
-
-  return categories
-}
-
 export default async function DashboardCategories() {
-  const categories = await getCategories()
+  const allCategories = await getCategories()
 
   return (
     <BasePage className="px-0" classNameTitle="px-8" title="Categories">
-      <DataTableCategories data={categories} />
+      <DataTableCategories data={allCategories} />
     </BasePage>
   )
 }

@@ -4,17 +4,17 @@ import { userSchema } from '@/auth/models/user'
 import { prisma } from '@/lib/prisma'
 
 export async function getUserPermissions(userId: string) {
-  const userDb = await prisma.user.findFirst({
+  const findUserById = await prisma.user.findFirst({
     where: {
       id: userId,
     },
   })
 
-  if (!userDb) throw new UserNotExistsError()
+  if (!findUserById) throw new UserNotExistsError()
 
   const authUser = userSchema.parse({
     id: userId,
-    role: userDb?.role,
+    role: findUserById?.role,
   })
 
   const ability = defineAbilityFor(authUser)
