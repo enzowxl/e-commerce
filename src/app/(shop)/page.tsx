@@ -1,21 +1,21 @@
-import { getProducts } from '@/app/(shop)/_actions/get-products'
+// import { getProducts } from '@/app/(shop)/_actions/get-products'
 import { BasePage } from '@/components/base-page'
 
-import { getCategories } from './_actions/get-categories'
-import { CategoryList } from './_components/category/category-list'
-import { ProductList } from './_components/product/product-list'
+// import { getCategories } from './_actions/get-categories'
+// import { CategoryList } from './_components/category/category-list'
+// import { ProductList } from './_components/product/product-list'
 
 export default async function Shop() {
-  const allCategories = await getCategories()
-  const allProducts = await getProducts({
-    type: 'ALL',
-  })
-  const productsInOffer = await getProducts({ type: 'OFFER' })
+  // const allCategories = await getCategories()
+  // const allProducts = await getProducts({
+  //   type: 'ALL',
+  // })
+  // const productsInOffer = await getProducts({ type: 'OFFER' })
 
   return (
     <BasePage>
       <div className="flex flex-col gap-10">
-        {allCategories?.length > 0 && (
+        {/* {allCategories?.length > 0 && (
           <CategoryList categories={allCategories} />
         )}
         {productsInOffer?.length > 0 && (
@@ -38,7 +38,7 @@ export default async function Shop() {
               />
             )
           }
-        })}
+        })} */}
       </div>
     </BasePage>
   )

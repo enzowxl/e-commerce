@@ -5,8 +5,8 @@ import { BasePage } from '@/components/base-page'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { authOptions } from '@/utils/auth-options'
 
-import { getMe } from '../_actions/get-me'
-import { SettingsForm } from '../_components/settings/settings-form'
+// import { getMe } from '../_actions/get-me'
+// import { SettingsForm } from '../_components/settings/settings-form'
 
 export default async function Settings() {
   const data = await getServerSession(authOptions)
@@ -15,7 +15,7 @@ export default async function Settings() {
     return notFound()
   }
 
-  const me = await getMe(data?.user?.email as string)
+  // const me = await getMe(data?.user?.email as string)
 
   return (
     <BasePage title="Settings">
@@ -36,7 +36,7 @@ export default async function Settings() {
         </div>
         <div className="w-full flex flex-col gap-10 p-8 bg-color-secondary rounded-xl">
           <h1 className="font-semibold text-xl">General information</h1>
-          <SettingsForm me={me} />
+          {/* <SettingsForm me={me} /> */}
         </div>
       </div>
     </BasePage>
