@@ -1,12 +1,4 @@
-import {
-  LayoutDashboard,
-  LogIn,
-  LogOut,
-  Package,
-  Settings,
-  Store,
-  UserRoundPlus,
-} from 'lucide-react'
+import { LogOut } from 'lucide-react'
 import Link from 'next/link'
 import { getServerSession } from 'next-auth'
 import React, { ReactNode } from 'react'
@@ -23,6 +15,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { authOptions } from '@/utils/auth-options'
 
+import { pages } from '../pagesData'
 import { DropDownLogOut } from './logout-drop-down'
 
 export async function UserDropDown({ children }: { children: ReactNode }) {
@@ -38,54 +31,54 @@ export async function UserDropDown({ children }: { children: ReactNode }) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
       <DropdownMenuContent className="min-w-56">
-        {data?.user ? (
+        {data?.user && (
           <React.Fragment>
-            <Link href={'/'}>
+            <Link href={'/settings'}>
               <DropdownMenuItem className="flex gap-3 items-center">
                 <Avatar>
-                  <AvatarImage src={data.user.image!} alt={data.user.name!} />
-                  <AvatarFallback>{data.user.name![0][0]}</AvatarFallback>
+                  <AvatarImage
+                    src={data?.user.image as string}
+                    alt={data?.user.name as string}
+                  />
+                  <AvatarFallback>{data?.user.name![0][0]}</AvatarFallback>
                 </Avatar>
                 <div>
-                  <h1 className="font-medium text-base">{data.user.name}</h1>
+                  <h1 className="font-medium text-base">{data?.user.name}</h1>
                   <span className="text-color-gray text-sm">
-                    {data.user.email}
+                    {data?.user.email}
                   </span>
                 </div>
               </DropdownMenuItem>
             </Link>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <Link href={'/'}>
-                <DropdownMenuItem className="flex gap-3 items-center w-full">
-                  <Store className="w-5 h-5" />
-                  Home
-                </DropdownMenuItem>
-              </Link>
-              {permission && (
-                <Link href={'/dashboard/product'}>
+          </React.Fragment>
+        )}
+        <DropdownMenuGroup>
+          {pages.map((page) => {
+            if (!data && page.logged) return null
+
+            if (data && !page.logged && page.name !== 'Home') return null
+
+            if (data && page.admin && !permission) return null
+
+            return (
+              <React.Fragment key={page.id}>
+                {page.name === 'Sign In' && <DropdownMenuSeparator />}
+                <Link
+                  href={page.href as string}
+                  className="flex gap-3 items-center w-full"
+                >
                   <DropdownMenuItem className="flex gap-3 items-center w-full">
-                    <LayoutDashboard className="w-5 h-5" />
-                    Dashboard
+                    <page.icon className="w-5 h-5" />
+                    {page.name}
                   </DropdownMenuItem>
                 </Link>
-              )}
-              <Link href={'/order'}>
-                <DropdownMenuItem className="flex gap-3 items-center w-full">
-                  <Package className="w-5 h-5" />
-                  My orders
-                </DropdownMenuItem>
-              </Link>
-              <Link
-                href={'/settings'}
-                className="flex gap-3 items-center w-full"
-              >
-                <DropdownMenuItem className="flex gap-3 items-center w-full">
-                  <Settings className="w-5 h-5" />
-                  Settings
-                </DropdownMenuItem>
-              </Link>
-            </DropdownMenuGroup>
+              </React.Fragment>
+            )
+          })}
+        </DropdownMenuGroup>
+        {data?.user && (
+          <React.Fragment>
             <DropdownMenuSeparator />
             <DropDownLogOut className="w-full">
               <DropdownMenuItem className="flex gap-3 items-center w-full">
@@ -93,30 +86,6 @@ export async function UserDropDown({ children }: { children: ReactNode }) {
                 Log out
               </DropdownMenuItem>
             </DropDownLogOut>
-          </React.Fragment>
-        ) : (
-          <React.Fragment>
-            <DropdownMenuGroup>
-              <Link href={'/'}>
-                <DropdownMenuItem className="flex gap-3 items-center w-full">
-                  <Store className="w-5 h-5" />
-                  Home
-                </DropdownMenuItem>
-              </Link>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <Link href={'/signin'}>
-              <DropdownMenuItem className="flex gap-3 items-center w-full">
-                <LogIn className="w-5 h-5" />
-                Sign In
-              </DropdownMenuItem>
-            </Link>
-            <Link href={'/signup'}>
-              <DropdownMenuItem className="flex gap-3 items-center w-full">
-                <UserRoundPlus className="w-5 h-5" />
-                Sign Up
-              </DropdownMenuItem>
-            </Link>
           </React.Fragment>
         )}
       </DropdownMenuContent>

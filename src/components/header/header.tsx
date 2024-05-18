@@ -11,7 +11,10 @@ export function Header({ isDashboard }: { isDashboard?: boolean }) {
   return (
     <header className="flex items-center justify-between px-8 py-8 border-b border-zinc-900">
       <div className="flex items-center gap-5">
-        <Link href="/" className="text-2xl font-extrabold text-white">
+        <Link
+          href="/"
+          className="max-sm:text-xl text-2xl font-extrabold text-white"
+        >
           mydevshop
         </Link>
 
@@ -27,7 +30,10 @@ export function Header({ isDashboard }: { isDashboard?: boolean }) {
           <CircleUserRound className="min-w-5 min-h-5 cursor-pointer" />
         </UserDropDown>
       </div>
-      <div className="sm:hidden">
+      <div className="flex gap-7 sm:hidden">
+        <CartSheet>
+          <ShoppingCart className="min-w-5 min-h-5 cursor-pointer" />
+        </CartSheet>
         <MenuSheet>
           <Menu className="min-w-5 min-h-5 cursor-pointer" />
         </MenuSheet>
