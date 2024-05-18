@@ -7,7 +7,10 @@ import { BadRequestError } from '@/app/api/_errors/bad-request-error'
 import { ValidationError } from '@/app/api/_errors/validation-error'
 import { makeAuthenticateUseCase } from '@/app/api/_use-cases/factories/make-authenticate'
 
+import { env } from '../env'
+
 export const authOptions = {
+  secret: env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       id: 'credentials',

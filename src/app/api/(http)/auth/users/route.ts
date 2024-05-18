@@ -16,9 +16,9 @@ import { userSchema } from '@/auth/models/user'
 
 const RoleTypes = ['ADMIN', 'MEMBER'] as const
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    // const token = await getToken({ req })
+    const token = await getToken({ req })
 
     // if (!token) throw new UnauthorizedError()
 
@@ -30,7 +30,7 @@ export async function GET() {
 
     const users = await fetchAllUsers.execute()
 
-    return NextResponse.json(users, { status: 200 })
+    return NextResponse.json({ users, token }, { status: 200 })
   } catch (err) {
     if (err instanceof UnauthorizedError) {
       return new UnauthorizedError().error()
