@@ -1,69 +1,69 @@
-// import { useRouter } from 'next/navigation'
-// import toast from 'react-hot-toast'
+import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
 
-// import { Button } from '@/components/ui/button'
-// import {
-//   Dialog,
-//   DialogContent,
-//   DialogHeader,
-//   DialogTitle,
-// } from '@/components/ui/dialog'
-// import { api } from '@/utils/api'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { api } from '@/utils/api'
 
-// export function DeleteUserDialog({
-//   open,
-//   email,
-//   onOpenChange,
-// }: {
-//   open: boolean
-//   email: string
-//   onOpenChange: (open: boolean) => void
-// }) {
-//   const router = useRouter()
+export function DeleteUserDialog({
+  open,
+  email,
+  onOpenChange,
+}: {
+  open: boolean
+  email: string
+  onOpenChange: (open: boolean) => void
+}) {
+  const router = useRouter()
 
-//   async function handleDelete() {
-//     await api(`/auth/users/${email}`, {
-//       method: 'DELETE',
-//     })
-//       .then(async (res) => {
-//         if (!res.ok) {
-//           const { error } = await res.json()
-//           return toast.error(error, {
-//             duration: 3000,
-//           })
-//         }
+  async function handleDelete() {
+    await api(`/auth/users/${email}`, {
+      method: 'DELETE',
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          const { error } = await res.json()
+          return toast.error(error, {
+            duration: 3000,
+          })
+        }
 
-//         toast.success('User successfully deleted', {
-//           duration: 3000,
-//         })
-//       })
-//       .catch((err) => {
-//         return console.log(err)
-//       })
+        toast.success('User successfully deleted', {
+          duration: 3000,
+        })
+      })
+      .catch((err) => {
+        return console.log(err)
+      })
 
-//     onOpenChange(!open)
+    onOpenChange(!open)
 
-//     return router.refresh()
-//   }
-//   return (
-//     <Dialog open={open} onOpenChange={onOpenChange}>
-//       <DialogContent className="sm:max-w-[425px]">
-//         <DialogHeader>
-//           <DialogTitle>Delete user</DialogTitle>
-//         </DialogHeader>
-//         <div className="flex flex-col gap-8 max-sm:text-center">
-//           Are you sure you want to delete a user?
-//           <div className="w-full flex flex-col gap-8">
-//             <Button
-//               onClick={handleDelete}
-//               type="submit"
-//               className="text-white w-full bg-color-primary h-12 rounded-xl"
-//             >
-//               Delete
-//             </Button>
-//           </div>
-//         </div>
-//       </DialogContent>
-//     </Dialog>
-//   )
-// }
+    return router.refresh()
+  }
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Delete user</DialogTitle>
+        </DialogHeader>
+        <div className="flex flex-col gap-8 max-sm:text-center">
+          Are you sure you want to delete a user?
+          <div className="w-full flex flex-col gap-8">
+            <Button
+              onClick={handleDelete}
+              type="submit"
+              className="text-white w-full bg-color-primary h-12 rounded-xl"
+            >
+              Delete
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  )
+}

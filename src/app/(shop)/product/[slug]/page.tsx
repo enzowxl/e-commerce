@@ -1,29 +1,28 @@
-// import Image from 'next/image'
+import Image from 'next/image'
 
-// import { getProduct } from '@/app/(shop)/_actions/get-product'
+import { getProduct } from '@/app/(shop)/_actions/get-product'
 import { BasePage } from '@/components/base-page'
 
-// import { getProducts } from '../../_actions/get-products'
-// import { ProductInfo } from '../../_components/product/product-info'
-// import { ProductList } from '../../_components/product/product-list'
+import { getProducts } from '../../_actions/get-products'
+import { ProductInfo } from '../../_components/product/product-info'
+import { ProductList } from '../../_components/product/product-list'
 
 export default async function Product({
   params: { slug },
 }: {
   params: { slug: string }
 }) {
-  // const productBySlug = await getProduct(slug)
-  // const productsByCategorySlug = await getProducts({
-  //   type: 'CATEGORY',
-  //   categorySlug: productBySlug?.categorySlug as string,
-  // })
-  // const productsInOffer = await getProducts({
-  //   type: 'OFFER',
-  // })
+  const productBySlug = await getProduct(slug)
+  const productsByCategorySlug = await getProducts({
+    type: 'CATEGORY',
+    categorySlug: productBySlug?.categorySlug as string,
+  })
+  const productsInOffer = await getProducts({
+    type: 'OFFER',
+  })
   return (
     <BasePage>
-      {slug}
-      {/* <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-10">
         <div className="w-full flex max-lg:flex-col gap-5">
           <div className="flex w-full items-center justify-center bg-color-secondary rounded-xl max-lg:p-8">
             <Image
@@ -56,7 +55,7 @@ export default async function Product({
             />
           )}
         </div>
-      </div> */}
+      </div>
     </BasePage>
   )
 }
