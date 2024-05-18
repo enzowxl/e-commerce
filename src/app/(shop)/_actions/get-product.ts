@@ -1,3 +1,5 @@
+'use server'
+
 import { Product } from '@prisma/client'
 
 import { api } from '@/utils/api'

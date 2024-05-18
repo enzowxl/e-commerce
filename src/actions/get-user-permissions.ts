@@ -1,3 +1,5 @@
+'use server'
+
 import { UserNotExistsError } from '@/app/api/_errors/user-not-exists-error'
 import { defineAbilityFor } from '@/auth'
 import { userSchema } from '@/auth/models/user'
