@@ -116,7 +116,7 @@ export function DataTableProducts({
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => {
-                  updateSlugDialog(row.original?.slug)
+                  updateSlugDialog(row.original?.slug as string)
                   updateUpdateDialog(!updateDialog)
                 }}
                 className="flex gap-3 items-center w-full"
@@ -126,7 +126,7 @@ export function DataTableProducts({
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
-                  updateSlugDialog(row.original?.slug)
+                  updateSlugDialog(row.original?.slug as string)
                   updateDeleteDialog(!deleteDialog)
                 }}
                 className="flex gap-3 items-center w-full"
