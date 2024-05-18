@@ -22,8 +22,7 @@ const RoleTypes = ['ADMIN', 'MEMBER'] as const
 export async function GET(req: NextRequest) {
   try {
     const token = await getToken({ req })
-    const session = await getServerSession({ headers })
-    const session2 = await getServerSession(authOptions)
+    const session = await getServerSession(authOptions)
 
     // if (!token) throw new UnauthorizedError()
 
@@ -35,10 +34,7 @@ export async function GET(req: NextRequest) {
 
     const users = await fetchAllUsers.execute()
 
-    return NextResponse.json(
-      { users, token, session, session2 },
-      { status: 200 },
-    )
+    return NextResponse.json({ users, token, session }, { status: 200 })
   } catch (err) {
     if (err instanceof UnauthorizedError) {
       return new UnauthorizedError().error()
