@@ -1,4 +1,6 @@
+import { headers } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
 import { getToken } from 'next-auth/jwt'
 import { z, ZodError } from 'zod'
 
@@ -13,12 +15,15 @@ import { makeFetchUserUseCase } from '@/app/api/_use-cases/factories/make-fetch-
 import { makeRegisterUseCase } from '@/app/api/_use-cases/factories/make-register-use-case'
 import { makeUpdateUserUseCase } from '@/app/api/_use-cases/factories/make-update-user-use-case'
 import { userSchema } from '@/auth/models/user'
+import { authOptions } from '@/utils/auth-options'
 
 const RoleTypes = ['ADMIN', 'MEMBER'] as const
 
 export async function GET(req: NextRequest) {
   try {
     const token = await getToken({ req })
+    const session = await getServerSession({ headers })
+    const session2 = await getServerSession(authOptions)
 
     // if (!token) throw new UnauthorizedError()
 
@@ -30,7 +35,10 @@ export async function GET(req: NextRequest) {
 
     const users = await fetchAllUsers.execute()
 
-    return NextResponse.json({ users, token }, { status: 200 })
+    return NextResponse.json(
+      { users, token, session, session2 },
+      { status: 200 },
+    )
   } catch (err) {
     if (err instanceof UnauthorizedError) {
       return new UnauthorizedError().error()
