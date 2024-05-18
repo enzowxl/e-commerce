@@ -28,7 +28,7 @@ export const pages = [
   {
     id: 3,
     name: 'My orders',
-    href: '/orders',
+    href: '/order',
     icon: Package,
     logged: true,
   },
