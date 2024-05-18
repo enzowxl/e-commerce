@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
+import { getToken } from 'next-auth/jwt'
 import { z, ZodError } from 'zod'
 
 import { getUserPermissions } from '@/actions/get-user-permissions'
@@ -13,17 +13,16 @@ import { makeFetchUserUseCase } from '@/app/api/_use-cases/factories/make-fetch-
 import { makeRegisterUseCase } from '@/app/api/_use-cases/factories/make-register-use-case'
 import { makeUpdateUserUseCase } from '@/app/api/_use-cases/factories/make-update-user-use-case'
 import { userSchema } from '@/auth/models/user'
-import { authOptions } from '@/utils/auth-options'
 
 const RoleTypes = ['ADMIN', 'MEMBER'] as const
 
 export async function GET() {
   try {
-    // const session = await getServerSession(authOptions)
+    // const token = await getToken({ req })
 
-    // if (!session?.user) throw new UnauthorizedError()
+    // if (!token) throw new UnauthorizedError()
 
-    // const { cannot } = await getUserPermissions(session?.user?.sub as string)
+    // const { cannot } = await getUserPermissions(token.sub as string)
 
     // if (cannot('manage', 'all')) throw new UnauthorizedError()
 
@@ -70,11 +69,11 @@ export async function POST(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    const token = await getToken({ req })
 
-    if (!session?.user) throw new UnauthorizedError()
+    if (!token) throw new UnauthorizedError()
 
-    const { cannot } = await getUserPermissions(session.user?.sub as string)
+    const { cannot } = await getUserPermissions(token.sub as string)
 
     const userRequestSchema = z
       .object({

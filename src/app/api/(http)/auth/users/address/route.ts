@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
+import { getToken } from 'next-auth/jwt'
 import { z, ZodError } from 'zod'
 import { zfd } from 'zod-form-data'
 
@@ -11,15 +11,14 @@ import { ValidationError } from '@/app/api/_errors/validation-error'
 import { makeCreateAddressUseCase } from '@/app/api/_use-cases/factories/make-create-address-use-case'
 import { makeFetchUserUseCase } from '@/app/api/_use-cases/factories/make-fetch-user-use-case'
 import { userSchema } from '@/auth/models/user'
-import { authOptions } from '@/utils/auth-options'
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    const token = await getToken({ req })
 
-    if (!session?.user) throw new UnauthorizedError()
+    if (!token) throw new UnauthorizedError()
 
-    const { cannot } = await getUserPermissions(session?.user?.sub as string)
+    const { cannot } = await getUserPermissions(token.sub as string)
 
     const addressRequestSchema = zfd
       .formData({
