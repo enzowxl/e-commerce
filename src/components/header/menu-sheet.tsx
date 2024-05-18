@@ -42,8 +42,11 @@ export async function MenuSheet({ children }: { children: ReactNode }) {
           <div className="flex flex-col gap-10">
             <ul className="space-y-4 font-medium">
               {data?.user && (
-                <li className="text-white px-5 py-2 relative flex cursor-pointer select-none items-center rounded-sm text-sm outline-none transition-colors hover:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full">
-                  <Link href={'/settings'}>
+                <Link
+                  className="text-white px-5 py-2 relative flex cursor-pointer select-none items-center rounded-sm text-sm outline-none transition-colors hover:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full"
+                  href={'/settings'}
+                >
+                  <li>
                     <div className="flex gap-3 items-center">
                       <Avatar>
                         <AvatarImage
@@ -63,8 +66,8 @@ export async function MenuSheet({ children }: { children: ReactNode }) {
                         </span>
                       </div>
                     </div>
-                  </Link>
-                </li>
+                  </li>
+                </Link>
               )}
               {pages?.map((page) => {
                 if (!data && page.logged) return null
@@ -74,18 +77,16 @@ export async function MenuSheet({ children }: { children: ReactNode }) {
                 if (data && page.admin && !permission) return null
 
                 return (
-                  <li
-                    className="text-white px-5 py-2 relative flex cursor-pointer select-none items-center rounded-sm text-sm outline-none transition-colors hover:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full"
+                  <Link
+                    href={page.href as string}
                     key={page.id}
+                    className="text-white px-5 py-2 relative flex cursor-pointer select-none items-center rounded-sm text-sm outline-none transition-colors hover:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full"
                   >
-                    <Link
-                      href={page.href as string}
-                      className={'flex gap-3 items-center w-full'}
-                    >
+                    <li className={'flex gap-3 items-center w-full'}>
                       <page.icon className="w-5 h-5" />
                       {page.name}
-                    </Link>
-                  </li>
+                    </li>
+                  </Link>
                 )
               })}
             </ul>
@@ -94,33 +95,29 @@ export async function MenuSheet({ children }: { children: ReactNode }) {
                 if (!permission) return null
 
                 return (
-                  <li
-                    className="text-white px-5 py-2 relative flex cursor-pointer select-none items-center rounded-sm text-sm outline-none transition-colors hover:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full"
+                  <Link
                     key={page.id}
+                    href={page.href as string}
+                    className="text-white px-5 py-2 relative flex cursor-pointer select-none items-center rounded-sm text-sm outline-none transition-colors hover:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full"
                   >
-                    <Link
-                      href={page.href as string}
-                      className={'flex gap-3 items-center w-full'}
-                    >
+                    <li className={'flex gap-3 items-center w-full'}>
                       <page.icon className="w-5 h-5" />
                       {page.name}
-                    </Link>
-                  </li>
+                    </li>
+                  </Link>
                 )
               })}
             </ul>
           </div>
           {data?.user && (
-            <ul>
-              <li className="text-white px-5 py-2 relative flex cursor-pointer select-none items-center rounded-sm text-sm outline-none transition-colors hover:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full">
-                <DropDownLogOut className="w-full">
-                  <div className="flex gap-3 items-center w-full">
-                    <LogOut className="w-5 h-5" />
-                    Log out
-                  </div>
-                </DropDownLogOut>
-              </li>
-            </ul>
+            <DropDownLogOut className="text-white px-5 py-2 relative flex cursor-pointer select-none items-center rounded-sm text-sm outline-none transition-colors hover:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full">
+              <div className="w-full">
+                <div className="flex gap-3 items-center w-full">
+                  <LogOut className="w-5 h-5" />
+                  Log out
+                </div>
+              </div>
+            </DropDownLogOut>
           )}
         </div>
       </SheetContent>

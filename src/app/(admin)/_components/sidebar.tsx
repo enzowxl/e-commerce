@@ -9,18 +9,16 @@ export function SideBar() {
         <ul className="space-y-4 font-medium">
           {dashboardPages?.map((page) => {
             return (
-              <li
-                className="text-white px-5 py-2 relative flex cursor-pointer select-none items-center rounded-sm text-sm outline-none transition-colors hover:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full"
+              <Link
                 key={page.id}
+                href={page.href}
+                className="text-white px-5 py-2 relative flex cursor-pointer select-none items-center rounded-sm text-sm outline-none transition-colors hover:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full"
               >
-                <Link
-                  href={page.href}
-                  className={'flex gap-3 items-center w-full'}
-                >
+                <li className={'flex gap-3 items-center w-full'}>
                   <page.icon className="w-5 h-5" />
                   {page.name}
-                </Link>
-              </li>
+                </li>
+              </Link>
             )
           })}
         </ul>
