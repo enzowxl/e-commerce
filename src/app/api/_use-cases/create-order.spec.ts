@@ -35,7 +35,7 @@ describe('Create product Use Case', () => {
       totalDiscounts: 200,
       orderItems: {
         createMany: {
-          data: productsRepository.products.map((product) => {
+          data: productsRepository.products?.map((product) => {
             return {
               price: product.price,
               discount: product.discount,

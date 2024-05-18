@@ -31,7 +31,7 @@ export function OrderItem({
       method: 'POST',
       body: JSON.stringify({
         orderId: order.id,
-        products: order.orderItems.map((orderItem) => {
+        products: order.orderItems?.map((orderItem) => {
           return {
             id: orderItem.id,
             name: orderItem.product.name,
@@ -123,7 +123,7 @@ export function OrderItem({
               )}
             </div>
             <Separator />
-            {order.orderItems.map((orderItem) => {
+            {order.orderItems?.map((orderItem) => {
               return (
                 <OrderProductItem key={orderItem.id} orderItem={orderItem} />
               )

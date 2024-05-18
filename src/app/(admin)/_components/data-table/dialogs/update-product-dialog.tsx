@@ -223,7 +223,7 @@ export function UpdateProductDialog({
                 <Plus className="w-5 h-5" />
               </Button>
             </div>
-            {sizes.map((size, index) => {
+            {sizes?.map((size, index) => {
               return (
                 <div className="flex items-center justify-between" key={index}>
                   <Label>{size}</Label>
@@ -255,7 +255,7 @@ export function UpdateProductDialog({
                 <Plus className="w-5 h-5" />
               </Button>
             </div>
-            {colors.map((color, index) => {
+            {colors?.map((color, index) => {
               return (
                 <div className="flex items-center justify-between" key={index}>
                   <Label>{color}</Label>

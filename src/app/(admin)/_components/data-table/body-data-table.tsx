@@ -25,9 +25,9 @@ export function DataTableBody({
     <div className="border-t border-b">
       <Table>
         <TableHeader className="bg-color-secondary">
-          {table.getHeaderGroups().map((headerGroup) => (
+          {table.getHeaderGroups()?.map((headerGroup) => (
             <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
+              {headerGroup.headers?.map((header) => {
                 return (
                   <TableHead key={header.id}>
                     {header.isPlaceholder
@@ -44,21 +44,26 @@ export function DataTableBody({
         </TableHeader>
         <TableBody>
           {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
+            table.getRowModel().rows?.map((row) => (
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && 'selected'}
               >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
+                {row
+                  .getVisibleCells()
+                  ?.map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </TableCell>
+                  ))}
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
+              <TableCell colSpan={columns?.length} className="h-24 text-center">
                 No results.
               </TableCell>
             </TableRow>

@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
       totalDiscounts,
       orderItems: {
         createMany: {
-          data: products.map((product) => {
+          data: products?.map((product) => {
             return {
               price: product.price,
               discount: product.discount,

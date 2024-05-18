@@ -24,7 +24,7 @@ export default async function Shop() {
         {allProducts?.length > 0 && (
           <ProductList title="All" products={allProducts} />
         )}
-        {allCategories.map(async (category) => {
+        {allCategories?.map(async (category) => {
           const productsByCategory = await getProducts({
             type: 'CATEGORY',
             categorySlug: category.slug,

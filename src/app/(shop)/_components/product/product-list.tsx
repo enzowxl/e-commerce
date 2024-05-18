@@ -26,7 +26,7 @@ export function ProductList({
         {filter
           ? products
               ?.filter(filter)
-              .map((product) => (
+              ?.map((product) => (
                 <ProductItem key={product.id} product={product} />
               ))
           : products?.map((product) => (

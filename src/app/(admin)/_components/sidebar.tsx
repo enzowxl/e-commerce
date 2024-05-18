@@ -27,7 +27,7 @@ export function SideBar() {
     <aside className="z-40 flex-1 max-sm:hidden px-8 py-8 border-r border-zinc-900">
       <div className="h-full overflow-y-auto">
         <ul className="space-y-4 font-medium">
-          {pagesInSideBar.map((page) => {
+          {pagesInSideBar?.map((page) => {
             return (
               <li
                 className="text-white px-5 py-2 relative flex cursor-pointer select-none items-center rounded-sm text-sm outline-none transition-colors hover:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full"

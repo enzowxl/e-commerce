@@ -34,7 +34,7 @@ export function TablePagination<TData>({
                 />
               </SelectTrigger>
               <SelectContent side="top" className="bg-color-secondary">
-                {[10, 20, 30, 40, 50].map((pageSize) => (
+                {[10, 20, 30, 40, 50]?.map((pageSize) => (
                   <SelectItem key={pageSize} value={`${pageSize}`}>
                     {pageSize}
                   </SelectItem>

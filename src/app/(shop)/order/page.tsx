@@ -20,7 +20,7 @@ export default async function Order() {
   return (
     <BasePage title="My orders">
       <div className="flex flex-col gap-10">
-        {allOrders.map((order, index) => {
+        {allOrders?.map((order, index) => {
           return <OrderItem key={order.id} order={order} index={index + 1} />
         })}
       </div>

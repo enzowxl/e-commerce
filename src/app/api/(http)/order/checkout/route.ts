@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
       metadata: {
         orderId,
       },
-      line_items: products.map((product) => {
+      line_items: products?.map((product) => {
         return {
           price_data: {
             currency: 'brl',

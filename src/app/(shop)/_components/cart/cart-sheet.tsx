@@ -47,13 +47,15 @@ export function CartSheet({ children }: { children: ReactNode }) {
       return updateOnOpenChange(!open)
     }
 
+    if (cart?.length === 0) return
+
     const responseOrder = await api('/order', {
       method: 'POST',
       body: JSON.stringify({
         totalPrice,
         subtotalPrice,
         totalDiscounts,
-        products: cart.map((product) => {
+        products: cart?.map((product) => {
           return {
             id: product.id,
             price: Number(product.price),
@@ -72,7 +74,7 @@ export function CartSheet({ children }: { children: ReactNode }) {
       method: 'POST',
       body: JSON.stringify({
         orderId: order.id,
-        products: cart.map((product) => {
+        products: cart?.map((product) => {
           return {
             id: product.id,
             name: product.name,
