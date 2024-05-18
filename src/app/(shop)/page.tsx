@@ -1,7 +1,7 @@
-import { getProducts } from '@/app/(shop)/_actions/get-products'
+import { getProducts } from '@/actions/get-products'
 import { BasePage } from '@/components/base-page'
 
-import { getCategories } from './_actions/get-categories'
+import { getCategories } from '../../actions/get-categories'
 import { CategoryList } from './_components/category/category-list'
 import { ProductList } from './_components/product/product-list'
 

@@ -1,5 +1,5 @@
-import { getCategories } from '@/app/(shop)/_actions/get-categories'
-import { getProducts } from '@/app/(shop)/_actions/get-products'
+import { getCategories } from '@/actions/get-categories'
+import { getProducts } from '@/actions/get-products'
 import { BasePage } from '@/components/base-page'
 
 import { DataTableProducts } from '../../_components/data-table/tables/products-data-table'

@@ -1,4 +1,4 @@
-import { getCategories } from '@/app/(shop)/_actions/get-categories'
+import { getCategories } from '@/actions/get-categories'
 import { BasePage } from '@/components/base-page'
 
 import { DataTableCategories } from '../../_components/data-table/tables/categories-data-table'

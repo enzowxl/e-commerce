@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 
 import { BasePage } from '@/components/base-page'
 
-import { getProducts } from '../_actions/get-products'
+import { getProducts } from '../../../actions/get-products'
 import { ProductList } from '../_components/product/product-list'
 
 export default async function Search({

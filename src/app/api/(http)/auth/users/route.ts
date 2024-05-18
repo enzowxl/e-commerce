@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
 import { getToken } from 'next-auth/jwt'
 import { z, ZodError } from 'zod'
 
@@ -14,26 +13,24 @@ import { makeFetchUserUseCase } from '@/app/api/_use-cases/factories/make-fetch-
 import { makeRegisterUseCase } from '@/app/api/_use-cases/factories/make-register-use-case'
 import { makeUpdateUserUseCase } from '@/app/api/_use-cases/factories/make-update-user-use-case'
 import { userSchema } from '@/auth/models/user'
-import { authOptions } from '@/utils/auth-options'
 
 const RoleTypes = ['ADMIN', 'MEMBER'] as const
 
 export async function GET(req: NextRequest) {
   try {
     const token = await getToken({ req })
-    const session = await getServerSession(authOptions)
 
-    // if (!token) throw new UnauthorizedError()
+    if (!token) throw new UnauthorizedError()
 
-    // const { cannot } = await getUserPermissions(token.sub as string)
+    const { cannot } = await getUserPermissions(token.sub as string)
 
-    // if (cannot('manage', 'all')) throw new UnauthorizedError()
+    if (cannot('manage', 'all')) throw new UnauthorizedError()
 
     const fetchAllUsers = makeFetchAllUsersUseCase()
 
     const users = await fetchAllUsers.execute()
 
-    return NextResponse.json({ users, token, session }, { status: 200 })
+    return NextResponse.json(users, { status: 200 })
   } catch (err) {
     if (err instanceof UnauthorizedError) {
       return new UnauthorizedError().error()

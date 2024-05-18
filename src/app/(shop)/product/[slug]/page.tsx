@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { getProduct } from '@/app/(shop)/_actions/get-product'
 import { BasePage } from '@/components/base-page'
 
-import { getProducts } from '../../_actions/get-products'
+import { getProducts } from '../../../../actions/get-products'
 import { ProductInfo } from '../../_components/product/product-info'
 import { ProductList } from '../../_components/product/product-list'
 
