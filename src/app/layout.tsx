@@ -14,8 +14,8 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | myshop',
-    default: 'myshop',
+    template: '%s | mydevshop',
+    default: 'mydevshop',
   },
 }
 

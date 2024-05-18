@@ -12,7 +12,7 @@ export function Header({ isDashboard }: { isDashboard?: boolean }) {
     <header className="flex items-center justify-between px-8 py-8 border-b border-zinc-900">
       <div className="flex items-center gap-5">
         <Link href="/" className="text-2xl font-extrabold text-white">
-          myshop
+          mydevshop
         </Link>
 
         {!isDashboard && <SearchForm />}
