@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
 
-    if (!session) throw new UnauthorizedError()
+    if (!session?.user) throw new UnauthorizedError()
 
     const { cannot } = await getUserPermissions(session?.user?.sub as string)
 

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getToken } from 'next-auth/jwt'
+import { getServerSession } from 'next-auth'
 import { z, ZodError } from 'zod'
 
 import { getUserPermissions } from '@/actions/get-user-permissions'
@@ -10,17 +10,16 @@ import { ValidationError } from '@/app/api/_errors/validation-error'
 import { makeDeleteUserUseCase } from '@/app/api/_use-cases/factories/make-delete-user-use-case'
 import { makeFetchUserUseCase } from '@/app/api/_use-cases/factories/make-fetch-user-use-case'
 import { userSchema } from '@/auth/models/user'
+import { authOptions } from '@/utils/auth-options'
 
 export async function GET(
   req: NextRequest,
   { params }: { params: { email: string } },
 ) {
   try {
-    const token = await getToken({ req })
+    const session = await getServerSession(authOptions)
 
-    if (!token) throw new UnauthorizedError()
-
-    const { cannot } = await getUserPermissions(token.sub as string)
+    const { cannot } = await getUserPermissions(session?.user?.sub as string)
 
     const userParamsSchema = z
       .object({
@@ -58,11 +57,11 @@ export async function DELETE(
   { params }: { params: { email: string } },
 ) {
   try {
-    const token = await getToken({ req })
+    const session = await getServerSession(authOptions)
 
-    if (!token) throw new UnauthorizedError()
+    if (!session?.user) throw new UnauthorizedError()
 
-    const { cannot } = await getUserPermissions(token.sub as string)
+    const { cannot } = await getUserPermissions(session?.user?.sub as string)
 
     const fetchUserUseCase = makeFetchUserUseCase()
     const deleteUserUseCase = makeDeleteUserUseCase()

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
-import { getToken } from 'next-auth/jwt'
 import { z, ZodError } from 'zod'
 
 import { getUserPermissions } from '@/actions/get-user-permissions'
@@ -21,6 +20,8 @@ const RoleTypes = ['ADMIN', 'MEMBER'] as const
 export async function GET() {
   try {
     const session = await getServerSession(authOptions)
+
+    if (!session?.user) throw new UnauthorizedError()
 
     const { cannot } = await getUserPermissions(session?.user?.sub as string)
 
@@ -69,11 +70,11 @@ export async function POST(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
   try {
-    const token = await getToken({ req })
+    const session = await getServerSession(authOptions)
 
-    if (!token) throw new UnauthorizedError()
+    if (!session?.user) throw new UnauthorizedError()
 
-    const { cannot } = await getUserPermissions(token.sub as string)
+    const { cannot } = await getUserPermissions(session.user?.sub as string)
 
     const userRequestSchema = z
       .object({

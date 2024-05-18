@@ -37,7 +37,7 @@ export default async function Settings() {
         </div>
         <div className="w-full flex flex-col gap-10 p-8 bg-color-secondary rounded-xl">
           <h1 className="font-semibold text-xl">General information</h1>
-          <SettingsForm user={data} address={userMe?.address as Address} />
+          <SettingsForm session={data} address={userMe?.address as Address} />
         </div>
       </div>
     </BasePage>

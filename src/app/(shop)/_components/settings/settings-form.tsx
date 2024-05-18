@@ -11,10 +11,10 @@ import { Label } from '@/components/ui/label'
 import { api } from '@/utils/api'
 
 export function SettingsForm({
-  user,
+  session,
   address,
 }: {
-  user: Session
+  session: Session
   address: Address
 }) {
   const [formData, setFormData] = React.useState({
@@ -73,7 +73,7 @@ export function SettingsForm({
       formDataSend.delete(key)
     })
 
-    formDataSend.append('email', user?.user?.email as string)
+    formDataSend.append('email', session?.user?.email as string)
     formDataSend.append('address', formData.address)
     formDataSend.append('number', formData.number.toString())
     formDataSend.append('complement', formData.complement)
