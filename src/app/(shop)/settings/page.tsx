@@ -1,3 +1,4 @@
+import { Address } from '@prisma/client'
 import { notFound } from 'next/navigation'
 import { getServerSession } from 'next-auth'
 
@@ -15,7 +16,7 @@ export default async function Settings() {
     return notFound()
   }
 
-  const me = await getMe(data?.user?.email as string)
+  const userMe = await getMe(data?.user?.email as string)
 
   return (
     <BasePage title="Settings">
@@ -36,7 +37,7 @@ export default async function Settings() {
         </div>
         <div className="w-full flex flex-col gap-10 p-8 bg-color-secondary rounded-xl">
           <h1 className="font-semibold text-xl">General information</h1>
-          <SettingsForm me={me} />
+          <SettingsForm user={data} address={userMe?.address as Address} />
         </div>
       </div>
     </BasePage>

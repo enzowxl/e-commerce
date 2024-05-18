@@ -41,9 +41,9 @@ export function CartSheet({ children }: { children: ReactNode }) {
       return updateOnOpenChange(!open)
     }
 
-    const me = await getMe(data?.user.email as string)
+    const userMe = await getMe(data?.user.email as string)
 
-    if (!me?.address) {
+    if (!userMe?.address) {
       router.push('/settings')
       updateOnOpenChange(!open)
       return toast.error('Please fill in your details before making a purchase')

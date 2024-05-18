@@ -1,6 +1,7 @@
 'use client'
 
-import { Prisma } from '@prisma/client'
+import { Address } from '@prisma/client'
+import { Session } from 'next-auth'
 import React, { ChangeEvent, FocusEvent, FormEvent } from 'react'
 import toast from 'react-hot-toast'
 
@@ -9,24 +10,23 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { api } from '@/utils/api'
 
-interface UserPayload
-  extends Prisma.UserGetPayload<{
-    include: {
-      address: true
-    }
-  }> {}
-
-export function SettingsForm({ me }: { me: UserPayload }) {
+export function SettingsForm({
+  user,
+  address,
+}: {
+  user: Session
+  address: Address
+}) {
   const [formData, setFormData] = React.useState({
-    address: me?.address?.address ?? '',
-    number: me?.address?.number ?? '',
-    complement: me?.address?.complement ?? '',
-    zipcode: me?.address?.zip ?? '',
-    district: me?.address?.district ?? '',
-    city: me?.address?.city ?? '',
-    state: me?.address?.state ?? '',
+    address: address?.address ?? '',
+    number: address?.number ?? '',
+    complement: address?.complement ?? '',
+    zipcode: address?.zip ?? '',
+    district: address?.district ?? '',
+    city: address?.city ?? '',
+    state: address?.state ?? '',
   })
-  const [foundData, updateFoundData] = React.useState(!!me?.address?.zip)
+  const [foundData, updateFoundData] = React.useState(!!address?.zip)
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
@@ -73,7 +73,7 @@ export function SettingsForm({ me }: { me: UserPayload }) {
       formDataSend.delete(key)
     })
 
-    formDataSend.append('email', me.email)
+    formDataSend.append('email', user?.user?.email as string)
     formDataSend.append('address', formData.address)
     formDataSend.append('number', formData.number.toString())
     formDataSend.append('complement', formData.complement)
