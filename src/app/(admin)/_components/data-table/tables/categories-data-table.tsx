@@ -87,7 +87,8 @@ export function DataTableCategories({ data }: { data: Category[] }) {
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => {
-                  updateSlugDialog(row.original.slug as string)
+                  // @ts-ignore
+                  updateSlugDialog(row.original.slug)
                   updateUpdateDialog(!updateDialog)
                 }}
                 className="flex gap-3 items-center w-full"
@@ -97,7 +98,8 @@ export function DataTableCategories({ data }: { data: Category[] }) {
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
-                  updateSlugDialog(row.original.slug as string)
+                  // @ts-ignore
+                  updateSlugDialog(row.original.slug)
                   updateDeleteDialog(!deleteDialog)
                 }}
                 className="flex gap-3 items-center w-full"
