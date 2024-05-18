@@ -6,8 +6,8 @@ import { HeaderPromotion } from './_components/header-promotions'
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | devstore',
-    default: 'devstore',
+    template: '%s | myshop',
+    default: 'myshop',
   },
 }
 
