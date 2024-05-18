@@ -26,6 +26,7 @@ export default async function AdminLayout({
   if (cannot('manage', 'all')) {
     return notFound()
   }
+
   return (
     <div className="min-h-screen w-full flex flex-col">
       <Header isDashboard />
