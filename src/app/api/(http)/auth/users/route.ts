@@ -57,7 +57,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({}, { status: 201 })
   } catch (err) {
-    console.log(err)
     if (err instanceof ZodError) {
       return new ValidationError().error()
     }
