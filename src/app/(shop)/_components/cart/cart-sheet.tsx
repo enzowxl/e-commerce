@@ -38,7 +38,8 @@ export function CartSheet({ children }: { children: ReactNode }) {
   async function finishOrder() {
     if (!data?.user) {
       router.push('/signin')
-      return updateOnOpenChange(!open)
+      updateOnOpenChange(!open)
+      return toast.error('Please log in before completing a create an order')
     }
 
     const userMe = await getMe(data?.user.email as string)
