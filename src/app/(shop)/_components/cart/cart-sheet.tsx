@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import React, { ReactNode } from 'react'
+import toast from 'react-hot-toast'
 
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
@@ -40,11 +41,12 @@ export function CartSheet({ children }: { children: ReactNode }) {
       return updateOnOpenChange(!open)
     }
 
-    const user = await getMe(data?.user.email as string)
+    const me = await getMe(data?.user.email as string)
 
-    if (!user.address) {
+    if (!me?.address) {
       router.push('/settings')
-      return updateOnOpenChange(!open)
+      updateOnOpenChange(!open)
+      return toast.error('Please fill in your details before making a purchase')
     }
 
     if (cart?.length === 0) return
