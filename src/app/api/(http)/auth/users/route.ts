@@ -1,4 +1,3 @@
-import { headers } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { getToken } from 'next-auth/jwt'
