@@ -76,7 +76,7 @@ export function DataTableUsers({ data }: { data: User[] }) {
 
               <DropdownMenuItem
                 onClick={() => {
-                  updateEmailDialog(row?.original.email)
+                  updateEmailDialog(row?.original?.email)
                   updateUpdateDialog(!updateDialog)
                 }}
                 className="flex gap-3 items-center w-full"
@@ -87,7 +87,7 @@ export function DataTableUsers({ data }: { data: User[] }) {
 
               <DropdownMenuItem
                 onClick={() => {
-                  updateEmailDialog(row?.original.email)
+                  updateEmailDialog(row?.original?.email)
                   updateDeleteDialog(!deleteDialog)
                 }}
                 className="flex gap-3 items-center w-full"

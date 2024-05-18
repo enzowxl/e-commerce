@@ -27,7 +27,7 @@ export class InMemoryOrdersRepository implements OrdersRepository {
   async findManyByUserId(id: string): Promise<OrderPayload[]> {
     const findOrdersByUserId = this.orders.filter(
       (order) => order.userId === id,
-    ) as unknown as OrderPayload[]
+    ) as OrderPayload[]
 
     return findOrdersByUserId
   }
