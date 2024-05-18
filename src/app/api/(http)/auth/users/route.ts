@@ -19,13 +19,13 @@ const RoleTypes = ['ADMIN', 'MEMBER'] as const
 
 export async function GET() {
   try {
-    const session = await getServerSession(authOptions)
+    // const session = await getServerSession(authOptions)
 
-    if (!session?.user) throw new UnauthorizedError()
+    // if (!session?.user) throw new UnauthorizedError()
 
-    const { cannot } = await getUserPermissions(session?.user?.sub as string)
+    // const { cannot } = await getUserPermissions(session?.user?.sub as string)
 
-    if (cannot('manage', 'all')) throw new UnauthorizedError()
+    // if (cannot('manage', 'all')) throw new UnauthorizedError()
 
     const fetchAllUsers = makeFetchAllUsersUseCase()
 
