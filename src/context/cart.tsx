@@ -2,6 +2,7 @@
 
 import { Product } from '@prisma/client'
 import React, { createContext, ReactNode, useContext, useEffect } from 'react'
+import toast from 'react-hot-toast'
 
 import { formatPriceDiscount } from '@/utils/format-price-discount'
 
@@ -67,6 +68,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
     } else {
       cartInLocalStorage.push(product)
     }
+
+    toast.success('Product added successfully')
 
     localStorage.setItem('cart', JSON.stringify(cartInLocalStorage))
     return updateCart(cartInLocalStorage)
