@@ -23,7 +23,7 @@ export default async function Settings() {
       <div className="w-full flex flex-col gap-5">
         <div className="w-full flex gap-5 justify-between items-center p-8 bg-color-secondary rounded-xl">
           <div className="flex items-center gap-3">
-            <Avatar>
+            <Avatar className="sm:w-16 sm:h-16">
               <AvatarImage src={data.user.image!} alt={data.user.name!} />
               <AvatarFallback>{data.user.name![0][0]}</AvatarFallback>
             </Avatar>
