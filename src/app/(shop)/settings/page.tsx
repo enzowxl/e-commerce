@@ -28,8 +28,10 @@ export default async function Settings() {
               <AvatarFallback>{data.user.name![0][0]}</AvatarFallback>
             </Avatar>
             <div>
-              <h1 className="font-medium text-lg">{data.user.name}</h1>
-              <span className="text-color-gray text-base">
+              <h1 className="max-sm:text-sm font-medium text-lg">
+                {data.user.name}
+              </h1>
+              <span className="max-sm:text-xs text-color-gray text-base">
                 {data.user.email}
               </span>
             </div>
