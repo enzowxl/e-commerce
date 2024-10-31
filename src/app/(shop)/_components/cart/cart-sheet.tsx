@@ -83,7 +83,7 @@ export function CartSheet({ children }: { children: ReactNode }) {
             name: product.name,
             price: formatPriceDiscount(product),
             quantity: product.quantity,
-            photos: [product.photoUrl] ?? undefined,
+            photos: [product.photoUrl],
             description: product.description ?? undefined,
           }
         }),
